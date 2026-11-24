@@ -1,0 +1,6 @@
+out/
+toons/out/
+projects/*/out/
+projects/*/.work/
+node_modules/
+*.zip

@@ -119,9 +119,11 @@ function ass(cues, w, h, style, shots = [], hostName = '') {
       ev.push(`Dialogue: 2,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(300,250)\\an5\\pos(${cx},${cy})}{\\fs${small}\\1c${accent}}PART ${s.chapterNo}\\N{\\fs${fit(s.chapter, Math.round(big * 0.55), 0.6)}\\1c&HFFFFFF&}${wrapAss(s.chapter.replace(/[{}]/g, ''), fit(s.chapter, Math.round(big * 0.55), 0.6))}`);
     }
     if (s.media && s.mhave && s.media.credit) { const a = s.S + s.lead + 0.3, b = s.S + s.D - 0.2; ev.push(`Dialogue: 4,${assTime(a)},${assTime(b)},Credit,,0,0,0,,{\\fad(200,200)}${(s.media.kind === 'clip' ? 'Clip: ' : 'Source: ') + s.media.credit.replace(/[{}]/g, '')}`); }
-    if (s.sticker) { // "SUBSTITUTE" sticker: honest label for stand-in media, kept on screen for the whole shot, tilted like a sticker
-      const a = s.S + s.lead + 0.15, b = s.S + s.D - 0.15, sx = v ? Math.round(w * 0.05) : Math.round(w * 0.03), sy = v ? Math.round(h * 0.06) : Math.round(h * 0.06), ss = Math.round(fs2 * (v ? 0.8 : 0.72));
-      ev.push(`Dialogue: 5,${assTime(a)},${assTime(b)},Sticker,,0,0,0,,{\\fad(200,200)\\an7\\pos(${sx},${sy})\\frz-3}{\\b1}SUBSTITUTE\\N{\\b0\\fs${Math.round(ss * 0.78)}}${wrapAss(s.sticker.replace(/[{}]/g, ''), Math.round(ss * 0.78)).replace(/\\N/g, '\\N')}`);
+    if (s.sticker) { // "SUBSTITUTE" sticker: honest label for stand-in media, on screen for the whole shot, tilted like a sticker, never wider than 40% of the frame
+      const a = s.S + s.lead + 0.15, b = s.S + s.D - 0.15, sx = Math.round(w * (v ? 0.05 : 0.035)), sy = Math.round(h * (v ? 0.05 : 0.07)), big2 = Math.round(fs2 * (v ? 1.05 : 1.0)), sm = Math.round(big2 * 0.72);
+      const mx = Math.max(10, Math.floor((w * (v ? 0.7 : 0.4)) / (sm * 0.6))), lines = []; let cur = '';
+      for (const wd of s.sticker.replace(/[{}]/g, '').split(' ')) { if ((cur + ' ' + wd).trim().length > mx && cur) { lines.push(cur); cur = wd; } else cur = (cur + ' ' + wd).trim(); } if (cur) lines.push(cur);
+      ev.push(`Dialogue: 5,${assTime(a)},${assTime(b)},Sticker,,0,0,0,,{\\fad(200,200)\\an7\\pos(${sx},${sy})\\frz-3\\fs${big2}}{\\b1}SUBSTITUTE\\N{\\b0\\fs${sm}}${lines.join('\\N')}`);
     }
     if (s.host && s.host.name && hostName) { const a = s.S + s.lead + 0.2, b = Math.min(s.S + s.D - 0.2, a + 4); const nx = v ? Math.round(w * 0.05) : Math.round(w * 0.06), ny = v ? Math.round(h * 0.34) : Math.round(h * 0.2);
       ev.push(`Dialogue: 4,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(250,250)\\an7\\pos(${nx},${ny})\\fs${Math.round(fs2 * 1.1)}\\bord0\\shad1}${hostName.toUpperCase()}\\N{\\fs${Math.round(fs2 * 0.7)}\\1c${accent}}your host`); }

@@ -38,6 +38,8 @@ function parse() {
     const hostM = /^\[host(?:\s+([\w-]+))?(?:\s+([\w-]+))?\]$/.exec(l);
     if (hostM) { if (!shots.length) throw new Error('[host] before the first [img] line'); const sh = shots[shots.length - 1], words = [hostM[1], hostM[2]].filter(Boolean);
       sh.host = { full: words.includes('full'), name: words.includes('name'), pose: words.find((w) => w !== 'full' && w !== 'name') || null }; continue; } // the channel host on screen for this shot
+    const stk = /^\[sticker\s+(.+)\]$/.exec(l); // a sticker on this part of the video: this is a substitute for the media we wanted
+    if (stk) { if (!shots.length) throw new Error('[sticker] before the first [img] line'); shots[shots.length - 1].sticker = stk[1].trim(); continue; }
     const unl = /^\[(unless|when)\s+(\S+)\]$/.exec(l);
     if (unl) { if (!shots.length) throw new Error('[unless] or [when] before the first [img] line'); shots[shots.length - 1][unl[1]] = unl[2]; continue; } // this shot is dropped when media/<file> exists (a typed-quote fallback for a real clip)
     const tc = (x) => x.includes(':') ? x.split(':').reduce((a, v) => a * 60 + +v, 0) : +x;
@@ -117,6 +119,10 @@ function ass(cues, w, h, style, shots = [], hostName = '') {
       ev.push(`Dialogue: 2,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(300,250)\\an5\\pos(${cx},${cy})}{\\fs${small}\\1c${accent}}PART ${s.chapterNo}\\N{\\fs${fit(s.chapter, Math.round(big * 0.55), 0.6)}\\1c&HFFFFFF&}${wrapAss(s.chapter.replace(/[{}]/g, ''), fit(s.chapter, Math.round(big * 0.55), 0.6))}`);
     }
     if (s.media && s.mhave && s.media.credit) { const a = s.S + s.lead + 0.3, b = s.S + s.D - 0.2; ev.push(`Dialogue: 4,${assTime(a)},${assTime(b)},Credit,,0,0,0,,{\\fad(200,200)}${(s.media.kind === 'clip' ? 'Clip: ' : 'Source: ') + s.media.credit.replace(/[{}]/g, '')}`); }
+    if (s.sticker) { // "SUBSTITUTE" sticker: honest label for stand-in media, kept on screen for the whole shot, tilted like a sticker
+      const a = s.S + s.lead + 0.15, b = s.S + s.D - 0.15, sx = v ? Math.round(w * 0.05) : Math.round(w * 0.03), sy = v ? Math.round(h * 0.06) : Math.round(h * 0.06), ss = Math.round(fs2 * (v ? 0.8 : 0.72));
+      ev.push(`Dialogue: 5,${assTime(a)},${assTime(b)},Sticker,,0,0,0,,{\\fad(200,200)\\an7\\pos(${sx},${sy})\\frz-3}{\\b1}SUBSTITUTE\\N{\\b0\\fs${Math.round(ss * 0.78)}}${wrapAss(s.sticker.replace(/[{}]/g, ''), Math.round(ss * 0.78)).replace(/\\N/g, '\\N')}`);
+    }
     if (s.host && s.host.name && hostName) { const a = s.S + s.lead + 0.2, b = Math.min(s.S + s.D - 0.2, a + 4); const nx = v ? Math.round(w * 0.05) : Math.round(w * 0.06), ny = v ? Math.round(h * 0.34) : Math.round(h * 0.2);
       ev.push(`Dialogue: 4,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(250,250)\\an7\\pos(${nx},${ny})\\fs${Math.round(fs2 * 1.1)}\\bord0\\shad1}${hostName.toUpperCase()}\\N{\\fs${Math.round(fs2 * 0.7)}\\1c${accent}}your host`); }
     if (s.quote) { // someone's words on screen (a quote from the show or a post): the speaker's name, then the words
@@ -135,6 +141,7 @@ function ass(cues, w, h, style, shots = [], hostName = '') {
     `Style: Title,${c.font},${big},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,1,0,0,0,100,100,0,0,1,0,2,5,60,60,0,1\n` +
     `Style: Quote,${c.font},${Math.round(fs2 * 1.35)},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,1,0,0,100,100,0,0,1,0,2,5,${Math.round(w * (v ? 0.08 : 0.16))},${Math.round(w * (v ? 0.08 : 0.16))},0,1\n` +
     `Style: Credit,${c.font},${Math.round(fs2 * 0.62)},&H00DDDDDD,&H00DDDDDD,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,${Math.round(fs2 * 0.06)},1,1,${Math.round(w * 0.025)},60,${Math.round(h * 0.03)},1\n` +
+    `Style: Sticker,${c.font},${Math.round(fs2 * 0.72)},&H00101010,&H00101010,&H004BC8F5,&H004BC8F5,0,0,0,0,100,100,0,0,3,${Math.round(fs2 * 0.2)},0,7,0,0,0,1\n` +
     `Style: Fx,${c.font},10,&H00000000,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n` +
     [...ev, ...cues.map((q) => `Dialogue: 3,${assTime(q.a)},${assTime(q.b)},Cap,,0,0,0,,${q.lines.map((l) => l.replace(/[{}]/g, '')).join('\\N')}`)].join('\n') + '\n';
 }

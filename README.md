@@ -62,6 +62,9 @@ pip install edge-tts
 termux-setup-storage
 ```
 
+## Footage and media
+Every way to get pictures, screenshots and clips (what works, what is blocked, how to pace Wikimedia Commons, the owner's-phone route) is in [`docs/MEDIA_SOURCES.md`](docs/MEDIA_SOURCES.md). If the exact media cannot be had, use an honest substitute and add a `[sticker ...]` line under that shot: the engine shows a tilted yellow **SUBSTITUTE** label for the whole shot. Never fake a post or a clip.
+
 ## Voices (Termux)
 The cloud cannot reach the Edge voices, so the owner makes them on a phone.
 - Narrator: `en-US-AvaMultilingualNeural` (British alternative `en-GB-SoniaNeural`). Male voice: `en-US-AndrewMultilingualNeural` (it sometimes returns empty files; the scripts retry). Cartoon episodes name their own voices in `EP.voices`.

@@ -30,11 +30,11 @@ const jobs = [];
 for (const s of shots) { if (!s.host || !s.text) continue; if (only && !only.includes(s.i + 1)) continue;
   const n = String(s.i + 1).padStart(2, '0'), voice = ['mp3', 'wav'].map((e) => path.join(P, 'voice', `${n}.${e}`)).find((f) => fs.existsSync(f));
   for (const [tag, aspect, w, h] of [['v', '9:16', 1080, 1920], ['h', '16:9', 1920, 1080]]) { if (tag === 'h' && !s.host.full) continue;
-    const pose = POSES[s.host.pose] || {}, cues = [{ do: 'camera', at: 0, preset: tag === 'v' && !s.host.full ? 'halfbody' : 'closeup', move: 'cut' }];
+    const pose = POSES[s.host.pose] || {}, cues = [{ do: 'camera', at: 0, preset: 'closeup', move: 'cut' }];
     if (pose.expression) cues.push({ do: 'expression', at: 0.2, ...pose.expression, duration: 3 }); if (pose.gesture) cues.push({ do: 'gesture', at: 0.6, name: pose.gesture });
     cues.push({ do: 'say', text: s.text, ...(voice ? { audio: voice } : {}), caption: false }, { do: 'wait', seconds: 0.4 });
     const script = { version: 1, meta: { title: `${id} host ${n}${tag}`, format: { aspect, width: w, height: h, fps: +fps } },
-      setup: { avatarLook: look, scene: 'apartment-default', background: 'apartment', lighting: 'studioSoft', camera: 'halfbody', voice: { engine: voice ? 'file' : 'none' }, animation: { personality: 'calm', energy: 0.5, handsRest: 'front', eyeContact: 0.9 } }, cues };
+      setup: { avatarLook: look, scene: 'apartment-default', background: 'living-room', lighting: 'studioSoft', camera: 'halfbody', voice: { engine: voice ? 'file' : 'none' }, animation: { personality: 'calm', energy: 0.5, handsRest: 'front', eyeContact: 0.9 } }, cues };
     const f = path.join(WORK, `${n}-${tag}.vme.json`); fs.writeFileSync(f, JSON.stringify(script)); jobs.push({ n, tag, f, voice }); } }
 console.log(`${jobs.length} host clips to render (scale ${scale}, ${fps} fps)`);
 for (const j of jobs) { const out = path.join(OUT, `${j.n}-${j.tag}.mp4`); if (fs.existsSync(out) && !args.includes('--force')) { console.log('have', out); continue; }

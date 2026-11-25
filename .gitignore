@@ -11,3 +11,6 @@ hosts/kuina/
 
 # scratch test projects
 projects/_*/
+
+# animated host clips and their work files embed the confidential avatar look
+projects/*/host/

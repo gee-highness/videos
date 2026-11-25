@@ -71,6 +71,13 @@ Put files in `projects/<id>/media/`. All of it is optional: a missing file rende
 - `node essay/essay.cjs media <id>` writes `media.md` (every file needed, where it is used, credit, status) and `media-download.sh` (a Termux block that downloads the clips with yt-dlp on the phone).
 - Rules: under ~25 s a clip and about 90 s of borrowed footage in total, always credited, always with commentary; screenshots show the headline only. `check` warns past 90 s.
 
+## Stock photos instead of AI images
+When there are no AI images, real Creative Commons photos work well, and real places beat illustrations (the actual stadium, lighthouse, square or street the story names).
+1. Search Openverse (`https://api.openverse.org/v1/images/?q=...&license_type=commercial,modification&source=wikimedia`) for each shot; keep landscape photos at least ~1500 px wide. Openverse needs no key and works from the cloud session.
+2. Wikimedia and Flickr refuse direct downloads from the cloud machine (HTTP 429), but the web-fetch agent can fetch them: give it up to ~15 URLs (the 1920 px thumbnail form `.../thumb/x/xy/File.jpg/1920px-File.jpg`), and it saves each file under the session's tool-results folder, in order. Copy them into `projects/<id>/img/NN.jpg`.
+3. Look at every photo on a contact sheet. Replace any that show a recognisable person's face, readable names or brands, or the wrong place.
+4. Write `projects/<id>/image-credits.md` (title, author, licence, link) and link it from the video description. CC BY and BY-SA need that credit, plus a note that the photos were modified.
+
 ## Music and sound effects
 All synthesised in `essay/score.cjs` (nothing to license). Set the opening mood with `music:` in the front matter (a mood name, `pad`, `none` or a file) and change it with `[music mood]` lines. The music ducks under the narrator by itself.
 

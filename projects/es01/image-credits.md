@@ -1,10 +1,10 @@
 # Photo credits: es01
 
-Every picture in this video is a photograph from Wikimedia Commons (via Openverse), used under its Creative Commons licence. All were cropped, colour graded, overlaid with text and animated (slow zoom and pan) for the video. No photograph shows a cast member.
+Every picture in this video is a photograph from Wikimedia Commons (found through Openverse), used under its Creative Commons licence. All were cropped, colour graded, overlaid with text and animated (slow zoom and pan) for the video. No photograph shows a cast member. Some places stand in for others (for example, an empty concert stage for the reunion set); the narration never says a photo shows a specific place unless it does.
 
 | Shot | Photo | By | Licence | Source |
 |---|---|---|---|---|
-| 01 | France 24 television studio - 2021 | IAEA Imagebank | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=113095432) |
+| 01 | Seats Waiting for Customers (6290748889) | oatsy40 | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=112992996) |
 | 03 | Smartphone (screen on) | 彭嘉傑 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=67201124) |
 | 04 | Dean's Mews At Night December 2016 London United Kingdom | Simeon87 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=54054608) |
 | 06 | Countrysideofjamaica | Jay Jay Marcus Keize13 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=66424811) |
@@ -42,7 +42,7 @@ Every picture in this video is a photograph from Wikimedia Commons (via Openvers
 | 49 | Jamaica White River Ocho Rios St. Ann's Bay; river boat boatride fishermen village fishermen landscape Katinka Zuchowicz Photography DSC 2267-1.jpg | Katinka Zuchowicz Photography | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | [link](https://commons.wikimedia.org/w/index.php?curid=10344973) |
 | 50 | (Venice) Ca' Rezzonico ballroom chandelier | Didier Descouens | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=155676752) |
 | 51 | Ebury Mews, London - geograph.org.uk - 2414043 | John Lord | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=108012445) |
-| 53 | LRT TV studios | Erwin Verbruggen | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=29104352) |
+| 53 | Empty seats | ProjectManhattan | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=36703971) |
 | 56 | ... antique lock with set of keys (exhibit) at Mehrangarh (31746266328) | Dinesh Valke from Thane, India | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=112059676) |
 | 57 | Studio Microphones on Stand (51877280903) | Dejan Krsmanovic | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=134047244) |
 | 59 | Castle Howard Lady Georgianas' Dressing Room | Mdbeckwith | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) | [link](https://commons.wikimedia.org/w/index.php?curid=31962851) |

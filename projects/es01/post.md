@@ -23,7 +23,7 @@ Reality Tea: https://www.realitytea.com/2026/11/23/rhol-reunion-part-2-karen-ama
 Wikipedia: https://en.wikipedia.org/wiki/The_Real_Housewives_of_London
 
 CREDITS
-Short clips from Hayu's official YouTube channel, used for commentary and criticism. Press headlines are shown with their publisher named. Narration is a synthetic voice. Pictures are AI-generated illustrations; no real person is pictured.
+Short clips from Hayu's official YouTube channel, used for commentary and criticism. Press headlines are shown with their publisher named. Narration is a synthetic voice. Photos are from Wikimedia Commons under Creative Commons licences (cropped, graded and animated); full credits and licences: https://github.com/gee-highness/videos/blob/main/projects/es01/image-credits.md. No cast member is pictured.
 This channel is not affiliated with Hayu, Bravo, NBCUniversal or anyone in the cast. Quotes from the show and social posts are reproduced for commentary.
 
 ## Tags
@@ -40,4 +40,4 @@ One mews house. Five properties. Three words. The whole Real Housewives of Londo
 - [ ] Hayu clips watched, times set, credited on screen
 - [ ] Watched once with sound and once muted
 - [ ] Thumbnail: the blush-pink mews house + "ONE MEWS HOUSE" (no faces)
-- [ ] Altered or synthetic content disclosure ticked on YouTube (AI pictures and voice)
+- [ ] Altered or synthetic content disclosure ticked on YouTube (synthetic voice)

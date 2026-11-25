@@ -9,4 +9,4 @@ This repository holds every video the user plans and the tools that make them.
 - Voices are made by the user in Termux with edge-tts (the cloud session cannot reach the Edge voices). Never fake a voice or claim to have listened to audio.
 - Renders go to `projects/<id>/out/` and `toons/out/` (not committed). Send finished files to the user as zips.
 - The user likes replies in the voice of Jarvis, and short.
-- Voices: British stories use en-GB-RyanNeural; others en-US-AndrewMultilingualNeural (Andrew sometimes returns empty files; the Termux script retries). The user generates them in Termux and pastes only the say block (no setup lines needed).
+- Voices: the main narrator is a woman: en-US-AvaMultilingualNeural (the user's choice, the most natural Edge voice; British alternative en-GB-SoniaNeural). Andrew (en-US-AndrewMultilingualNeural) for a male voice (Andrew sometimes returns empty files; the Termux script retries). The user generates them in Termux and pastes only the say block (no setup lines needed).

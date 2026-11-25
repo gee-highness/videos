@@ -1,6 +1,6 @@
 # The Real Housewives of London: How a Mews House Became the Most Famous Read of 2026: every voice line. Paste the whole block into Termux (needs: pkg install python zip; pip install edge-tts).
 # Each line retries up to 5 times, and lines already made are skipped, so it is safe to run again. Send back Downloads/es01-voice.zip
-say(){ n=0; until [ -s "$1.mp3" ] || [ $n -ge 5 ]; do rm -f "$1.mp3"; edge-tts --rate=-2% --voice en-GB-RyanNeural --text "$2" --write-media "$1.mp3"; n=$((n+1)); [ -s "$1.mp3" ] || sleep 2; done; }
+say(){ n=0; until [ -s "$1.mp3" ] || [ $n -ge 5 ]; do rm -f "$1.mp3"; edge-tts --rate=+0% --voice en-US-AvaMultilingualNeural --text "$2" --write-media "$1.mp3"; n=$((n+1)); [ -s "$1.mp3" ] || sleep 2; done; }
 mkdir -p ~/storage/downloads/es01-voice && cd ~/storage/downloads/es01-voice
 say 01 'In November 2026, a reality show most of the world had never watched produced one sentence that most of the world can now quote.'
 say 03 'Within days, SZA, Questlove and The View were talking about it. Millions of people watched a clip of six women arguing about property.'

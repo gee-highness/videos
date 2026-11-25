@@ -1,0 +1,14 @@
+[
+ { "file": "press-complex.png", "url": "https://www.complex.com/pop-culture/a/bernadette-giacomazzo/sza-vybz-kartel-questlove-low-budget-vagina-amanda", "mode": "headline" },
+ { "file": "press-bravo.png", "url": "https://www.bravotv.com/the-daily-dish/who-is-karen-loderick-peace-from-the-real-housewives-of-london-bio-photos", "mode": "headline" },
+ { "file": "press-hello.png", "url": "https://www.yahoo.com/entertainment/celebrity/articles/viral-real-housewives-london-mews-142045227.html", "mode": "headline" },
+ { "file": "press-people-mews.png", "url": "https://www.yahoo.com/entertainment/tv/articles/real-housewives-london-stars-heated-202541872.html", "mode": "headline" },
+ { "file": "press-tab-katherine.png", "url": "https://thetab.com/realityshrine/2026/11/19/rhol-host-katherine-ryan-speaks-out-on-the-viral-reunion-clash-between-amanda-and-karen/", "mode": "headline" },
+ { "file": "press-realitytea-part2.png", "url": "https://www.realitytea.com/2026/11/23/rhol-reunion-part-2-karen-amanda-hell-dig/", "mode": "headline" },
+ { "file": "press-tab-season3.png", "url": "https://thetab.com/realityshrine/2026/11/24/everything-we-know-about-the-real-housewives-of-london-season-three-with-its-reported-return/", "mode": "headline" },
+ { "file": "press-peacock.png", "url": "https://www.memorabletv.com/news/real-housewives-london-season-2-now-streaming-full-peacock/", "mode": "headline" },
+ { "file": "wiki-infobox.png", "url": "https://en.wikipedia.org/wiki/The_Real_Housewives_of_London", "mode": "selector", "selector": "table.infobox" },
+ { "file": "wiki-season2-episodes.png", "url": "https://en.wikipedia.org/wiki/The_Real_Housewives_of_London", "mode": "selector", "selector": "table.wikiepisodetable", "nth": 1 },
+ { "file": "complex-embed-1.png", "url": "https://www.complex.com/pop-culture/a/bernadette-giacomazzo/sza-vybz-kartel-questlove-low-budget-vagina-amanda", "mode": "selector", "selector": "iframe[src*='instagram'], blockquote.instagram-media, iframe[src*='twitter'], blockquote.twitter-tweet", "nth": 0, "wait": 8000 },
+ { "file": "complex-embed-2.png", "url": "https://www.complex.com/pop-culture/a/bernadette-giacomazzo/sza-vybz-kartel-questlove-low-budget-vagina-amanda", "mode": "selector", "selector": "iframe[src*='instagram'], blockquote.instagram-media, iframe[src*='twitter'], blockquote.twitter-tweet", "nth": 1, "wait": 8000 }
+]

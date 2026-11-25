@@ -1,8 +1,8 @@
 ---
 title: The Real Housewives of London: How a Mews House Became the Most Famous Read of 2026
 style: london-glam
-voice: en-GB-RyanNeural
-rate: -2%
+voice: en-US-AvaMultilingualNeural
+rate: +0%
 music: none
 status: scripted; research in research.md, plan in plan.md
 sources: research.md (every fact and quote with its source; cast members' words are quoted as claims)

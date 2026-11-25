@@ -4,3 +4,4 @@ projects/*/out/
 projects/*/.work/
 node_modules/
 *.zip
+projects/*/media/

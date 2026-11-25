@@ -5,3 +5,12 @@ projects/*/.work/
 node_modules/
 *.zip
 projects/*/media/
+
+# Kuina is confidential: kept only in the private v_me repo (hosts/kuina) and on the render machine
+hosts/kuina/
+
+# scratch test projects
+projects/_*/
+
+# animated host clips and their work files embed the confidential avatar look
+projects/*/host/

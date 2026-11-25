@@ -15,3 +15,15 @@
 - 2026-11-25 es01 pictures: 60 Creative Commons photos via Openverse + web-fetch agents (Wikimedia blocks the cloud machine directly). Each fetch agent stopped at its 15-turn limit, but the files it saved were complete and in order; match them by expected size when a batch is short. Rejected: a news set with presenters, a TV crew with faces, a concert stage with an artist's name across it.
 - 2026-11-25 News24, IOL and Briefly return HTTP 403 to the cloud machine (web-fetch too): only their search snippets are readable. Witness, Highway Mail/The Citizen, M&G and SAnews read fine. Label snippet-only facts as such in research.md and tell the user to re-check them. A fast-moving news story (es02) needs a re-check of numbers on posting day.
 - 2026-11-25 A viral-video story can rest on one outlet that names no video source (es03, GhPage): label it thin, say "reportedly", never reuse details from older look-alike stories (the 2024 Obodo bride), and ask the user to read the Facebook/Instagram posts, which the cloud machine cannot open.
+
+## Music
+- The user wants the music to be the best it can be in every video: matched to each section, shaped, ducked under the voice, loudness checked. Never a flat loop.
+
+## Set
+- All videos are made in the v_me default house (`scene: apartment-default`, `background: apartment`), with the confidential host as a v_me look.
+- Orchestra (Nov 2026): music now comes from `orchestra/orchestra.cjs` (real recorded sections). Check every score by measurement, not by ear (Claude cannot listen): `ffmpeg -af ebur128` (bed about -21 LUFS, true peak under -1 dB) and a spectrogram (`showspectrumpic`) to see the sections change with the cues. The user judges the sound.
+- The host's avatar and textures are confidential: details live in the private v_me repo (`hosts/kuina/`), not here.
+- Toons (Nov 2026): cartoon music now comes from the orchestra too (`toons/sfx.cjs` calls `orchestra/orchestra.cjs`, bed at -27 LUFS so the voices lead; set `ep.mood`, default `comedy`). Cartoon sound effects stay synthesised.
+
+## UI/UX
+- The user wants the best UI and UX in every video: readable on a phone, safe areas, clear hierarchy, consistent layout, strong contrast, real 9:16 design. Check frames of both formats at phone size; first sticker pass was too small and too wide, so labels are sized from the caption size and capped at 40% of the frame.

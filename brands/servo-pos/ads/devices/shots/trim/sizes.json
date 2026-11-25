@@ -1,0 +1,106 @@
+{
+ "cashier_till-cart_tablet_front": [
+  939,
+  700
+ ],
+ "cashier_till-cart_tablet_left": [
+  896,
+  729
+ ],
+ "cashier_till-cart_tablet_right": [
+  882,
+  740
+ ],
+ "guest_home_phone_back": [
+  416,
+  853
+ ],
+ "guest_home_phone_right": [
+  385,
+  863
+ ],
+ "guest_menu_phone_front": [
+  421,
+  847
+ ],
+ "kitchen_kitchen_desktop_back": [
+  1451,
+  708
+ ],
+ "kitchen_kitchen_desktop_front": [
+  972,
+  706
+ ],
+ "kitchen_kitchen_desktop_right": [
+  910,
+  728
+ ],
+ "manager_analytics_desktop_front": [
+  976,
+  699
+ ],
+ "manager_analytics_laptop_front": [
+  1028,
+  662
+ ],
+ "manager_dashboard_laptop_front": [
+  1029,
+  662
+ ],
+ "manager_dashboard_laptop_left": [
+  1028,
+  748
+ ],
+ "manager_dashboard_phone_front": [
+  422,
+  846
+ ],
+ "manager_orders-in_laptop_front": [
+  1029,
+  661
+ ],
+ "manager_orders-in_phone_front": [
+  422,
+  846
+ ],
+ "manager_payroll_laptop_front": [
+  1031,
+  652
+ ],
+ "manager_payroll_phone_front": [
+  422,
+  846
+ ],
+ "manager_reports_laptop_left": [
+  1029,
+  749
+ ],
+ "manager_reports_phone_front": [
+  422,
+  846
+ ],
+ "manager_shifts_laptop_front": [
+  1028,
+  662
+ ],
+ "manager_shifts_tablet_front": [
+  941,
+  697
+ ],
+ "manager_stock_laptop_front": [
+  1031,
+  652
+ ],
+ "manager_stock_phone_front": [
+  422,
+  846
+ ],
+ "waiter_server_phone_front": [
+  421,
+  846
+ ],
+ "waiter_server_phone_left": [
+  398,
+  861
+ ]
+}

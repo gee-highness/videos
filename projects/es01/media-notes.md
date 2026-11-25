@@ -19,3 +19,13 @@ Crop to the post only (no phone status bar, no notifications). Until you add the
 - Commentary around every clip (the narrator explains or reacts; the clip is never just played).
 - Screenshots show the headline only, with the publisher named on screen.
 - YouTube may still flag the video for a claim; that is the publisher's choice, not an error.
+
+## Stand-ins used in the posted cut (Nov 2026), each with a SUBSTITUTE sticker on screen
+| Wanted | Used instead | To replace with the real thing |
+|---|---|---|
+| `hayu-backstage.mp4` (reunion footage, shot 31) | CC BY 2.0 photo of Katherine Ryan (the host), `media/katherine-ryan.jpg` | add the clip, restore the `[clip]` line, remove the `[shot]` and `[sticker]` lines |
+| Instagram post, SZA (shot 72) | CC BY-SA 4.0 portrait `media/post-sza.jpg`, her words quoted | add `post-sza.png`, use `[shot] post-sza.png | Instagram, SZA`, drop the sticker |
+| Instagram post, Questlove (shot 73) | CC BY-SA 3.0 portrait `media/post-questlove.jpg`, words quoted | same with `post-questlove.png` |
+| Instagram post, Karen Huger (shot 75) | CC0 portrait `media/post-huger.png`, words quoted | same with `post-huger.png` |
+| Instagram post, Vybz Kartel (shot 74) | none (Wikimedia refused the download); the AI dancehall still and the narration carry the shot | add `post-vybz.png` and a `[shot]` line |
+| `hayu-monologue.mp4`, `hayu-hell.mp4` | typed quote cards over AI stills (the script's own `[unless]` fallbacks) | add the clips; the `[when]` shots take over |

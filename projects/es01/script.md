@@ -4,8 +4,8 @@ style: london-glam
 voice: en-US-AvaMultilingualNeural
 rate: +0%
 music: none
-host: hosts/naledi/dress.png
-host_name: Naledi
+host: hosts/kuina/dress.png
+host_name: Kuina
 status: scripted; research in research.md, plan in plan.md
 sources: research.md (every fact and quote with its source; cast members' words are quoted as claims)
 ---
@@ -142,7 +142,8 @@ Most of them did. Except one.
 [img] the reunion stage again, now lit, six velvet armchairs, a host's chair in the centre, the audience seats in darkness {move:in}
 [music tension]
 [sfx boom x0.6]
-[clip] hayu-backstage.mp4 0:00-0:14 mute | Hayu | https://www.youtube.com/watch?v=ZDUS31oI3R4
+[shot] katherine-ryan.jpg | Katherine Ryan: Paul Beavan, CC BY 2.0, via Wikimedia Commons | https://commons.wikimedia.org/wiki/File:Katherine_Ryan,_Scoundrels,_2012(cropped).jpg
+[sticker file photo of Katherine Ryan, the reunion host. The reunion footage itself was not available]
 The reunion streamed on the sixteenth of November. Katherine Ryan in the middle. Karen and Amanda on the same set.
 
 [img] a sealed brown envelope on a velvet chair, slightly open, light falling across it {move:in}
@@ -313,21 +314,23 @@ And the two Juliets, Mayhew and Angus, had a moment of their own.
 By then, the clip had left London.
 
 [img] a recording studio at night, a microphone and a mixing desk, headphones hanging on a stand {move:in}
-[shot] post-sza.png | Instagram, SZA
+[shot] post-sza.jpg | SZA: Bárbara Jadeh, CC BY-SA 4.0, via Wikimedia Commons | https://commons.wikimedia.org/wiki/File:SZA_LOLLAPALOOZA_(2024)_-_IMG_7917.jpg
+[sticker photo of SZA. Her Instagram post could not be captured, so her words are quoted]
 [quote] SZA | "Oh I'm starting episode one TONIGHT... Ain't seen nobody cleared this crazy since Phaedra."
 
 [img] a vinyl record spinning on a turntable, warm light, a tall afro comb resting beside it {move:in}
-[shot] post-questlove.png | Instagram, Questlove
+[shot] post-questlove.jpg | Questlove: Joe Mabel, CC BY-SA 3.0, via Wikimedia Commons | https://commons.wikimedia.org/wiki/File:Questlove_03.jpg
+[sticker photo of Questlove. His Instagram post could not be captured, so his words are quoted]
 [quote] Questlove | "This is the first time I've paid attention to housewives... She brung the ruckus!"
 
 [img] a dancehall stage in Kingston at night, speaker stacks and coloured lights, an empty microphone stand {move:panR}
 [sfx scratch]
-[shot] post-vybz.png | Instagram, Vybz Kartel
 In Jamaica, dancehall star Vybz Kartel posted that "Low budget v-word" was his new song. Spice asked whether she should make one too.
 
 [img] a teacup being set down on a saucer, a few drops jumping out, a gold crown resting beside it on a lace cloth {move:in}
 [sfx ding]
-[shot] post-huger.png | Instagram, Karen Huger
+[shot] post-huger.png | Karen Huger: CityLimitsJunction, CC0, via Wikimedia Commons | https://commons.wikimedia.org/wiki/File:Karen_Huger_in_Washington,_D.C._2022.png
+[sticker photo of Karen Huger. Her Instagram post could not be captured, so her words are quoted]
 [quote] Karen Huger, The Real Housewives of Potomac | "From one Karen to another, darling, I had to put my tea down for that one. Take your crown."
 
 [img] a bright American daytime-television studio, four empty chairs at a curved desk, morning light {move:panL}

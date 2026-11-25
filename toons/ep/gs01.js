@@ -7,20 +7,20 @@ const chat = (n) => { let s = fillR(0, 0, 440, 100) + text(220, 64, 'Staff group
   const k = Math.min(n, 7); for (let i = 0; i < k; i++) { const right = rnd(i + n) > 0.5, w = 170 + rnd(i * 3 + n) * 170, x = right ? 420 - w : 20, y = 760 - (k - i) * 90;
     s += rect(x, y, w, 66, 22, { fill: right ? '#e8f4ec' : '#fff', w: 3 }) + line(`M${x + 22},${y + 34} h${w - 60}`, { w: 4 }); } return s; };
 const EP = {
-  voiceTempo: 1.08, id: 'gs01', title: 'Blessed Tuesday', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
+  voiceTempo: 0.9, id: 'gs01', title: 'Blessed Tuesday', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
   voices: { N: 'en-GB-RyanNeural', L: 'en-US-AvaMultilingualNeural', M: 'en-US-AndrewMultilingualNeural' },
   voice: [
     { who: 'N', text: 'Seven a.m. One simple question.' },
-    { who: 'L', text: 'How many learners are absent today?', gap: 0.25 },
-    { who: 'M', text: 'Let me ask the staff group.', gap: 0.2 },
-    { who: 'N', text: 'Forty messages later, someone sent a picture of flowers.', gap: 0.45 },
-    { who: 'N', text: 'It said: Blessed Tuesday.', gap: 0.35 },
-    { who: 'N', text: "With GSS-LMS, teachers take the register on their phones, and it lands on her screen: who's absent, and which register isn't done." , gap: 0.9 },
-    { who: 'L', text: 'Twelve absent. And Tuesday is blessed.', gap: 0.4 },
-    { who: 'N', text: 'GSS-LMS. Open the demo as the principal.', gap: 0.5 },
+    { who: 'L', text: 'How many learners are absent today?', gap: 0.9 },
+    { who: 'M', text: 'Let me ask the staff group.', gap: 0.9 },
+    { who: 'N', text: 'Forty messages later, someone sent a picture of flowers.', gap: 1.6 },
+    { who: 'N', text: 'It said: Blessed Tuesday.', gap: 1.4 },
+    { who: 'N', text: "With GSS-LMS, teachers take the register on their phones, and it lands on her screen: who's absent, and which register isn't done." , gap: 2.2 },
+    { who: 'L', text: 'Twelve absent. And Tuesday is blessed.', gap: 1.5 },
+    { who: 'N', text: 'GSS-LMS. Open the demo as the principal.', gap: 1.6 },
   ],
-  caps: [[0, '7 a.m.\nOne *simple* question.'], [1, '“How many learners are\n*absent* today?”'], [2, '“Let me ask\nthe *staff group.*”'], [3, '40 messages later…'], [4, '“*Blessed Tuesday.*”'],
-    [5, 'The register, *on their phones.*\nThe answer, *on hers.*'], [6, '“Twelve absent.\nAnd Tuesday is *blessed.*”']],
+  caps: [[0, '7 a.m.\nOne *simple* question.', 1], [1, '“How many learners are\n*absent* today?”', 2], [2, '“Let me ask\nthe *staff group.*”', 3], [3, '40 messages later…', 4], [4, '“*Blessed Tuesday.*”', 5],
+    [5, 'The register, *on their phones.*\nThe answer, *on hers.*', 6], [6, '“Twelve absent.\nAnd Tuesday is *blessed.*”']],
   sx: [[0, 0.1, 'tick'], [1, 0.1, 'pop'], [2, 0.1, 'pop'], [3, 0.2, 'tick'], [3, 0.5, 'tick'], [3, 0.8, 'tick'], [3, 1.1, 'tick'], [3, 1.4, 'tick'], [4, -0.1, 'chime', 0.8], [4, 1.4, 'womp', 0.7], [5, -0.2, 'whoosh'], [5, 3.5, 'pop'], [5, 5.0, 'ding', 0.8], [6, 1.6, 'chime'], [7, 0.2, 'whoosh'], [7, 0.7, 'ding', 0.7]],
   scenes: [
     { s: 0, draw(t, T, len, rel) {
@@ -41,6 +41,6 @@ const EP = {
       return { art, ui: text(540, 220, 'Twelve.', { font: BRUSH, size: 130, weight: 400 }) + grp(rect(-150, -120, 300, 240, 20, { fill: '#fff', w: 6 }) + text(0, -40, 'Absent', { size: 40 }) + text(0, 60, '12', { size: 120, fill: BRAND }), 820, 520, pop(prog(t, 0.1, 0.5)), 3) +
         flowers(820, 900, 0.7, prog(t, rel(6) + 1.4, rel(6) + 1.8)) };
     } },
-    gssEnd(7, 'the principal', principal),
+    gssEnd(7, 'the principal', principal, { tail: 4 }),
   ],
 };

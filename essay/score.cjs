@@ -72,7 +72,7 @@ const SOUNDS = {
   hush: { d: 1.4, lp: 0.04, f: (t) => noise() * Math.sin(Math.PI * t / 1.4) * 0.8 },
 };
 
-function score(file, dur, cues, sfx) {
+function synth(file, dur, cues, sfx) {
   const n = Math.ceil(dur * SR), buf = new Float32Array(n), X = 1.5;
   const list = [...cues].sort((a, b) => a[0] - b[0]);
   for (let c = 0; c < list.length; c++) {
@@ -93,4 +93,18 @@ function score(file, dur, cues, sfx) {
   for (let i = 0; i < n; i++) { const v = Math.max(-1, Math.min(1, buf[i])) * 32767 | 0; pcm.writeInt16LE(v, 44 + i * 4); pcm.writeInt16LE(v, 46 + i * 4); }
   fs.writeFileSync(file, pcm);
 }
-module.exports = { score, moods: Object.keys(MOODS), sounds: Object.keys(SOUNDS) };
+// The orchestra (orchestra/orchestra.cjs, real recorded sections) scores every video; the synth above is only the fallback
+// when the samples cannot be fetched, and still makes the non-orchestral effects (pop, shutter, notify ...).
+const orch = require('../orchestra/orchestra.cjs'), { execFileSync } = require('child_process'), path = require('path');
+function score(file, dur, cues, sfx) {
+  if (!orch.available()) { try { execFileSync('bash', [path.join(__dirname, '..', 'orchestra', 'fetch.sh')], { stdio: 'inherit' }); } catch (e) { console.warn('orchestra: samples unavailable, using the synth'); } }
+  if (!orch.available()) return synth(file, dur, cues.map(([t, m]) => [t, MOODS[m] ? m : 'calm']), sfx);
+  const hit = (s) => orch.hits.includes(s[1]);
+  orch.score(file + '.orch.wav', dur, cues, sfx.filter(hit));
+  const rest = sfx.filter((s) => !hit(s));
+  if (!rest.length) { fs.renameSync(file + '.orch.wav', file); return; }
+  synth(file + '.fx.wav', dur, [[0, 'none']], rest);
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', file + '.orch.wav', '-i', file + '.fx.wav', '-filter_complex', '[0:a][1:a]amix=inputs=2:normalize=0,alimiter=limit=0.95[o]', '-map', '[o]', file]);
+  fs.rmSync(file + '.orch.wav'); fs.rmSync(file + '.fx.wav');
+}
+module.exports = { score, synth, moods: [...new Set([...orch.moods, ...Object.keys(MOODS)])], sounds: [...new Set([...Object.keys(SOUNDS), ...orch.hits])] };

@@ -80,7 +80,7 @@ window.draw=(t)=>{document.getElementById('s').innerHTML=frame(EP,t)};</script>`
   ff.stdin.end(); await new Promise((r) => ff.on('close', r));
   }
   await browser.close();
-  // sound: effects and music are synthesised (sfx.cjs) into one bed; each voice line is laid at its time. --audio-only redoes just this.
+  // sound: cartoon effects are synthesised, the music is the orchestra (sfx.cjs, orchestra/orchestra.cjs; set `ep.mood` to comedy, glam, island, wonder, sad, sneaky, tension, drama, triumph or calm; default comedy); each voice line is laid at its time. --audio-only redoes just this.
   const tmp = path.join(out, tag + '-vo'); fs.mkdirSync(tmp, { recursive: true });
   const bed = path.join(tmp, 'bed.wav');
   require('./sfx.cjs').bed(bed, dur, snd.sfx, opt('no-music') ? [] : snd.music);

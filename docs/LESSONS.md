@@ -13,3 +13,6 @@
 - 2026-11-25 Termux voice failures with `Connection timeout to host wss://speech.platform.bing.com` are the phone's network (a VPN, a blocked network), not the script: turn off the VPN or switch network and re-run the block (finished lines are skipped). A stray character before `say(){` also breaks the first line.
 - 2026-11-25 The check command estimated 8:45 for es01 but the render is 9:49: silent quote and screenshot shots, chapter holds and the final 2.5 s add about a minute. Trust the render for the real length.
 - 2026-11-25 es01 pictures: 60 Creative Commons photos via Openverse + web-fetch agents (Wikimedia blocks the cloud machine directly). Each fetch agent stopped at its 15-turn limit, but the files it saved were complete and in order; match them by expected size when a batch is short. Rejected: a news set with presenters, a TV crew with faces, a concert stage with an artist's name across it.
+
+## Music
+- The user wants the music to be the best it can be in every video: matched to each section, shaped, ducked under the voice, loudness checked. Never a flat loop.

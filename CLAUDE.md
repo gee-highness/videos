@@ -13,3 +13,5 @@ This repository holds every video the user plans and the tools that make them.
 - The user likes replies in the voice of Jarvis, and short.
 - Voices: the main narrator is a woman: en-US-AvaMultilingualNeural (the user's choice, the most natural Edge voice; British alternative en-GB-SoniaNeural). Andrew (en-US-AndrewMultilingualNeural) for a male voice (Andrew sometimes returns empty files; the Termux script retries). The user generates them in Termux and pastes only the say block (no setup lines needed).
 - The channel host is Kuina (working name), a fictional AI-generated presenter: `hosts/kuina/HOST.md`. Use `dress.png` (glam but covered); the alt images are not used in videos.
+
+**Music (standing rule from the user):** the music must be the best it can be in every video. Choose or compose a bed that fits the mood of each section, shape it (intro, build, drop under the voice, outro), duck it under speech, mix it cleanly, and check the loudness. Never ship a flat generic loop. Record what worked in `docs/LESSONS.md`.

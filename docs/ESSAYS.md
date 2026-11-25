@@ -46,11 +46,33 @@ sources: where every number comes from
 What the narrator says over this picture. One or two sentences.
 [card] 95% | of organisations: no measurable return     (a statistic on screen for this shot)
 [pause 0.8]                      (a beat of silence after this shot, before the next line)
+[quote] SPEAKER | "their exact words"   (someone's words on screen; replaces captions for that shot; a shot can be only a quote, with no narration)
+[music sneaky]                   (the music changes here and plays until the next [music]; moods: calm glam sneaky tension drama triumph island none)
+[sfx boom]  [sfx pop end]  [sfx notify +0.9 x0.7]   (a sound effect at the start of the narration, at its end, or N seconds in; xN = volume)
 
 [img same] {move:in}
 Keeps the previous picture with a new camera move (in, out, panL, panR, up, down, hold).
 ```
 About 145 words is one minute. A 10-minute essay is about 1,450 words and 90 to 120 shots.
+
+## Music and sound effects
+All synthesised in `essay/score.cjs` (nothing to license). Set the opening mood with `music:` in the front matter (a mood name, `pad`, `none` or a file) and change it with `[music mood]` lines. The music ducks under the narrator by itself.
+
+| Mood | Use it for |
+|---|---|
+| calm | explanations, endings, a fair-minded aside |
+| glam | money, luxury, London, fashion |
+| sneaky | gossip, scheming, someone about to be found out (tip-toe pizzicato) |
+| tension | a feud building, a confrontation coming (drone and heartbeat) |
+| drama | the big moment (minor swells and hits) |
+| triumph | the internet reacts, a victory lap |
+| island | Caribbean roots (offbeat skank, gentle) |
+| none | silence before a punchline: silence is a sound effect too |
+
+Sounds: pop, tick, ding, chime, whoosh, womp (a joke falls flat), sting, thud, munch, boom (a reveal), riser (build into a moment; use a negative offset, e.g. `[sfx riser -1.6]`), scratch (record scratch: "wait, what?"), cash (money), shutter (photos), notify (phones, going viral), hush (the room goes quiet).
+
+## Real people
+Read `.claude/skills/research-desk/SKILL.md`: research first, label every line FACT / CLAIM / UNVERIFIED, quote people as their words, follow an accusation with the denial, crude words on screen only with an asterisk, no clips and no real faces in images.
 
 ## Commands
 | Command | Does |

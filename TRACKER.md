@@ -8,7 +8,8 @@ Status: `idea` → `scripted` → `voiced` (voice files in) → `images` (all im
 
 | ID | Title | Style | Length | Status | Next step | Notes |
 |---|---|---|---|---|---|---|
-| es01 | The AI Takeover Quietly Stalled. Here's What the Numbers Say | retro-office | ~2.2 min | planned and scripted (pilot), pacing check passes | voices from `projects/es01/termux.sh`, images from `projects/es01/prompts.md` | Pipeline test; check every figure against the MIT NANDA 2025 report before posting |
+| es01 | The Real Housewives of London: How a Mews House Became the Most Famous Read of 2026 | london-glam | 10:08 | researched, planned and scripted; pacing check passes | voices from `projects/es01/termux.sh` (68 lines), 60 images from `projects/es01/prompts.md` | First full demo: chapters, cards, quote cards, mood music, sound effects. Facts in `research.md` |
+| es00 | The AI Takeover Quietly Stalled (pipeline pilot) | retro-office | ~2.2 min | scripted | voices and images | Check every figure against the MIT NANDA 2025 report before posting |
 
 ### Essay ideas (pick, then I script them)
 | Working title | Angle | Style |

@@ -35,9 +35,15 @@ function parse() {
     // "# Title" starts a chapter: a title card on screen and a YouTube chapter. "## note" is only for you.
     if (/^#\s/.test(l)) { section = l.replace(/^#\s*/, ''); pendingChapter = section; continue; }
     if (l.startsWith('#')) continue;
-    const card = /^\[card\]\s*(.*)$/.exec(l), pz = /^\[pause\s+([\d.]+)\]$/.exec(l);
-    if (card || pz) { if (!shots.length) throw new Error('[card] or [pause] before the first [img] line'); const sh = shots[shots.length - 1];
-      if (card) { const [big, small] = card[1].split('|').map((x) => x.trim()); sh.card = { big, small: small || '' }; } else sh.pause = +pz[1]; continue; }
+    const card = /^\[card\]\s*(.*)$/.exec(l), pz = /^\[pause\s+([\d.]+)\]$/.exec(l), quote = /^\[quote\]\s*(.*)$/.exec(l),
+      mus = /^\[music\s+(\w+)\]$/.exec(l), fx = /^\[sfx\s+(\w+)(?:\s+(end|[+-]?[\d.]+))?(?:\s+x([\d.]+))?\]$/.exec(l);
+    if (card || pz || quote || mus || fx) { if (!shots.length) throw new Error('[card], [quote], [pause], [music] or [sfx] before the first [img] line: ' + l); const sh = shots[shots.length - 1];
+      if (card) { const [big, small] = card[1].split('|').map((x) => x.trim()); sh.card = { big, small: small || '' }; }
+      else if (quote) { const k = quote[1].indexOf('|'); sh.quote = k < 0 ? { who: '', text: quote[1].trim() } : { who: quote[1].slice(0, k).trim(), text: quote[1].slice(k + 1).trim() }; }
+      else if (mus) sh.music = mus[1];
+      else if (fx) (sh.sfx ||= []).push({ name: fx[1], at: fx[2] || '0', vol: fx[3] ? +fx[3] : 1 });
+      else sh.pause = +pz[1];
+      continue; }
     const m = /^\[img(?:\s+(same))?\]\s*(.*)$/.exec(l);
     if (m) { shots.push({ section, chapter: pendingChapter, prompt: m[2], same: !!m[1], text: '', move: (/\{move:(\w+)\}/.exec(m[2]) || [])[1] }); pendingChapter = null; shots[shots.length - 1].prompt = m[2].replace(/\{move:\w+\}/, '').trim(); continue; }
     if (!shots.length) throw new Error('Narration before the first [img] line: ' + l.slice(0, 60));
@@ -59,7 +65,7 @@ function plan() {
   let sh = `# ${meta.title || id}: every voice line. Paste the whole block into Termux (needs: pkg install python zip; pip install edge-tts).\n# Each line retries up to 5 times, and lines already made are skipped, so it is safe to run again. Send back Downloads/${id}-voice.zip\n`;
   sh += `say(){ n=0; until [ -s "$1.mp3" ] || [ $n -ge 5 ]; do rm -f "$1.mp3"; edge-tts --rate=${meta.rate} --voice ${meta.voice} --text "$2" --write-media "$1.mp3"; n=$((n+1)); [ -s "$1.mp3" ] || sleep 2; done; }\n`;
   sh += `mkdir -p ~/storage/downloads/${id}-voice && cd ~/storage/downloads/${id}-voice\n`;
-  shots.forEach((s, i) => { sh += `say ${nn(i)} ${q(spoken(s.text))}\n`; });
+  shots.forEach((s, i) => { if (spoken(s.text)) sh += `say ${nn(i)} ${q(spoken(s.text))}\n`; });
   sh += `cd .. && rm -f ${id}-voice.zip && zip -qr ${id}-voice.zip ${id}-voice && find ${id}-voice -name "*.mp3" -size 0 && echo "Done: Downloads/${id}-voice.zip (a file listed above is empty: run the block again)"\n`;
   fs.writeFileSync(path.join(P, 'termux.sh'), sh);
   const words = shots.reduce((a, s) => a + spoken(s.text).split(' ').length, 0);
@@ -94,6 +100,11 @@ function ass(cues, w, h, style, shots = []) {
       ev.push(`Dialogue: 1,${assTime(a)},${assTime(b)},Fx,,0,0,0,,{\\fad(250,250)}${dim('40')}`);
       ev.push(`Dialogue: 2,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(300,250)\\an5\\pos(${cx},${cy})}{\\fs${small}\\1c${accent}}PART ${s.chapterNo}\\N{\\fs${Math.round(big * 0.55)}\\1c&HFFFFFF&}${s.chapter.replace(/[{}]/g, '')}`);
     }
+    if (s.quote) { // someone's words on screen (a quote from the show or a post): the speaker's name, then the words
+      const a = s.S + s.lead + 0.1, b = s.S + s.D - 0.2, q = s.quote, qs = Math.round(fs2 * (v ? 1.3 : 1.7));
+      ev.push(`Dialogue: 1,${assTime(a)},${assTime(b)},Fx,,0,0,0,,{\\fad(250,250)}${dim('70')}`);
+      ev.push(`Dialogue: 2,${assTime(a)},${assTime(b)},Quote,,0,0,0,,{\\fad(250,250)\\an5\\pos(${cx},${cy})\\q0}${q.who ? `{\\fs${small}\\1c${accent}}${q.who.replace(/[{}]/g, '').toUpperCase()}\\N{\\fs${qs}\\1c&HFFFFFF&}` : ''}${q.text.replace(/[{}]/g, '')}`);
+    }
     if (s.card) { // a statistic or key phrase on screen while it is said
       const a = s.S + s.lead + 0.15, b = s.S + s.D - 0.25;
       ev.push(`Dialogue: 1,${assTime(a)},${assTime(b)},Fx,,0,0,0,,{\\fad(300,300)}${dim('80')}`);
@@ -103,6 +114,7 @@ function ass(cues, w, h, style, shots = []) {
   return `[Script Info]\nScriptType: v4.00+\nPlayResX: ${w}\nPlayResY: ${h}\nWrapStyle: 2\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n` +
     `Style: Cap,${c.font},${fs2},&H00FFFFFF,&H00FFFFFF,${c.box},${c.box},0,0,0,0,100,100,0,0,3,${Math.round(fs2 * 0.18)},0,2,60,60,${mv},1\n` +
     `Style: Title,${c.font},${big},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,1,0,0,0,100,100,0,0,1,0,2,5,60,60,0,1\n` +
+    `Style: Quote,${c.font},${Math.round(fs2 * 1.35)},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,1,0,0,100,100,0,0,1,0,2,5,${Math.round(w * (v ? 0.08 : 0.16))},${Math.round(w * (v ? 0.08 : 0.16))},0,1\n` +
     `Style: Fx,${c.font},10,&H00000000,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n` +
     [...ev, ...cues.map((q) => `Dialogue: 3,${assTime(q.a)},${assTime(q.b)},Cap,,0,0,0,,${q.lines.map((l) => l.replace(/[{}]/g, '')).join('\\N')}`)].join('\n') + '\n';
 }
@@ -124,7 +136,8 @@ function render() {
     if (fs.existsSync(f) && fs.statSync(f).size > 0) {
       ff(['-i', f, '-af', `silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=stop_periods=-1:stop_duration=${pause}:stop_threshold=-45dB:stop_silence=${pause}`, '-ar', '44100', '-ac', '2', w]);
       s.d = dur(w); s.wav = w;
-    } else { missing.push(nn(i)); s.d = spoken(s.text).length * 0.066; s.wav = null; }
+    } else { if (spoken(s.text)) missing.push(nn(i)); s.d = spoken(s.text).length * 0.066; s.wav = null; }
+    if (s.quote && !spoken(s.text)) s.d = Math.max(s.d, s.quote.text.split(' ').length * 0.34 + 1.2); // a silent quote card stays up long enough to read
     s.lead = LEAD + (s.chapter && i > 0 ? (style.chapterHold ?? 1.8) : 0);
     s.D = s.lead + s.d + gap + (s.pause || 0) + (i === use.length - 1 ? 2.5 : 0);
   });
@@ -172,8 +185,16 @@ function render() {
   use.forEach((s) => { if (s.wav) { ins.push('-i', s.wav); fl.push(`[${fl.length + 1}:a]adelay=${Math.round((s.S + s.lead) * 1000)}:all=1[a${fl.length}]`); } });
   ff(['-f', 'lavfi', '-t', total.toFixed(2), '-i', 'anullsrc=r=44100:cl=stereo', ...ins, '-filter_complex', (fl.length ? fl.join(';') + ';' : '') + '[0:a]' + fl.map((_, k) => `[a${k}]`).join('') + `amix=inputs=${fl.length + 1}:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=11[o]`, '-map', '[o]', '-t', total.toFixed(2), voiceTrack]);
   let bed = null;
-  const music = meta.music;
-  if (music && music !== 'none') {
+  const music = meta.music, scored = use.some((s) => s.music || s.sfx) || require('./score.cjs').moods.includes(music);
+  if (scored) { // mood music that changes with the story, plus sound effects (essay/score.cjs)
+    const { score, moods } = require('./score.cjs'), cuesM = [], sfx = [];
+    if (moods.includes(music)) cuesM.push([0, music]);
+    use.forEach((s) => { if (s.music) cuesM.push([Math.max(0, s.S - 0.3), s.music]);
+      for (const f of s.sfx || []) sfx.push([f.at === 'end' ? s.S + s.lead + s.d : s.S + s.lead + parseFloat(f.at), f.name, f.vol]); });
+    if (!cuesM.length) cuesM.push([0, 'calm']);
+    const raw = path.join(WORK, 'score.wav'); score(raw, total, cuesM, sfx);
+    bed = path.join(WORK, 'bed.wav'); ff(['-i', raw, '-af', `volume=${style.scoreVolume ?? 1.0}`, bed]);
+  } else if (music && music !== 'none') {
     bed = path.join(WORK, 'bed.wav');
     const src = music === 'pad' ? null : path.join(P, music);
     if (src && fs.existsSync(src)) ff(['-stream_loop', '-1', '-i', src, '-t', total.toFixed(2), '-af', `volume=${style.musicVolume ?? 0.12},afade=t=in:d=2,afade=t=out:st=${Math.max(0, total - 3).toFixed(2)}:d=3`, '-ar', '44100', '-ac', '2', bed]);
@@ -185,7 +206,8 @@ function render() {
   if (bed) ff(['-i', voiceTrack, '-i', bed, '-filter_complex', '[0:a]asplit[v][k];[1:a][k]sidechaincompress=threshold=0.02:ratio=6:attack=40:release=600[d];[v][d]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.95[o]', '-map', '[o]', mix]); else fs.copyFileSync(voiceTrack, mix);
   // 5. captions
   const cuesFor = (max) => { const cues = [];
-  use.forEach((s) => { const cards = chunk(s.text, max), chars = cards.map((c) => c.join(' ').length), sum = chars.reduce((a, b) => a + b, 0) || 1; let a = s.S + s.lead;
+  use.forEach((s) => { if (s.quote) return; // the words are already on screen
+    const cards = chunk(s.text, max), chars = cards.map((c) => c.join(' ').length), sum = chars.reduce((a, b) => a + b, 0) || 1; let a = s.S + s.lead;
     cards.forEach((c, k) => { const len = (s.d * chars[k]) / sum; cues.push({ a, b: a + len - 0.04, lines: c }); a += len; }); });
   return cues; };
   const cues = cuesFor(style.captions.chars ?? 40);
@@ -202,10 +224,10 @@ function render() {
 }
 function check() {
   const { style, shots } = parse(); const noImg = [], noVoice = [];
-  shots.forEach((s, i) => { if (!s.same && !['png', 'jpg', 'jpeg', 'webp'].some((e) => fs.existsSync(path.join(P, 'img', `${nn(i)}.${e}`)))) noImg.push(nn(i)); const v = path.join(P, 'voice', nn(i) + '.mp3'); if (!fs.existsSync(v) || !fs.statSync(v).size) noVoice.push(nn(i)); });
+  shots.forEach((s, i) => { if (!s.same && !['png', 'jpg', 'jpeg', 'webp'].some((e) => fs.existsSync(path.join(P, 'img', `${nn(i)}.${e}`)))) noImg.push(nn(i)); const v = path.join(P, 'voice', nn(i) + '.mp3'); if (spoken(s.text) && (!fs.existsSync(v) || !fs.statSync(v).size)) noVoice.push(nn(i)); });
   // Pacing estimate: voice length if the file exists (minus Edge's padding), otherwise from the text
   let t = 0; const tl = shots.map((s, i) => { const v = path.join(P, 'voice', nn(i) + '.mp3'); const words = spoken(s.text).split(' ').length;
-    const d = fs.existsSync(v) && fs.statSync(v).size ? Math.max(0.5, dur(v) - 0.7 - 0.45 * (spoken(s.text).match(/[.!?]/g) || []).length) : spoken(s.text).length * 0.066;
+    const d = s.quote && !spoken(s.text) ? s.quote.text.split(' ').length * 0.34 + 1.2 : fs.existsSync(v) && fs.statSync(v).size ? Math.max(0.5, dur(v) - 0.7 - 0.45 * (spoken(s.text).match(/[.!?]/g) || []).length) : spoken(s.text).length * 0.066;
     const lead = LEAD + (s.chapter && i > 0 ? (style.chapterHold ?? 1.8) : 0), D = lead + d + (style.gap ?? 0.45) + (s.pause || 0); const r = { i, S: t, D, words, s }; t += D; return r; });
   const mmss = (x) => `${Math.floor(x / 60)}:${String(Math.floor(x % 60)).padStart(2, '0')}`;
   const words = tl.reduce((a, r) => a + r.words, 0), warn = [];
@@ -216,7 +238,7 @@ function check() {
   const avg = t / shots.length; console.log(`\nAverage shot ${avg.toFixed(1)} s (aim 4 to 8 s).`);
   tl.forEach((r) => { if (r.D > 11) warn.push(`Shot ${nn(r.i)} runs ${r.D.toFixed(1)} s: split it into two pictures.`); });
   // something new should happen at least every minute: a chapter, a card, a question, a pause or a callback
-  const beats = tl.filter((r) => r.s.chapter || r.s.card || r.s.pause || /\?/.test(r.s.text)).map((r) => r.S);
+  const beats = tl.filter((r) => r.s.chapter || r.s.card || r.s.quote || r.s.pause || /\?/.test(r.s.text)).map((r) => r.S);
   let prev = 0; for (const b of [...beats, t]) { if (b - prev > 60) warn.push(`Nothing new on screen from ${mmss(prev)} to ${mmss(b)}: add a [card], a question or a [pause].`); prev = b; }
   const hook = tl.filter((r) => r.S < 15); if (!hook.some((r) => /\d|\?/.test(r.s.text) || r.s.card)) warn.push('The first 15 seconds have no number, question or card: sharpen the hook.');
   console.log(warn.length ? '\nTo fix:\n- ' + warn.join('\n- ') : '\nPacing: no problems found.');

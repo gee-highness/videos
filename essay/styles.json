@@ -1,30 +1,102 @@
 {
-  "retro-office": {
-    "about": "Muted, foggy, symmetrical AI stills: 1980s-90s offices, CRT screens, lone humanoid robots, institutional teal-grey and beige, cool fluorescent light. The look of the 'AI take over backfired' essay.",
-    "prompt": "Cinematic still, 16:9. Retro-futuristic corporate dystopia in muted institutional tones (teal-grey #4B5E5B, beige-grey #9EA292, charcoal #1C2523, cyan CRT glow #67B7C7). Symmetrical eye-level composition, lots of empty space, 1990s offices and public buildings, cool overhead fluorescents, soft atmospheric haze, light halation, fine 35mm film grain, desaturated, quiet and eerie documentary mood. Smooth white humanoid robots with dark joints where people would be. No text, no logos, no watermarks.",
-    "aspect": "16:9",
-    "placeholder": "0x1c2523",
-    "grade": "eq=saturation=0.88:contrast=1.03",
-    "zoom": 0.07,
-    "moves": ["in", "panR", "out", "panL", "in", "up"],
-    "pause": 0.45,
-    "gap": 0.45,
-    "pad": [110, 164.81, 220, 261.63, 329.63],
-    "padVolume": 0.9,
-    "musicVolume": 0.12,
-    "captions": { "font": "Noto Sans Mono", "size": 0.042, "sizeVertical": 0.03, "marginV": 0.05, "marginVVertical": 0.2, "box": "&H26000000" }
-  },
-  "archive-noir": {
-    "about": "Black-and-white archival look for history and economics essays: old photographs, newsrooms, factories, crowds.",
-    "prompt": "Cinematic black-and-white archival photograph, 16:9, mid-20th-century documentary look, deep shadows, soft grain, slight vignette, symmetrical framing, quiet and serious mood. No text, no logos, no watermarks.",
-    "aspect": "16:9",
-    "placeholder": "0x161616",
-    "grade": "hue=s=0,eq=contrast=1.06",
-    "zoom": 0.06,
-    "moves": ["in", "panL", "out", "panR"],
-    "pause": 0.45, "gap": 0.45,
-    "pad": [98, 146.83, 196, 233.08],
-    "padVolume": 0.8, "musicVolume": 0.12,
-    "captions": { "font": "Noto Sans Mono", "size": 0.042, "sizeVertical": 0.03, "marginV": 0.05, "marginVVertical": 0.2, "box": "&H26000000" }
+ "retro-office": {
+  "about": "Muted, foggy, symmetrical AI stills: 1980s-90s offices, CRT screens, lone humanoid robots, institutional teal-grey and beige, cool fluorescent light. The look of the 'AI take over backfired' essay.",
+  "prompt": "Cinematic still, 16:9. Retro-futuristic corporate dystopia in muted institutional tones (teal-grey #4B5E5B, beige-grey #9EA292, charcoal #1C2523, cyan CRT glow #67B7C7). Symmetrical eye-level composition, lots of empty space, 1990s offices and public buildings, cool overhead fluorescents, soft atmospheric haze, light halation, fine 35mm film grain, desaturated, quiet and eerie documentary mood. Smooth white humanoid robots with dark joints where people would be. No text, no logos, no watermarks.",
+  "aspect": "16:9",
+  "placeholder": "0x1c2523",
+  "grade": "eq=saturation=0.88:contrast=1.03",
+  "zoom": 0.07,
+  "moves": [
+   "in",
+   "panR",
+   "out",
+   "panL",
+   "in",
+   "up"
+  ],
+  "pause": 0.45,
+  "gap": 0.45,
+  "pad": [
+   110,
+   164.81,
+   220,
+   261.63,
+   329.63
+  ],
+  "padVolume": 0.9,
+  "musicVolume": 0.12,
+  "captions": {
+   "font": "Noto Sans Mono",
+   "size": 0.042,
+   "sizeVertical": 0.03,
+   "marginV": 0.05,
+   "marginVVertical": 0.2,
+   "box": "&H26000000"
   }
+ },
+ "archive-noir": {
+  "about": "Black-and-white archival look for history and economics essays: old photographs, newsrooms, factories, crowds.",
+  "prompt": "Cinematic black-and-white archival photograph, 16:9, mid-20th-century documentary look, deep shadows, soft grain, slight vignette, symmetrical framing, quiet and serious mood. No text, no logos, no watermarks.",
+  "aspect": "16:9",
+  "placeholder": "0x161616",
+  "grade": "hue=s=0,eq=contrast=1.06",
+  "zoom": 0.06,
+  "moves": [
+   "in",
+   "panL",
+   "out",
+   "panR"
+  ],
+  "pause": 0.45,
+  "gap": 0.45,
+  "pad": [
+   98,
+   146.83,
+   196,
+   233.08
+  ],
+  "padVolume": 0.8,
+  "musicVolume": 0.12,
+  "captions": {
+   "font": "Noto Sans Mono",
+   "size": 0.042,
+   "sizeVertical": 0.03,
+   "marginV": 0.05,
+   "marginVVertical": 0.2,
+   "box": "&H26000000"
+  }
+ },
+ "london-glam": {
+  "about": "Cinematic, glossy London luxury for reality-TV and celebrity stories: Belgravia stucco, cobbled mews at night, velvet, chandeliers, champagne, reunion-stage lighting. Objects and places tell the story; never a real person's face.",
+  "prompt": "Cinematic editorial still, 16:9, glossy and moody, shallow depth of field, rich contrast. Palette: ivory #F2EBDD, champagne gold #C9A96E, deep plum #3B1E2E, midnight navy #14192B. Warm tungsten light against cool blue night, soft haze, subtle film grain, luxury magazine look, symmetrical framing. No recognisable real people, no faces in focus, no text, no logos, no watermarks.",
+  "aspect": "16:9",
+  "placeholder": "0x14192b",
+  "grade": "eq=saturation=1.05:contrast=1.04",
+  "zoom": 0.08,
+  "moves": [
+   "in",
+   "panR",
+   "out",
+   "panL",
+   "in",
+   "up",
+   "down"
+  ],
+  "pause": 0.4,
+  "gap": 0.4,
+  "chapterHold": 2.0,
+  "scoreVolume": 1.0,
+  "musicVolume": 0.12,
+  "accentAss": "&H006EA9C9",
+  "captions": {
+   "font": "Noto Sans Mono",
+   "size": 0.042,
+   "sizeVertical": 0.03,
+   "marginV": 0.05,
+   "marginVVertical": 0.2,
+   "box": "&H26000000",
+   "chars": 40,
+   "charsVertical": 24
+  }
+ }
 }

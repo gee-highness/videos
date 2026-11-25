@@ -91,7 +91,7 @@ When there are no AI images, real Creative Commons photos work well, and real pl
 4. Write `projects/<id>/image-credits.md` (title, author, licence, link) and link it from the video description. CC BY and BY-SA need that credit, plus a note that the photos were modified.
 
 ## Music and sound effects
-All synthesised in `essay/score.cjs` (nothing to license). Set the opening mood with `music:` in the front matter (a mood name, `pad`, `none` or a file) and change it with `[music mood]` lines. The music ducks under the narrator by itself.
+Played by a real orchestra: `orchestra/orchestra.cjs` scores each mood with recorded string, wind, brass and percussion sections (VSCO 2 CE, CC0; fetched once with `bash orchestra/fetch.sh`, done automatically on the first render), seated across the stereo stage, in a concert-hall reverb, at about -21 LUFS under the voice. Each mood is a small composition (intro, theme, answer, a fuller second half, a cadence into the next cue). `boom`, `sting`, `riser`, `ding`, `chime`, `womp`, `hush` and `thud` are orchestral hits; the other effects stay synthesised in `essay/score.cjs` (the fallback if the samples cannot be fetched). Demo: `node orchestra/orchestra.cjs out.wav calm drama triumph`. Set the opening mood with `music:` in the front matter (a mood name, `pad`, `none` or a file) and change it with `[music mood]` lines. The music ducks under the narrator by itself.
 
 | Mood | Use it for |
 |---|---|

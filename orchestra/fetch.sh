@@ -13,7 +13,7 @@ DIRS=(
  "Woodwinds/Flute/susvib" "Woodwinds/Flute/stac" "Woodwinds/Oboe/Vib" "Woodwinds/Clarinet/susLong" "Woodwinds/Clarinet/stac"
  "Woodwinds/Bassoon/sus" "Woodwinds/Bassoon/stac"
  "Percussion/Timpani" "Percussion/Glock" "Percussion/temp"
- "VSCO 1 Percussion/drums/bass" "VSCO 1 Percussion/varMetal/Cymbals" "VSCO 1 Percussion/varMetal/Gong"
+ "VSCO 1 Percussion/drums/bass" "VSCO 1 Percussion/varMetal/Cymbals/clash" "VSCO 1 Percussion/varMetal/Cymbals/susp" "VSCO 1 Percussion/varMetal/Gong"
 )
 if [ ! -d "$SRC/.git" ]; then git clone -q --filter=blob:none --no-checkout --depth 1 https://github.com/sgossner/VSCO-2-CE "$SRC"; fi
 cd "$SRC"; git sparse-checkout init --no-cone; printf '/%s/\n' "${DIRS[@]}" > .git/info/sparse-checkout; git checkout -q HEAD
@@ -22,7 +22,7 @@ for d in "${DIRS[@]}"; do
   mkdir -p "$OUT/$key"
   for f in "$SRC/$d"/*.wav; do
     [ -f "$f" ] || continue; o="$OUT/$key/$(basename "$f")"; [ -f "$o" ] && continue
-    ffmpeg -nostdin -loglevel error -y -i "$f" -t 9 -af "afade=t=out:st=8.6:d=0.4" -ar 44100 -ac 2 -c:a pcm_s16le "$o"
+    ffmpeg -nostdin -loglevel error -y -i "$f" -t 12 -af "afade=t=out:st=11.5:d=0.5" -ar 44100 -ac 2 -c:a pcm_s16le "$o"
   done
 done
 echo "orchestra ready: $(find "$OUT" -name '*.wav' | wc -l) samples, $(du -sh "$OUT" | cut -f1)"

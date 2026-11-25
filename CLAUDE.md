@@ -2,7 +2,7 @@
 
 **When the user says "continue videos":** read `docs/HANDOFF.md` first and do the first unchecked item in its "Next" list (then the next), committing and pushing after each. Keep that file current: tick what is done and add what comes next before you stop.
 
-This repository holds every video the user plans and the tools that make them.
+This repository holds every video the user plans and the tools that make them, for every project and repo (see `INDEX.md` for where everything lives). Video work done in another repo is copied here and sorted by brand.
 - `TRACKER.md`: every video and its status. Read it first and keep it current.
 - Lessons from every job: `docs/LESSONS.md` (read first, add after).
 - Stories about real people or events: research first with `.claude/skills/research-desk/` (project `research.md`, FACT / CLAIM / UNVERIFIED).

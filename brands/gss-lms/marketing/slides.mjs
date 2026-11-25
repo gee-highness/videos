@@ -1,0 +1,38 @@
+// The campaign's slides. Every picture is a real screen from the demo school (marketing/raw, taken by capture.mjs).
+// Copy rules (same as the Servo plan): one idea per slide, say "demo data", no invented numbers, no testimonials,
+// nothing the app does not do. Every claim below is a feature that exists and is covered by a test.
+export const SETS = {
+  leaders: { name: "School leaders", palette: ["#14392e", "#2f7a5c"], accent: "#e8c766", role: "admin", slides: [
+    { id: "sl1", device: "laptop", shot: "admin-dashboard", kicker: "FOR PRINCIPALS, OWNERS AND BURSARS", head: "Your whole school on one screen.", sub: "Learners, teachers, attendance and results, live.", bullets: ["Every class, learner and teacher in one place", "Attendance and grades at a glance", "Works on a phone, tablet or computer"] },
+    { id: "sl2", device: "laptop", shot: "admin-fees", kicker: "FEES", head: "Who has paid? Know in seconds.", sub: "Fees, receipts and what is still owing.", bullets: ["See collected, outstanding and overdue", "Check a proof of payment once, receipt goes out", "Statements as PDF for every learner"] },
+    { id: "sl3", device: "laptop", shot: "admin-insights", kicker: "EARLY HELP", head: "See who needs help before the exam.", sub: "Each learner is flagged with the reasons.", bullets: ["Attendance, marks, missing work and fees", "Every flag says why, with a suggested next step", "Refreshed every night"] },
+    { id: "sl4", device: "laptop", shot: "admin-timetable", kicker: "TIMETABLE", head: "A clash-free week in one click.", sub: "Teachers, rooms and classes all checked.", bullets: ["Teacher preferences kept where possible", "Double periods and lab rooms handled", "Move a lesson by hand: clashes are refused"] },
+    { id: "sl5", device: "laptop", shot: "admin-exams", kicker: "EXAMS", head: "Exam week, planned without clashes.", sub: "Timetable, seating and invigilators.", bullets: ["Warns when a room, learner or invigilator clashes", "Seating plans and printable slips", "Invigilation shared fairly"] },
+    { id: "sl6", device: "laptop", shot: "admin-reports", kicker: "REPORTS", head: "Reports without the spreadsheet.", sub: "Results and fees, ready to show your board.", bullets: ["Pass rates and attendance", "Fee collection status", "Ministry enrolment return as Excel"] },
+    { id: "sl7", device: "laptop", shot: "admin-classes", kicker: "CLASSES", head: "Registers taken. Re-registration tracked.", sub: "Class teachers, daily registers, who has confirmed.", bullets: ["Today's registers: who has not taken theirs", "Class lists with class teachers", "Guardians confirm next year's place online"] },
+  ] },
+  teachers: { name: "Teachers", palette: ["#0c3b4a", "#2a8296"], accent: "#ffd166", role: "teacher", slides: [
+    { id: "tc1", device: "phone", shot: "teacher-class-phone", kicker: "FOR TEACHERS", head: "Take the register in a tap.", sub: "On your phone, in the classroom.", bullets: ["Tap to mark present, absent, late or excused", "\"All present\" in one press", "Guardians told the same morning when a child is absent"] },
+    { id: "tc2", device: "laptop", shot: "teacher-gradebook", kicker: "MARKS", head: "Every mark on one grid.", sub: "Averages worked out for you.", bullets: ["Type a mark and move on", "Weights for tests, class work and exams", "Download to Excel any time"] },
+    { id: "tc3", device: "laptop", shot: "teacher-planning", kicker: "PLANNING", head: "Lesson plans, approved online.", sub: "Write it, submit it, get it back with a note.", bullets: ["Schemes of work week by week", "Head of department approves or sends back", "See how much of the term you have covered"] },
+    { id: "tc4", device: "laptop", shot: "teacher-qbank", kicker: "TESTS", head: "Tests that mark themselves.", sub: "A bank of questions you build once.", bullets: ["Multiple choice, matching, ordering, fill the gap", "Partial marks and random question pools", "Time limits and attempts you control"] },
+    { id: "tc5", device: "laptop", shot: "teacher-dashboard", kicker: "YOUR DAY", head: "Your classes. Your marking. One page.", sub: "Know what is waiting for you.", bullets: ["Your courses and class progress", "Submissions waiting to be marked", "Announce and add modules in a click"] },
+  ] },
+  parents: { name: "Parents and guardians", palette: ["#4a2142", "#8c4a82"], accent: "#ffcf9e", role: "guardian", slides: [
+    { id: "pa1", device: "phone", shot: "guardian-dashboard", kicker: "FOR PARENTS AND GUARDIANS", head: "See how your child is doing.", sub: "Marks, attendance, homework and fees.", bullets: ["Report card and transcript as PDF", "This week's homework, and what is done", "More than one child? Switch in a tap"] },
+    { id: "pa2", device: "phone", shot: "guardian-paynow", kicker: "SCHOOL FEES", head: "Pay the school. Send the proof from your phone.", sub: "The details and the reference, ready to copy.", bullets: ["eWallet or bank details, with your reference", "Upload the payment screenshot", "Get a receipt when the school confirms"] },
+    { id: "pa3", device: "phone", shot: "guardian-forms", kicker: "FORMS AND MEETINGS", head: "Sign forms. Book teacher meetings.", sub: "No more paper slips in the school bag.", bullets: ["Consent forms signed on your phone", "Short surveys, answered once", "Pick a meeting slot with your child's teacher"] },
+    { id: "pa4", device: "phone", shot: "learner-homework", kicker: "HOMEWORK", head: "Know this week's homework.", sub: "What is due, and when.", bullets: ["Your child ticks it off as they finish", "You see what is done and what is not", "Nothing lost in the bag"] },
+  ] },
+  learners: { name: "Learners", palette: ["#6b3a05", "#d08b1a"], accent: "#fff3c4", role: "learner", slides: [
+    { id: "lr1", device: "phone", shot: "learner-dashboard", kicker: "FOR LEARNERS", head: "Your school in your pocket.", sub: "Courses, deadlines and marks.", bullets: ["Your courses and how far you are", "Deadlines that remind you", "Hand work in from your phone"] },
+    { id: "lr2", device: "phone", shot: "learner-homework", kicker: "THIS WEEK", head: "This week's homework, ticked off.", sub: "Everything due, in one list.", bullets: ["See what is due and when", "Tick it off when it is done", "Your parent can see it too"] },
+    { id: "lr3", device: "phone", shot: "learner-exams", kicker: "EXAMS", head: "Your exam slip. Your seat.", sub: "Papers, times, venue and seat number.", bullets: ["Every paper with date and time", "Where to sit", "Print your slip"] },
+    { id: "lr4", device: "phone", shot: "learner-grades", kicker: "MARKS", head: "Your marks, clear.", sub: "Per course, per assignment.", bullets: ["Current grade for each course", "Every assignment's score", "Download your report card"] },
+  ] },
+  everyone: { name: "Everyone", palette: ["#14392e", "#2f7a5c"], accent: "#e8c766", role: "", slides: [
+    { id: "ev1", device: "phone", shot: "login-demo", kicker: "NO SIGN-UP", head: "Pick a role. Open the real thing.", sub: "Principal, teacher, parent or learner.", bullets: ["A whole demo school, filled with made-up data", "Click around: nothing you do is real", "Free to look, any time"] },
+    { id: "ev2", device: "collage", shots: ["admin-dashboard", "learner-dashboard", "guardian-dashboard"], kicker: "ONE SYSTEM", head: "One school. Four people. One system.", sub: "The principal, the teacher, the learner and the parent see the same school, each from their own screen.", bullets: [] },
+    { id: "ev3", device: "laptop", shot: "welcome", kicker: "SEE IT FOR YOURSELF", head: "Free to look. Tell us what you think.", sub: "Open the demo, then ask us anything.", bullets: ["Made for schools in Eswatini", "Works on any phone or computer", "30-day free trial for your school"] },
+  ] },
+};

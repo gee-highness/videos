@@ -74,10 +74,10 @@ Put files in `projects/<id>/media/`. All of it is optional: a missing file rende
 ## The host
 A channel host (a fictional, AI-generated presenter) can appear on screen while her lines play. Her profile, looks, wardrobe, poses and image prompt are in `hosts/<name>/HOST.md`.
 ```
-host: hosts/naledi/dress.png      (front matter: the default picture)
-host_name: Naledi
+host: hosts/kuina/dress.png      (front matter: the default picture)
+host_name: Kuina
 [host]            she appears in a framed window beside the picture (16:9 right, 9:16 top right)
-[host name]       the same, plus a "NALEDI · your host" lower-third (her first appearance)
+[host name]       the same, plus a "KUINA · your host" lower-third (her first appearance)
 [host full]       she fills the frame (9:16) or appears large (16:9): openings and sign-offs
 [host eyebrow]    a pose: hosts/<name>/eyebrow.png if it exists, otherwise the default picture
 ```

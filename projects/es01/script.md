@@ -4,8 +4,8 @@ style: london-glam
 voice: en-US-AvaMultilingualNeural
 rate: +0%
 music: none
-host: hosts/naledi/dress.png
-host_name: Naledi
+host: hosts/kuina/dress.png
+host_name: Kuina
 status: scripted; research in research.md, plan in plan.md
 sources: research.md (every fact and quote with its source; cast members' words are quoted as claims)
 ---

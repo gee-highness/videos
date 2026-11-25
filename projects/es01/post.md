@@ -23,7 +23,7 @@ Reality Tea: https://www.realitytea.com/2026/11/23/rhol-reunion-part-2-karen-ama
 Wikipedia: https://en.wikipedia.org/wiki/The_Real_Housewives_of_London
 
 CREDITS
-Short clips from Hayu's official YouTube channel, used for commentary and criticism. Press headlines are shown with their publisher named. Narration is a synthetic voice; the host, Naledi, is an AI-generated character. Photos are from Wikimedia Commons under Creative Commons licences (cropped, graded and animated); full credits and licences: https://github.com/gee-highness/videos/blob/main/projects/es01/image-credits.md. No cast member is pictured.
+Short clips from Hayu's official YouTube channel, used for commentary and criticism. Press headlines are shown with their publisher named. Narration is a synthetic voice; the host, Kuina, is an AI-generated character. Photos are from Wikimedia Commons under Creative Commons licences (cropped, graded and animated); full credits and licences: https://github.com/gee-highness/videos/blob/main/projects/es01/image-credits.md. No cast member is pictured.
 This channel is not affiliated with Hayu, Bravo, NBCUniversal or anyone in the cast. Quotes from the show and social posts are reproduced for commentary.
 
 ## Tags

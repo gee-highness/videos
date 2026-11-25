@@ -17,3 +17,5 @@ This repository holds every video the user plans and the tools that make them, f
 **Music (standing rule from the user):** the music must be the best it can be in every video. Choose or compose a bed that fits the mood of each section, shape it (intro, build, drop under the voice, outro), duck it under speech, mix it cleanly, and check the loudness. Never ship a flat generic loop. Record what worked in `docs/LESSONS.md`.
 
 **Set (standing rule from the user):** every video is made in the v_me default house: v_me scripts use `"scene": "apartment-default"` and `"background": "apartment"` (repo `gee-highness/v_me`, renderer `npm run performer:render`).
+
+**UI/UX (standing rule from the user):** every video has the best UI and UX it can: captions and stickers big enough to read on a phone, inside safe areas, never overlapping faces or key content; clear hierarchy and consistent layout between shots; strong contrast; pacing a first-time viewer can follow; and the 9:16 version designed for the phone, not just cropped. Check every shot of both formats at phone size (frames) before sending, and fix what looks cramped, small or cluttered.

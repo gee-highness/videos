@@ -22,3 +22,6 @@
 - Orchestra (Nov 2026): music now comes from `orchestra/orchestra.cjs` (real recorded sections). Check every score by measurement, not by ear (Claude cannot listen): `ffmpeg -af ebur128` (bed about -21 LUFS, true peak under -1 dB) and a spectrogram (`showspectrumpic`) to see the sections change with the cues. The user judges the sound.
 - The host's avatar and textures are confidential: details live in the private v_me repo (`hosts/kuina/`), not here.
 - Toons (Nov 2026): cartoon music now comes from the orchestra too (`toons/sfx.cjs` calls `orchestra/orchestra.cjs`, bed at -27 LUFS so the voices lead; set `ep.mood`, default `comedy`). Cartoon sound effects stay synthesised.
+
+## UI/UX
+- The user wants the best UI and UX in every video: readable on a phone, safe areas, clear hierarchy, consistent layout, strong contrast, real 9:16 design. Check frames of both formats at phone size; first sticker pass was too small and too wide, so labels are sized from the caption size and capped at 40% of the frame.

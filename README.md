@@ -45,7 +45,8 @@ These come from the owner and apply to every video.
 6. **Pace for a first-time viewer.** If a short feels fast, slow it: lower voice tempo, longer pauses, hold captions (gs01 went from 25 s to 37 s this way).
 7. **Facts are sourced; no invented testimonials, numbers or results.** Demo screens say "demo data". Offer wording comes from the brand's posting plan, word for word.
 8. **Replies are short and in Jarvis's voice.** Finished files are sent as files (renders are not committed).
-9. **Commit and push after every stage.** Keep `TRACKER.md` and `docs/HANDOFF.md` current before stopping.
+9. **Best UI/UX in every video:** captions and stickers readable on a phone, inside safe areas, clear hierarchy, consistent layout, strong contrast, a real 9:16 design (not a crop). Look at frames of both formats at phone size before sending.
+10. **Commit and push after every stage.** Keep `TRACKER.md` and `docs/HANDOFF.md` current before stopping.
 
 ## Setup
 

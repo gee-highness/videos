@@ -19,6 +19,17 @@ Titles: a big claim plus a feeling ("…Quietly Stalled. Here's What the Numbers
 
 **Truth rule:** every number and source must be checked against the original before posting, and said as the source says it. The reference video overstated its source (the MIT report found 95% of organisations getting no measurable return, not that billions "yielded no results"); we don't. Put the sources in the script's front matter and in the video description.
 
+## Planning (do this first)
+Copy `essay/templates/plan.md` to `projects/<id>/plan.md` and fill it in: who the viewer is, the one sentence they leave with, three title options, a source table with every number exactly as it will be said, the chapters with target lengths, and the engagement checklist. The script is written from the plan; `projects/es01/plan.md` is a filled-in example.
+
+## Pacing and engagement rules (the `check` command tests the first four)
+- **Hook:** a number, a question or a `[card]` within the first 15 seconds, and an open loop ("so what went wrong?") that a later chapter pays off.
+- **Something new at least every 60 seconds:** a chapter, a card, a question to the viewer, or a `[pause]` before a key line.
+- **Shots 4 to 8 seconds**, none over 11; one to two sentences per picture.
+- **Chapters** (`# Title`) every 1 to 3 minutes; they become title cards and YouTube chapters (`out/<id>-chapters.txt`).
+- **For everyone:** plain words, sentences under ~20 words, every idea paired with an everyday example anyone can picture, one "you" question per chapter, and the ending calls back to the opening picture.
+- **Sound:** the music ducks under the voice and rises in pauses and chapter cards on its own.
+
 ## `script.md` format
 ```
 ---
@@ -29,9 +40,12 @@ rate: -4%
 music: pad                     # pad, none, or a file in the project folder, e.g. music.mp3
 sources: where every number comes from
 ---
-# Section name (only for you; not spoken)
+# Chapter title                 (a title card on screen + a YouTube chapter; the first one starts at 0:00)
+## note                          (only for you; not shown or spoken)
 [img] what the picture shows (the style's master prompt is added for you)
-What the narrator says over this picture. One to three sentences.
+What the narrator says over this picture. One or two sentences.
+[card] 95% | of organisations: no measurable return     (a statistic on screen for this shot)
+[pause 0.8]                      (a beat of silence after this shot, before the next line)
 
 [img same] {move:in}
 Keeps the previous picture with a new camera move (in, out, panL, panR, up, down, hold).
@@ -42,7 +56,7 @@ About 145 words is one minute. A 10-minute essay is about 1,450 words and 90 to 
 | Command | Does |
 |---|---|
 | `node essay/essay.cjs plan <id>` | writes `prompts.md` (one prompt per shot, style added) and `termux.sh` (every voice line, retries built in) |
-| `node essay/essay.cjs check <id>` | lists missing images and voice files, word count and estimated length |
+| `node essay/essay.cjs check <id>` | missing images and voice files, length, chapters with times, and a pacing report (long shots, minutes with nothing new, a weak hook) |
 | `node essay/essay.cjs render <id>` | renders `out/<id>.mp4` (1920x1080) and `out/<id>-sheet.jpg` |
 | `... render <id> --vertical` | also `out/<id>-9x16.mp4` (1080x1920: the picture over a blurred copy, captions in the middle) |
 | `... render <id> --to 12` | only the first 12 shots, for a quick look |

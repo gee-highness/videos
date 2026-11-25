@@ -18,6 +18,7 @@ Updated 25 Nov 2026. Read in this order: this file, `TRACKER.md`, `docs/LESSONS.
 - [ ] **Final render of es01:** `node essay/essay.cjs render es01 --vertical` (about 25 minutes; run it in the background and wait with Monitor). Check the contact sheets of both versions, the loudness (`ffmpeg -af volumedetect`), and frames at every host appearance and every screenshot.
 - [ ] **Send the user** `out/es01.mp4`, `out/es01-9x16.mp4`, `out/es01-chapters.txt` and `post.md` (SendUserFile), and update `TRACKER.md` (status `checked`).
 - [ ] When the user sends clips or post screenshots: unzip into a fresh folder, copy into `projects/es01/media/` with the names in `media.md`, set the clip times in `script.md`, re-render.
+- [ ] **v_me as the studio** (plan saved in `docs/STUDIO_PLAN.md`, not started): format spec + es01 conversion first.
 - [ ] Next video: pick from the ideas in `TRACKER.md` (or the user's topic), follow `.claude/skills/research-desk` and `.claude/skills/essay-studio`.
 
 ## How the user works

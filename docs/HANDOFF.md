@@ -9,12 +9,12 @@ Updated 25 Nov 2026. Read in this order: this file, `TRACKER.md`, `docs/LESSONS.
 - Pictures in: `projects/es01/img/` (60 Creative Commons photos; credits in `image-credits.md`).
 - Press screenshots: `projects/es01/media/` is NOT committed (public repo). If it is empty, run `NODE_PATH=/home/user/gss-lms/node_modules node essay/capture.cjs es01` (uses `capture.json`).
 - Still missing (optional; typed fallbacks render instead): 3 Hayu clips (`media-download.sh`, `media-notes.md`) and 4 post screenshots (`post-sza.png`, `post-questlove.png`, `post-vybz.png`, `post-huger.png`).
-- Host: Kuina (`hosts/kuina/HOST.md`), currently a still photo (`dress.png`) in a framed window or full frame.
+- Host: confidential (private v_me repo, `hosts/kuina/`; copy locally to `hosts/kuina/`, git-ignored). A still photo in a framed window or full frame.
 - Last full render was a draft with placeholder pictures; the render with photos + host was stopped before finishing.
 
 ## Next
-- [ ] **Animated host.** The user wants an animated Kuina. The phone app V_me cannot be driven from the cloud; build her as a code-drawn cartoon instead: `essay/host-anim.cjs` renders an SVG character (deep brown skin, round face, long black box braids in a high ponytail with gold cuffs, gold heart necklace, stud earrings, fitted mustard-yellow dress; "Dream Big" set in mustard, black and gold) frame by frame with Playwright, with blinks, a gentle sway and a mouth driven by the loudness of the cleaned voice line (`.work/vNN.wav`, per 40 ms). Poses: default, eyebrow, laugh, arms. Hook it into `essay.cjs` so `[host]` uses the animation when the front matter says `host_mode: animated` (keep the photo mode as the fallback). Test on a 2-shot project first (16:9 and 9:16), look at frames, then delete the test project.
-- [ ] **Host images.** Export a character sheet (`hosts/kuina/sheet.png`: the six poses) and a thumbnail pose, for the user to see and approve.
+- [ ] **Animated host.** Details are confidential: see the private v_me repo (`hosts/kuina/`).
+- [ ] **Host images.** Character sheet and thumbnail pose: kept in the private repo, not here.
 - [ ] **Final render of es01:** `node essay/essay.cjs render es01 --vertical` (about 25 minutes; run it in the background and wait with Monitor). Check the contact sheets of both versions, the loudness (`ffmpeg -af volumedetect`), and frames at every host appearance and every screenshot.
 - [ ] **Send the user** `out/es01.mp4`, `out/es01-9x16.mp4`, `out/es01-chapters.txt` and `post.md` (SendUserFile), and update `TRACKER.md` (status `checked`).
 - [ ] When the user sends clips or post screenshots: unzip into a fresh folder, copy into `projects/es01/media/` with the names in `media.md`, set the clip times in `script.md`, re-render.

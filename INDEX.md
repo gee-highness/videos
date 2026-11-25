@@ -8,7 +8,7 @@ Everything to do with video for every project and repo (Servo POS, GSS-LMS, Vend
 | `essay/`, `projects/<id>/` | documentary video essays (es01, es00): engine, scripts, research, voices, pictures |
 | `toons/` | ink-cartoon kit (engine, lib, sfx, voice tools) with **all** episodes: `ep/gs01-10` (GSS-LMS Cartoon High), `ep/sv01-08` (Servo POS), voices in `voice/<id>/`, logos |
 | `orchestra/` | the orchestra that scores every video (`fetch.sh` downloads the samples) |
-| `hosts/kuina/` | the channel host: photos, `HOST.md`, her v_me look (`v_me-look.json`) and the tools that painted it |
+| `hosts/` | pointer only: the host's files are confidential and live in the private `v_me` repo |
 | `performances/v_me/` | v_me scripts (`.vme.json`), Termux voice scripts, robots pictures; engine and app: repo `gee-highness/v_me` |
 | `docs/toons/` | cartoon README, the Venda Khona method; `docs/studio/` market research, 24 original shorts, shorts captions; `docs/v_me/` performer guides and the AI script skill |
 | `brands/servo-pos/` | ad campaign docs and scripts (`ads/<campaign>/CAMPAIGN.md`, `ads/devices/WORKFLOW.md`, `ads/NEXT_POSTS.md`), posting plan, Facebook prompts, post docs |
@@ -21,4 +21,4 @@ Everything to do with video for every project and repo (Servo POS, GSS-LMS, Vend
 Move them here only if this repo becomes private.
 
 ## Rules that follow every video
-Music from the orchestra; every video is made in the v_me default house; host Kuina (Queena); Jarvis-style replies. See `CLAUDE.md`.
+Music from the orchestra; every video is made in the v_me default house; the confidential host; Jarvis-style replies. See `CLAUDE.md`.

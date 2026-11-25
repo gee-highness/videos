@@ -17,7 +17,7 @@ Everything to do with video, for every project: documentary video essays, voiced
 6. [Cartoon shorts](#cartoon-shorts)
 7. [v_me performances](#v_me-performances)
 8. [The orchestra (music)](#the-orchestra-music)
-9. [The host, Kuina](#the-host-kuina)
+9. [The host](#the-host)
 10. [Brands](#brands)
 11. [Working method](#working-method)
 12. [Troubleshooting](#troubleshooting)
@@ -39,7 +39,7 @@ Research for anything about real people or events goes through the skill `resear
 These come from the owner and apply to every video.
 1. **Music is the best it can be.** Every video is scored by the orchestra, shaped per section (intro, build, duck under the voice, outro), loudness-checked. Never a flat loop.
 2. **Every video is made in the v_me default house** (`scene: apartment-default`, `background: apartment`).
-3. **The host is Kuina** (pronounced "Queena"), glam but covered. Photo `hosts/kuina/dress.png`; v_me look `kuina`.
+3. **The host** is confidential (see [The host](#the-host)); glam but covered, never revealing.
 4. **Voices are made by the owner in Termux** (Microsoft Edge voices). Never fake a voice, never claim to have listened to audio. Checks are by measurement (loudness, spectrograms) and by frames.
 5. **Always 16:9 and 9:16** for essays; cartoons are 9:16. Mobile first.
 6. **Pace for a first-time viewer.** If a short feels fast, slow it: lower voice tempo, longer pauses, hold captions (gs01 went from 25 s to 37 s this way).
@@ -53,7 +53,7 @@ These come from the owner and apply to every video.
 - Node 20+ (22 used), `ffmpeg` and `ffprobe` on the PATH.
 - Playwright's Chromium for cartoons and captures (`require('playwright')`; if the project's Playwright wants another build, set `CHROMIUM_PATH`).
 - `npm install` is only needed for the cartoon line (`playwright`); the essay and orchestra code use Node and ffmpeg only.
-- Python 3 with Pillow and NumPy only for painting avatar textures (`hosts/kuina/v_me-tools`).
+- Python 3 with Pillow and NumPy only for painting avatar textures (kept in the private v_me repo).
 
 **On the phone** (voices), once:
 ```
@@ -119,8 +119,8 @@ v_me is the 3D avatar studio (repo `gee-highness/v_me`). A performance is a `.vm
 - **Use:** essays set `music:` in the front matter and `[music mood]` lines in the script; cartoons set `ep.mood`. Demo: `node orchestra/orchestra.cjs out.wav calm glam drama triumph`.
 - **Checking (no listening):** `ffmpeg -i out.wav -af ebur128=peak=true -f null -` for loudness and true peak, and `showspectrumpic` for a spectrogram. The owner judges the sound.
 
-## The host, Kuina
-The channel's presenter, a fictional AI-generated woman (pronounced "Queena"): `hosts/kuina/HOST.md` has her look, personality, voice, signature lines, wardrobe rules (glam but covered, so videos are not age-restricted), poses and the `[host]` directives. Photos: `dress.png` (used), `alt-1.png` and `alt-2.png` (kept aside, not used). Her v_me avatar: `v_me-look.json` and the texture-painting tools in `v_me-tools/` (face, brows, iris, dress, accessories, body sliders); `vme-kuina-sheet.jpg` shows the current result.
+## The host
+The channel's presenter is a fictional AI-generated woman. Her details, photos, look and tools are **confidential**: they are not in this public repo but in the private repo `gee-highness/v_me` (`hosts/kuina/`); see `hosts/README.md`. Scripts reference her through the front matter (`host:` and `host_name:`) and the `[host]` directives in `docs/ESSAYS.md`.
 
 ## Brands
 - `brands/servo-pos/` Servo POS (restaurant POS): `ads/<campaign>/CAMPAIGN.md`, `ads/devices/WORKFLOW.md` (capture, compose, video, every pitfall), `ads/NEXT_POSTS.md`, `docs/POSTING_PLAN.md` (offer ladder and rules), `docs/FACEBOOK_PROMPTS.md`, post documents.

@@ -18,7 +18,7 @@
 - The user wants the music to be the best it can be in every video: matched to each section, shaped, ducked under the voice, loudness checked. Never a flat loop.
 
 ## Set
-- All videos are made in the v_me default house (`scene: apartment-default`, `background: apartment`), with Kuina as the v_me look `kuina`.
+- All videos are made in the v_me default house (`scene: apartment-default`, `background: apartment`), with the confidential host as a v_me look.
 - Orchestra (Nov 2026): music now comes from `orchestra/orchestra.cjs` (real recorded sections). Check every score by measurement, not by ear (Claude cannot listen): `ffmpeg -af ebur128` (bed about -21 LUFS, true peak under -1 dB) and a spectrogram (`showspectrumpic`) to see the sections change with the cues. The user judges the sound.
-- Kuina in v_me: look `kuina` on base-female; textures painted from the photo with scripts that rasterise the mesh UVs by bone and 3D position (body dress, face skin, brows, iris). VRoid face mesh stays anime-shaped; likeness comes from colour, brows, lips, iris, mole, braids and body sliders (new `bust`, `thighs`).
+- The host's avatar and textures are confidential: details live in the private v_me repo (`hosts/kuina/`), not here.
 - Toons (Nov 2026): cartoon music now comes from the orchestra too (`toons/sfx.cjs` calls `orchestra/orchestra.cjs`, bed at -27 LUFS so the voices lead; set `ep.mood`, default `comedy`). Cartoon sound effects stay synthesised.

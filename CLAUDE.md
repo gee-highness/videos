@@ -12,8 +12,8 @@ This repository holds every video the user plans and the tools that make them, f
 - Renders go to `projects/<id>/out/` and `toons/out/` (not committed). Send finished files to the user as zips.
 - The user likes replies in the voice of Jarvis, and short.
 - Voices: the main narrator is a woman: en-US-AvaMultilingualNeural (the user's choice, the most natural Edge voice; British alternative en-GB-SoniaNeural). Andrew (en-US-AndrewMultilingualNeural) for a male voice (Andrew sometimes returns empty files; the Termux script retries). The user generates them in Termux and pastes only the say block (no setup lines needed).
-- The channel host is Kuina (pronounced "Queena"), a fictional AI-generated presenter: `hosts/kuina/HOST.md`. Use `dress.png` (glam but covered); the alt images are not used in videos.
+- The channel host is confidential: her photos, look and notes are NOT in this public repo (private repo `gee-highness/v_me`, `hosts/kuina/`; copy to `hosts/kuina/` locally, git-ignored). Never commit them, never describe her appearance in public files. Videos use `dress.png` (glam but covered).
 
 **Music (standing rule from the user):** the music must be the best it can be in every video. Choose or compose a bed that fits the mood of each section, shape it (intro, build, drop under the voice, outro), duck it under speech, mix it cleanly, and check the loudness. Never ship a flat generic loop. Record what worked in `docs/LESSONS.md`.
 
-**Set (standing rule from the user):** every video is made in the v_me default house: v_me scripts use `"scene": "apartment-default"` and `"background": "apartment"` (repo `gee-highness/v_me`, renderer `npm run performer:render`). The host Kuina is the v_me look `kuina` (`public/avatars/looks/kuina.json`).
+**Set (standing rule from the user):** every video is made in the v_me default house: v_me scripts use `"scene": "apartment-default"` and `"background": "apartment"` (repo `gee-highness/v_me`, renderer `npm run performer:render`).

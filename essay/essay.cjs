@@ -125,8 +125,9 @@ function ass(cues, w, h, style, shots = [], hostName = '') {
       for (const wd of s.sticker.replace(/[{}]/g, '').split(' ')) { if ((cur + ' ' + wd).trim().length > mx && cur) { lines.push(cur); cur = wd; } else cur = (cur + ' ' + wd).trim(); } if (cur) lines.push(cur);
       ev.push(`Dialogue: 5,${assTime(a)},${assTime(b)},Sticker,,0,0,0,,{\\fad(200,200)\\an7\\pos(${sx},${sy})\\frz-3\\fs${big2}}{\\b1}SUBSTITUTE\\N{\\b0\\fs${sm}}${lines.join('\\N')}`);
     }
-    if (s.host && s.host.name && hostName) { const a = s.S + s.lead + 0.2, b = Math.min(s.S + s.D - 0.2, a + 4); const nx = v ? Math.round(w * 0.05) : Math.round(w * 0.06), ny = v ? Math.round(h * 0.34) : Math.round(h * 0.2);
-      ev.push(`Dialogue: 4,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(250,250)\\an7\\pos(${nx},${ny})\\fs${Math.round(fs2 * 1.1)}\\bord0\\shad1}${hostName.toUpperCase()}\\N{\\fs${Math.round(fs2 * 0.7)}\\1c${accent}}your host`); }
+    if (s.host && s.host.name && hostName) { // name label: large, boxed for contrast, low-left clear of her face (UX rule)
+      const a = s.S + s.lead + 0.2, b = Math.min(s.S + s.D - 0.2, a + 4.5), nx = Math.round(w * (v ? 0.06 : 0.05)), ny = Math.round(h * (v ? 0.66 : 0.74)), nf = Math.round(fs2 * (v ? 1.9 : 1.7));
+      ev.push(`Dialogue: 4,${assTime(a)},${assTime(b)},Name,,0,0,0,,{\\fad(250,250)\\an7\\pos(${nx},${ny})\\fs${nf}}${hostName.toUpperCase()}\\N{\\fs${Math.round(nf * 0.5)}\\1c${accent}}your host`); }
     if (s.quote) { // someone's words on screen (a quote from the show or a post): the speaker's name, then the words
       const a = s.S + s.lead + 0.1, b = s.S + s.D - 0.2, q = s.quote, qs = Math.round(fs2 * (v ? 1.3 : 1.7));
       ev.push(`Dialogue: 1,${assTime(a)},${assTime(b)},Fx,,0,0,0,,{\\fad(250,250)}${dim('70')}`);
@@ -143,6 +144,7 @@ function ass(cues, w, h, style, shots = [], hostName = '') {
     `Style: Title,${c.font},${big},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,1,0,0,0,100,100,0,0,1,0,2,5,60,60,0,1\n` +
     `Style: Quote,${c.font},${Math.round(fs2 * 1.35)},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,1,0,0,100,100,0,0,1,0,2,5,${Math.round(w * (v ? 0.08 : 0.16))},${Math.round(w * (v ? 0.08 : 0.16))},0,1\n` +
     `Style: Credit,${c.font},${Math.round(fs2 * 0.62)},&H00DDDDDD,&H00DDDDDD,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,${Math.round(fs2 * 0.06)},1,1,${Math.round(w * 0.025)},60,${Math.round(h * 0.03)},1\n` +
+    `Style: Name,${c.font},${Math.round(fs2 * 1.7)},&H00FFFFFF,&H00FFFFFF,${c.box},${c.box},1,0,0,0,100,100,0,0,3,${Math.round(fs2 * 0.22)},0,7,0,0,0,1\n` +
     `Style: Sticker,${c.font},${Math.round(fs2 * 0.72)},&H00101010,&H00101010,&H004BC8F5,&H004BC8F5,0,0,0,0,100,100,0,0,3,${Math.round(fs2 * 0.2)},0,7,0,0,0,1\n` +
     `Style: Fx,${c.font},10,&H00000000,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n` +
     [...ev, ...cues.map((q) => `Dialogue: 3,${assTime(q.a)},${assTime(q.b)},Cap,,0,0,0,,${q.lines.map((l) => l.replace(/[{}]/g, '')).join('\\N')}`)].join('\n') + '\n';
@@ -222,18 +224,18 @@ function render() {
         }
         s.clip = out2;
       }
-      if (s.host && meta.host) { // the host: a framed portrait beside the picture, or large (fills a 9:16 frame) with [host full]
-        const dir = path.dirname(path.join(ROOT, meta.host)), poseFile = s.host.pose && ['png', 'jpg', 'jpeg', 'webp'].map((e) => path.join(dir, `${s.host.pose}.${e}`)).find((f) => fs.existsSync(f));
-        const himg = poseFile || path.join(ROOT, meta.host), out3 = path.join(WORK, `h${nn(s.i)}${tag}.mp4`), LL = L.toFixed(3);
-        if (fs.existsSync(himg)) {
-          const full = s.host.full, hh = Math.round(vert ? (full ? H : H * 0.3) : H * (full ? 0.86 : 0.62));
+      if (s.host) { // the animated host (v_me avatar, rendered by essay/host-vme.cjs into projects/<id>/host/): a framed window beside the picture, or large with [host full]. No photo of the host is ever used.
+        const n2 = nn(s.i), full = s.host.full, tagV = vert || !full ? 'v' : 'h', hv = path.join(P, 'host', `${n2}-${tagV}.mp4`), out3 = path.join(WORK, `h${n2}${tag}.mp4`), LL = L.toFixed(3);
+        if (fs.existsSync(hv)) {
+          const hh = Math.round(vert ? (full ? H : H * 0.3) : H * (full ? 1 : 0.62));
           let fc;
-          if (vert && full) fc = `[1:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},zoompan=z='1+0.05*on/${Math.round(L * FPS)}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=${W}x${H}:fps=${FPS},format=yuv420p,fade=t=in:st=0:d=0.3[v]`;
-          else { const x = vert ? `W-w-${Math.round(W * 0.04)}` : full ? '(W-w)/2' : `W-w-${Math.round(W * 0.05)}`, y = vert ? `${Math.round(H * 0.06)}` : `(H-h)/2-${Math.round(H * 0.04)}`;
-            fc = `[0:v]${full ? 'eq=brightness=-0.3,boxblur=16:2' : 'null'}[bg];[1:v]scale=-2:${hh},pad=iw+12:ih+12:6:6:color=0x${(style.hostFrame || 'c9a96e')},pad=iw+80:ih+80:40:40:color=black@0,format=rgba,split[c][sh];[sh]colorchannelmixer=rr=0:gg=0:bb=0:aa=0.65,boxblur=16:3[shb];[shb][c]overlay=0:6[card];[card]fade=t=in:st=0.1:d=0.35:alpha=1[cz];[bg][cz]overlay=x=${x}:y=${y}:format=auto:shortest=1[v]`; }
-          ff(['-i', s.clip, '-loop', '1', '-framerate', String(FPS), '-t', LL, '-i', himg, '-filter_complex', fc, '-map', '[v]', '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '17', '-pix_fmt', 'yuv420p', '-t', LL, out3]);
+          const hostIn = `[1:v]tpad=stop_mode=clone:stop=-1,trim=duration=${LL},setpts=PTS-STARTPTS,fps=${FPS}`;
+          if (full) fc = `${hostIn},scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},format=yuv420p,fade=t=in:st=0:d=0.3[v]`;
+          else { const x = vert ? `W-w-${Math.round(W * 0.04)}` : `W-w-${Math.round(W * 0.04)}`, y = vert ? `${Math.round(H * 0.06)}` : `(H-h)/2-${Math.round(H * 0.02)}`;
+            fc = `[0:v]null[bg];${hostIn},scale=-2:${hh},pad=iw+12:ih+12:6:6:color=0x${(style.hostFrame || 'c9a96e')},pad=iw+80:ih+80:40:40:color=black@0,format=rgba,split[c][sh];[sh]colorchannelmixer=rr=0:gg=0:bb=0:aa=0.65,boxblur=16:3[shb];[shb][c]overlay=0:6[card];[card]fade=t=in:st=0.1:d=0.35:alpha=1[cz];[bg][cz]overlay=x=${x}:y=${y}:format=auto:shortest=1[v]`; }
+          ff(['-i', s.clip, '-i', hv, '-filter_complex', fc, '-map', '[v]', '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '17', '-pix_fmt', 'yuv420p', '-t', LL, out3]);
           s.clip = out3;
-        }
+        } else console.warn(`\nhost clip missing for shot ${n2} (${tagV}): run node essay/host-vme.cjs ${id}; no host shown`);
       }
       process.stdout.write(`\r${tag || 'wide'} shots ${i + 1}/${use.length}`);
     });

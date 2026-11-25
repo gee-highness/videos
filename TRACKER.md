@@ -9,6 +9,7 @@ Status: `idea` → `scripted` → `voiced` (voice files in) → `images` (all im
 | ID | Title | Style | Length | Status | Next step | Notes |
 |---|---|---|---|---|---|---|
 | es01 | The Real Housewives of London: How a Mews House Became the Most Famous Read of 2026 | london-glam | 10:08 | voiced (Ava, 67 lines in); pictures in (60 Creative Commons photos, credited in image-credits.md); final render | optional: 4 post screenshots, 3 Hayu clips | First full demo: chapters, cards, quote cards, mood music, sound effects, press screenshots and Hayu clips. Facts in `research.md`; media in `media.md` and `media-notes.md` |
+| es03 | The Bride, the DJ and the Missing Song (Facebook Reel, 9:16) | london-glam | ~1:12 | scripted | user reads the Facebook/Instagram posts and confirms; voices (`projects/es03/termux.sh`); 4 images (`prompts.md`); headline screenshot is in `media/` | Single-source story (GhPage, 24 Nov): say "reportedly". Facts in `research.md`; caption in `post.md` |
 | es02 | Two Stories, One Road: The Westville Dog Attack (Facebook Reel, 9:16) | archive-noir | ~1:25 | scripted | user OKs wording; blazer host image; voices (`projects/es02/termux.sh`); 10 images (`prompts.md`) | News story, live: re-check police status and fundraiser total on posting day. Facts in `research.md`; caption in `post.md` |
 | es00 | The AI Takeover Quietly Stalled (pipeline pilot) | retro-office | ~2.2 min | scripted | voices and images | Check every figure against the MIT NANDA 2025 report before posting |
 

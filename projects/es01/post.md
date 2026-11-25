@@ -23,11 +23,11 @@ Reality Tea: https://www.realitytea.com/2026/11/23/rhol-reunion-part-2-karen-ama
 Wikipedia: https://en.wikipedia.org/wiki/The_Real_Housewives_of_London
 
 CREDITS
-Short clips from Hayu's official YouTube channel, used for commentary and criticism. Press headlines are shown with their publisher named. Narration is a synthetic voice; the host, Kuina, is an AI-generated character. Photos are from Wikimedia Commons under Creative Commons licences (cropped, graded and animated); full credits and licences: https://github.com/gee-highness/videos/blob/main/projects/es01/image-credits.md. No cast member is pictured.
+No footage from the show is used: quotes appear on screen as text, for commentary. Press headlines are shown with their publisher named. Narration is a synthetic voice; the host, Kuina, is an AI-generated character. Photos are from Wikimedia Commons under Creative Commons licences (cropped, graded and animated); portraits marked SUBSTITUTE on screen (Katherine Ryan, SZA, Questlove, Karen Huger) stand in for footage or posts we could not use, and are credited on screen; full credits and licences: https://github.com/gee-highness/videos/blob/main/projects/es01/image-credits.md. No cast member is pictured.
 This channel is not affiliated with Hayu, Bravo, NBCUniversal or anyone in the cast. Quotes from the show and social posts are reproduced for commentary.
 
 ## Tags
-real housewives of london, rholdn, karen loderick-peace, amanda cronin, mews house, low budget, reunion explained, hayu, bravo, reality tv, housewives feud, katherine ryan
+real housewives of london, rholdn, karen loderick-peace, amanda cronin, mews house, low budget, reunion explained, bravo, reality tv, housewives feud, katherine ryan
 
 ## Pinned comment
 Which line of the reunion lives in your head rent-free? (And did you know a mews house was a stable?)
@@ -37,7 +37,7 @@ One mews house. Five properties. Three words. The whole Real Housewives of Londo
 
 ## Before posting
 - [ ] Every claim checked against research.md; the facts and quotes are as they were on 25 Nov 2026
-- [ ] Hayu clips watched, times set, credited on screen
+- [x] No Hayu clips in this cut: quotes are typed cards; stand-in photos carry a SUBSTITUTE sticker and an on-screen credit
 - [ ] Watched once with sound and once muted
 - [ ] Thumbnail: the blush-pink mews house + "ONE MEWS HOUSE" (no faces)
 - [ ] Altered or synthetic content disclosure ticked on YouTube (synthetic voice, AI-generated host)

@@ -6,7 +6,7 @@ Two stories, one road in Westville. A man was mauled by three dogs; he and the d
 **Pinned first comment:**
 Want to help Sizwe Doncabe's recovery? Fundraiser started by Kyle van Reenen on BackaBuddy: [paste the live campaign link after opening it]. Ban the breed, or licence the owners? Tell me below.
 
-**Description / disclosure:** Presented by Naledi, an AI-generated host (turn on Facebook's AI label). Sources: Highway Mail (The Citizen), The Witness, The Citizen, Mail & Guardian, SAnews. Not legal advice. Both accounts are claims; police are investigating.
+**Description / disclosure:** Presented by Kuina, an AI-generated host (turn on Facebook's AI label). Sources: Highway Mail (The Citizen), The Witness, The Citizen, Mail & Guardian, SAnews. Not legal advice. Both accounts are claims; police are investigating.
 
 **Hashtags (3 to 5):** #Westville #Durban #SouthAfrica #DogSafety #SAnews
 

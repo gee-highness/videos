@@ -22,6 +22,7 @@ Updated 25 Nov 2026. Read in this order: this file, `TRACKER.md`, `docs/LESSONS.
 - [ ] **Send the user** `out/es01.mp4`, `out/es01-9x16.mp4`, `out/es01-chapters.txt` and `post.md` (SendUserFile), and update `TRACKER.md` (status `checked`).
 - [ ] When the user sends clips or post screenshots: unzip into a fresh folder, copy into `projects/es01/media/` with the names in `media.md`, set the clip times in `script.md`, re-render.
 - [ ] **v_me as the studio** (plan saved in `docs/STUDIO_PLAN.md`, not started): format spec + es01 conversion first.
+- [ ] **Facebook Reels es02 (Westville dog attack) and es03 (bride and DJ song):** scripted with research, caption and Termux voice block (`projects/es02|es03/`). Waiting on the user: wording OK for both; for es03, the Facebook/Instagram posts read by the user (see `research.md`). Then voices, images, `render <id> --vertical`.
 - [ ] Next video: pick from the ideas in `TRACKER.md` (or the user's topic), follow `.claude/skills/research-desk` and `.claude/skills/essay-studio`.
 
 ## How the user works

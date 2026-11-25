@@ -4,9 +4,9 @@ style: archive-noir
 voice: en-US-AvaMultilingualNeural
 rate: +0%
 music: tension
-host: hosts/naledi/dress.png
-host_name: Naledi
-status: scripted (draft, ~60 s reel, 9:16); research in research.md; needs the blazer host image and the user's OK on the wording
+host: hosts/kuina/dress.png
+host_name: Kuina
+status: scripted (draft, ~60 s reel, 9:16); research in research.md; needs the user's OK on the wording
 sources: research.md (every fact and quote with its source; the owner's and Doncabe's words are quoted as claims)
 ---
 <!-- Vertical reel for Facebook. Serious tone, no jokes. No dogs, no injuries, no real faces, no dashcam: places and objects only.

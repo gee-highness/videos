@@ -70,7 +70,7 @@ Doncabe:
 
 ## Reel decisions
 - Length ~60 s, 9:16 (`render es02 --vertical`; the landscape file is not needed).
-- Tone: serious. HOST.md: serious topics use the blazer look; only `dress.png` exists. Generate the blazer pose before the final render. No jokes, no humour beat.
+- Tone: serious: no jokes, no humour beat, calm music. The host look is the user's call (private repo).
 - Pictures: places and objects only (empty road at dawn, a closed automated gate, bin bags on a kerb, a recycling trolley). No dogs mid-attack, no injury photos, no real faces, no dashcam footage: it is graphic and cuts reach on Facebook, and the victim is a vulnerable person.
 - Naming: say Doncabe; say "the dogs' owner" (a disputed criminal matter, her name stays in research only).
 - Post: Facebook's AI-generated label on, "AI-generated host" in the caption.

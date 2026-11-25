@@ -4,8 +4,8 @@ style: london-glam
 voice: en-US-AvaMultilingualNeural
 rate: +0%
 music: glam
-host: hosts/naledi/dress.png
-host_name: Naledi
+host: hosts/kuina/dress.png
+host_name: Kuina
 status: scripted (draft, ~60 s reel, 9:16); research in research.md; single-source story, needs the user to read the Facebook posts and confirm
 sources: research.md (one outlet, GhPage, 24 Nov 2026; culture from Wikipedia and WePost)
 ---

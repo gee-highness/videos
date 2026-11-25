@@ -16,7 +16,7 @@ The times are the part of the clip that is used. Watch each clip once and change
 |---|---|---|---|---|
 | `press-complex.png` | shot 03 | captured by `node essay/capture.cjs es01` | Complex, 19 Nov 2026 | in |
 | `press-bravo.png` | shot 10 | captured by `node essay/capture.cjs es01` | Bravo, 18 Nov 2026 | in |
-| `press-hello.png` | shot 16 | captured by `node essay/capture.cjs es01` | HELLO! via Yahoo, 19 Nov 2026 | in |
+| `press-hello.png` | shot 17 | captured by `node essay/capture.cjs es01` | HELLO! via Yahoo, 19 Nov 2026 | in |
 | `wiki-infobox.png` | shot 18 | captured by `node essay/capture.cjs es01` | Wikipedia | in |
 | `wiki-season2-episodes.png` | shot 27 | captured by `node essay/capture.cjs es01` | Wikipedia, Season 2 episode list | in |
 | `press-people-mews.png` | shot 46 | captured by `node essay/capture.cjs es01` | PEOPLE via Yahoo, 17 Nov 2026 | in |

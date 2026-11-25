@@ -103,7 +103,7 @@ function chunk(text, max = 40) {
 const assTime = (t) => { const h = Math.floor(t / 3600), m = Math.floor(t / 60) % 60, s = (t % 60).toFixed(2).padStart(5, '0'); return `${h}:${String(m).padStart(2, '0')}:${s}`; };
 function ass(cues, w, h, style, shots = []) {
   const c = style.captions, v = w < h, fs2 = Math.round(h * (v ? c.sizeVertical : c.size)), mv = Math.round(h * (v ? c.marginVVertical : c.marginV));
-  const big = Math.round(Math.min(w * 0.16, h * 0.2)), small = Math.round(fs2 * 0.95), accent = style.accentAss || '&H0092A29E';
+  const bigMax = Math.round(Math.min(w * 0.16, h * 0.2)), wrapAss = (txt, size) => { const mx = Math.max(8, Math.floor((w * 0.84) / (size * 0.62))); const out = []; let cur = ''; for (const wd of String(txt).split(' ')) { if ((cur + ' ' + wd).trim().length > mx && cur) { out.push(cur); cur = wd; } else cur = (cur + ' ' + wd).trim(); } if (cur) out.push(cur); return out.join('\\N'); }, fit = (txt, mx, k = 0.62) => Math.max(24, Math.min(mx, Math.round((w * 0.86) / (Math.max(...String(txt).split('\n').map((x) => x.length)) * k)))), small = Math.round(fs2 * 0.95), big = bigMax, accent = style.accentAss || '&H0092A29E';
   const dim = (a) => `{\\an7\\pos(0,0)\\bord0\\shad0\\1c&H000000&\\1a&H${a}&\\p1}m 0 0 l ${w} 0 ${w} ${h} 0 ${h}{\\p0}`;
   const ev = [];
   shots.forEach((s) => {
@@ -111,18 +111,18 @@ function ass(cues, w, h, style, shots = []) {
     if (s.chapter && s.chapterNo > 1) { // a chapter card while the narrator waits: dim the picture, show the number and the title
       const a = s.S + 0.15, b = s.S + s.lead - 0.05;
       ev.push(`Dialogue: 1,${assTime(a)},${assTime(b)},Fx,,0,0,0,,{\\fad(250,250)}${dim('40')}`);
-      ev.push(`Dialogue: 2,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(300,250)\\an5\\pos(${cx},${cy})}{\\fs${small}\\1c${accent}}PART ${s.chapterNo}\\N{\\fs${Math.round(big * 0.55)}\\1c&HFFFFFF&}${s.chapter.replace(/[{}]/g, '')}`);
+      ev.push(`Dialogue: 2,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(300,250)\\an5\\pos(${cx},${cy})}{\\fs${small}\\1c${accent}}PART ${s.chapterNo}\\N{\\fs${fit(s.chapter, Math.round(big * 0.55), 0.6)}\\1c&HFFFFFF&}${wrapAss(s.chapter.replace(/[{}]/g, ''), fit(s.chapter, Math.round(big * 0.55), 0.6))}`);
     }
     if (s.media && s.mhave && s.media.credit) { const a = s.S + s.lead + 0.3, b = s.S + s.D - 0.2; ev.push(`Dialogue: 4,${assTime(a)},${assTime(b)},Credit,,0,0,0,,{\\fad(200,200)}${(s.media.kind === 'clip' ? 'Clip: ' : 'Source: ') + s.media.credit.replace(/[{}]/g, '')}`); }
     if (s.quote) { // someone's words on screen (a quote from the show or a post): the speaker's name, then the words
       const a = s.S + s.lead + 0.1, b = s.S + s.D - 0.2, q = s.quote, qs = Math.round(fs2 * (v ? 1.3 : 1.7));
       ev.push(`Dialogue: 1,${assTime(a)},${assTime(b)},Fx,,0,0,0,,{\\fad(250,250)}${dim('70')}`);
-      ev.push(`Dialogue: 2,${assTime(a)},${assTime(b)},Quote,,0,0,0,,{\\fad(250,250)\\an5\\pos(${cx},${cy})\\q0}${q.who ? `{\\fs${small}\\1c${accent}}${q.who.replace(/[{}]/g, '').toUpperCase()}\\N{\\fs${qs}\\1c&HFFFFFF&}` : ''}${q.text.replace(/[{}]/g, '')}`);
+      ev.push(`Dialogue: 2,${assTime(a)},${assTime(b)},Quote,,0,0,0,,{\\fad(250,250)\\an5\\pos(${cx},${cy})\\q0}${q.who ? `{\\fs${small}\\1c${accent}}${q.who.replace(/[{}]/g, '').toUpperCase()}\\N{\\fs${qs}\\1c&HFFFFFF&}` : ''}${wrapAss(q.text.replace(/[{}]/g, ''), qs)}`);
     }
     if (s.card) { // a statistic or key phrase on screen while it is said
       const a = s.S + s.lead + 0.15, b = s.S + s.D - 0.25;
       ev.push(`Dialogue: 1,${assTime(a)},${assTime(b)},Fx,,0,0,0,,{\\fad(300,300)}${dim('80')}`);
-      ev.push(`Dialogue: 2,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(300,300)\\an5\\pos(${cx},${cy})\\t(0,600,\\fscx100\\fscy100)\\fscx92\\fscy92}{\\fs${big}}${s.card.big.replace(/[{}]/g, '')}${s.card.small ? `\\N{\\fs${small}\\1c${accent}}${s.card.small.replace(/[{}]/g, '')}` : ''}`);
+      ev.push(`Dialogue: 2,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(300,300)\\an5\\pos(${cx},${cy})\\t(0,600,\\fscx100\\fscy100)\\fscx92\\fscy92}{\\fs${fit(s.card.big, big)}}${s.card.big.replace(/[{}]/g, '')}${s.card.small ? `\\N{\\fs${small}\\1c${accent}}${wrapAss(s.card.small.replace(/[{}]/g, ''), small)}` : ''}`);
     }
   });
   return `[Script Info]\nScriptType: v4.00+\nPlayResX: ${w}\nPlayResY: ${h}\nWrapStyle: 2\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n` +
@@ -135,10 +135,10 @@ function ass(cues, w, h, style, shots = []) {
 }
 
 // ---------- render ----------
-function placeholder(file, i, prompt, style) {
-  const tf = path.join(WORK, `ph${nn(i)}.txt`), wrap = (prompt || 'image').replace(/(.{1,58})(\s|$)/g, '$1\n').slice(0, 520);
+function placeholder(file, i, prompt, style, W = 1920, H = 1080) {
+  const tf = path.join(WORK, `ph${nn(i)}.txt`), wrap = (prompt || 'image').replace(W < H ? /(.{1,27})(\s|$)/g : /(.{1,58})(\s|$)/g, '$1\n').slice(0, 520);
   fs.writeFileSync(tf, `SHOT ${nn(i)}  (placeholder: add projects/${id}/img/${nn(i)}.png)\n\n${wrap}`);
-  ff(['-f', 'lavfi', '-i', `color=c=${style.placeholder || '0x1c2523'}:s=${W}x${H}`, '-vf', `drawtext=fontfile=${path.join(__dirname, 'fonts/NotoSansMono.ttf')}:textfile=${tf}:fontcolor=0x9ea292:fontsize=34:x=120:y=200:line_spacing=10`, '-frames:v', '1', file]);
+  ff(['-f', 'lavfi', '-i', `color=c=${style.placeholder || '0x1c2523'}:s=${W}x${H}`, '-vf', `drawtext=fontfile=${path.join(__dirname, 'fonts/NotoSansMono.ttf')}:textfile=${tf}:fontcolor=0x9ea292:fontsize=34:x=${W < H ? 60 : 120}:y=${W < H ? 420 : 200}:line_spacing=10`, '-frames:v', '1', file]);
 }
 function render() {
   const { meta, style, shots } = parse(), to = opt('to') ? +opt('to') : shots.length, has = (f) => fs.existsSync(path.join(P, 'media', f)) && fs.statSync(path.join(P, 'media', f)).size > 0, dropped = (x) => (x.unless && has(x.unless)) || (x.when && !has(x.when)), use = shots.slice(0, to).filter((x) => !dropped(x));
@@ -167,53 +167,69 @@ function render() {
   const mmss = (x) => `${Math.floor(x / 60)}:${String(Math.floor(x % 60)).padStart(2, '0')}`;
   const chs = use.filter((s) => s.chapter).map((s, k) => `${mmss(k === 0 ? 0 : s.S)} ${s.chapter}`);
   fs.mkdirSync(OUT, { recursive: true }); if (chs.length) fs.writeFileSync(path.join(OUT, `${id}-chapters.txt`), chs.join('\n') + '\n');
-  // 2. pictures: one clip per shot with a slow push or pan, a little longer than the shot so the crossfade has room
+  // 2 and 3. pictures and the joined video, once for each shape: 1920x1080 and (with --vertical) a native 1080x1920 recomposition
+  const probe = (f) => { try { const [w, h] = execFileSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'csv=p=0:s=x', f]).toString().trim().split('x').map(Number); return { w, h }; } catch { return { w: 16, h: 9 }; } };
   const moves = style.moves || ['in', 'panR', 'out', 'panL'];
-  let lastImg = null;
-  use.forEach((s, i) => {
-    let img = ['png', 'jpg', 'jpeg', 'webp'].map((e) => path.join(P, 'img', `${nn(s.i)}.${e}`)).find((f) => fs.existsSync(f));
-    if (!img && s.same && lastImg && !(s.media && !s.mhave)) img = lastImg;
-    if (!img) { img = path.join(WORK, `ph${nn(s.i)}.png`); placeholder(img, s.i, (s.media && !s.mhave ? `[${s.media.kind.toUpperCase()} MISSING: media/${s.media.file}${s.media.kind === 'clip' ? ` ${s.media.start}-${s.media.end}s` : ''}] ` : '') + s.prompt, style); }
-    lastImg = img;
-    const L = s.D + (i < use.length - 1 ? XF : 0), N = Math.round(L * FPS), z = style.zoom ?? 0.07, mv = s.move || moves[i % moves.length];
-    const Z = { in: `1+${z}*on/${N}`, out: `${1 + z}-${z}*on/${N}`, panR: `${1 + z}`, panL: `${1 + z}`, up: `${1 + z}`, down: `${1 + z}`, hold: '1' }[mv] || `1+${z}*on/${N}`;
-    const X = { panR: `(iw-iw/zoom)*on/${N}`, panL: `(iw-iw/zoom)*(1-on/${N})` }[mv] || 'iw/2-(iw/zoom/2)';
-    const Y = { up: `(ih-ih/zoom)*(1-on/${N})`, down: `(ih-ih/zoom)*on/${N}` }[mv] || 'ih/2-(ih/zoom/2)';
-    s.clip = path.join(WORK, `c${nn(s.i)}.mp4`);
-    ff(['-i', img, '-vf', `scale=${W * 1.5}:${H * 1.5}:force_original_aspect_ratio=increase,crop=${W * 1.5}:${H * 1.5},zoompan=z='${Z}':x='${X}':y='${Y}':d=${N}:s=${W}x${H}:fps=${FPS},${style.grade || 'null'},format=yuv420p`, '-frames:v', String(N), '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '17', s.clip]);
-    if (s.media && s.mhave) { // a screenshot floats over a dimmed picture; a video clip plays full frame (letterboxed over a blurred background if it is vertical)
-      const out2 = path.join(WORK, `m${nn(s.i)}.mp4`), LL = L.toFixed(3), enc = ['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '17', '-pix_fmt', 'yuv420p', '-t', LL, out2];
-      if (s.media.kind === 'shot') {
-        ff(['-i', s.clip, '-loop', '1', '-framerate', String(FPS), '-t', LL, '-i', s.mpath, '-filter_complex',
-          `[0:v]eq=brightness=-0.3:saturation=0.8,boxblur=16:2[bg];[1:v]scale=w=${Math.round(W * 0.78)}:h=${Math.round(H * 0.7)}:force_original_aspect_ratio=decrease,pad=iw+14:ih+14:7:7:color=0x1b1b22,pad=iw+90:ih+90:45:45:color=black@0,format=rgba,split[c][sh];` +
-          `[sh]colorchannelmixer=rr=0:gg=0:bb=0:aa=0.7,boxblur=18:3[shb];[shb][c]overlay=0:6[card];[card]scale=w='trunc(iw*(1+0.04*t/${LL})/2)*2':h=-2:eval=frame,fade=t=in:st=0.12:d=0.4:alpha=1[cz];[bg][cz]overlay=x=(W-w)/2:y=(H-h)/2-40:format=auto:shortest=1[v]`, '-map', '[v]', ...enc]);
-      } else {
-        const dur = Math.max(0.5, s.media.end - s.media.start);
-        ff(['-i', s.clip, '-ss', String(s.media.start), '-t', String(dur), '-i', s.mpath, '-filter_complex',
-          `[0:v]eq=brightness=-0.35,boxblur=24:3[bg];[1:v]fps=${FPS},scale=${W}:${H}:force_original_aspect_ratio=decrease,setsar=1,format=yuv420p,tpad=stop_mode=clone:stop_duration=30,fade=t=in:st=0:d=0.25[fg];[bg][fg]overlay=x=(W-w)/2:y=(H-h)/2:format=auto:shortest=1[v]`, '-map', '[v]', ...enc]);
-        if (s.media.sound) { s.mwav = path.join(WORK, `m${nn(s.i)}.wav`); ff(['-ss', String(s.media.start), '-t', String(dur), '-i', s.mpath, '-vn', '-af', 'aresample=44100,aformat=channel_layouts=stereo', s.mwav]); }
+  const buildVideo = (W, H, tag) => {
+    const vert = H > W; let lastImg = null;
+    use.forEach((s, i) => {
+      let img = ['png', 'jpg', 'jpeg', 'webp'].map((e) => path.join(P, 'img', `${nn(s.i)}.${e}`)).find((f) => fs.existsSync(f));
+      if (!img && s.same && lastImg && !(s.media && !s.mhave)) img = lastImg;
+      if (!img) { img = path.join(WORK, `ph${nn(s.i)}${vert ? 'v' : ''}.png`); placeholder(img, s.i, (s.media && !s.mhave ? `[${s.media.kind.toUpperCase()} MISSING: media/${s.media.file}${s.media.kind === 'clip' ? ` ${s.media.start}-${s.media.end}s` : ''}] ` : '') + s.prompt, style, W, H); }
+      lastImg = img;
+      const L = s.D + (i < use.length - 1 ? XF : 0), N = Math.round(L * FPS), z = style.zoom ?? 0.07, mv = s.move || moves[i % moves.length];
+      const grade = style.grade || 'null', base = path.join(WORK, `c${nn(s.i)}${tag}.mp4`), enc = ['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '17'];
+      if (!vert) {
+        const Z = { in: `1+${z}*on/${N}`, out: `${1 + z}-${z}*on/${N}`, panR: `${1 + z}`, panL: `${1 + z}`, up: `${1 + z}`, down: `${1 + z}`, hold: '1' }[mv] || `1+${z}*on/${N}`;
+        const X = { panR: `(iw-iw/zoom)*on/${N}`, panL: `(iw-iw/zoom)*(1-on/${N})` }[mv] || 'iw/2-(iw/zoom/2)';
+        const Y = { up: `(ih-ih/zoom)*(1-on/${N})`, down: `(ih-ih/zoom)*on/${N}` }[mv] || 'ih/2-(ih/zoom/2)';
+        ff(['-i', img, '-vf', `scale=${W * 1.5}:${H * 1.5}:force_original_aspect_ratio=increase,crop=${W * 1.5}:${H * 1.5},zoompan=z='${Z}':x='${X}':y='${Y}':d=${N}:s=${W}x${H}:fps=${FPS},${grade},format=yuv420p`, '-frames:v', String(N), ...enc, '-pix_fmt', 'yuv420p', base]);
+      } else { // 9:16: slide a portrait window across the wide picture (pans), then push in or out on it
+        const cw = Math.round(W * 1.5), ch = Math.round(H * 1.5), T = (N / FPS).toFixed(3);
+        const pan = { panR: `(0.32+0.36*t/${T})`, panL: `(0.68-0.36*t/${T})` }[mv] || '0.5';
+        const Z = { in: `1+${z}*on/${N}`, out: `${1 + z}-${z}*on/${N}`, panR: `1+${z / 2}*on/${N}`, panL: `1+${z / 2}*on/${N}`, up: `${1 + z}`, down: `${1 + z}`, hold: '1' }[mv] || `1+${z}*on/${N}`;
+        const Y = { up: `(ih-ih/zoom)*(1-on/${N})`, down: `(ih-ih/zoom)*on/${N}` }[mv] || 'ih/2-(ih/zoom/2)';
+        ff(['-loop', '1', '-framerate', String(FPS), '-t', T, '-i', img, '-vf', `scale=-2:${ch}:force_original_aspect_ratio=increase,crop=${cw}:${ch}:x='(iw-${cw})*${pan}':y=0,zoompan=z='${Z}':x='iw/2-(iw/zoom/2)':y='${Y}':d=1:s=${W}x${H}:fps=${FPS},${grade},format=yuv420p`, '-frames:v', String(N), ...enc, '-pix_fmt', 'yuv420p', base]);
       }
-      s.clip = out2;
+      s.clip = base;
+      if (s.media && s.mhave) { // a screenshot floats over a dimmed picture; a video clip plays full frame (letterboxed over a blurred background when its shape does not fit)
+        const out2 = path.join(WORK, `m${nn(s.i)}${tag}.mp4`), LL = L.toFixed(3), enc2 = ['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '17', '-pix_fmt', 'yuv420p', '-t', LL, out2];
+        if (s.media.kind === 'shot') {
+          const bw = Math.round(W * (vert ? 0.9 : 0.78)), bh = Math.round(H * (vert ? 0.55 : 0.7)), dy = vert ? -Math.round(H * 0.06) : -40;
+          ff(['-i', s.clip, '-loop', '1', '-framerate', String(FPS), '-t', LL, '-i', s.mpath, '-filter_complex',
+            `[0:v]eq=brightness=-0.3:saturation=0.8,boxblur=16:2[bg];[1:v]scale=w=${bw}:h=${bh}:force_original_aspect_ratio=decrease,pad=iw+14:ih+14:7:7:color=0x1b1b22,pad=iw+90:ih+90:45:45:color=black@0,format=rgba,split[c][sh];` +
+            `[sh]colorchannelmixer=rr=0:gg=0:bb=0:aa=0.7,boxblur=18:3[shb];[shb][c]overlay=0:6[card];[card]scale=w='trunc(iw*(1+0.04*t/${LL})/2)*2':h=-2:eval=frame,fade=t=in:st=0.12:d=0.4:alpha=1[cz];[bg][cz]overlay=x=(W-w)/2:y=(H-h)/2${dy}:format=auto:shortest=1[v]`, '-map', '[v]', ...enc2]);
+        } else {
+          const dur = Math.max(0.5, s.media.end - s.media.start), d0 = probe(s.mpath), portrait = d0.h > d0.w * 1.2;
+          const fit = vert && portrait ? `scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H}` : `scale=${W}:${H}:force_original_aspect_ratio=decrease`; // a portrait clip fills a portrait frame
+          ff(['-i', s.clip, '-ss', String(s.media.start), '-t', String(dur), '-i', s.mpath, '-filter_complex',
+            `[0:v]eq=brightness=-0.35,boxblur=24:3[bg];[1:v]fps=${FPS},${fit},setsar=1,format=yuv420p,tpad=stop_mode=clone:stop_duration=30,fade=t=in:st=0:d=0.25[fg];[bg][fg]overlay=x=(W-w)/2:y=(H-h)/2:format=auto:shortest=1[v]`, '-map', '[v]', ...enc2]);
+          if (s.media.sound && !s.mwav) { s.mwav = path.join(WORK, `m${nn(s.i)}.wav`); ff(['-ss', String(s.media.start), '-t', String(dur), '-i', s.mpath, '-vn', '-af', 'aresample=44100,aformat=channel_layouts=stereo', s.mwav]); }
+        }
+        s.clip = out2;
+      }
+      process.stdout.write(`\r${tag || 'wide'} shots ${i + 1}/${use.length}`);
+    });
+    console.log('');
+    const vid = path.join(WORK, `video${tag}.mp4`);
+    if (use.length === 1) fs.copyFileSync(use[0].clip, vid);
+    else {
+      const xf = (clips, durs, outFile) => { const a = []; clips.forEach((c) => a.push('-i', c)); let fc = '', prev = '[0:v]', off = 0;
+        for (let k = 1; k < clips.length; k++) { off += durs[k - 1]; const o = k === clips.length - 1 ? '[v]' : `[x${k}]`; fc += `${prev}[${k}:v]xfade=transition=fade:duration=${XF}:offset=${off.toFixed(3)}${o};`; prev = o; }
+        ff([...a, '-filter_complex', fc.slice(0, -1), '-map', '[v]', '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '17', '-pix_fmt', 'yuv420p', outFile]); };
+      // groups of 20 shots; each group keeps its tail so the next group can crossfade into it
+      const G = 20, parts = [], pdurs = [];
+      for (let g = 0; g < use.length; g += G) {
+        const grp = use.slice(g, g + G), f = path.join(WORK, `g${g}${tag}.mp4`);
+        if (grp.length === 1) fs.copyFileSync(grp[0].clip, f); else xf(grp.map((s) => s.clip), grp.map((s) => s.D), f);
+        parts.push(f); pdurs.push(grp.reduce((a, s) => a + s.D, 0));
+      }
+      if (parts.length === 1) fs.copyFileSync(parts[0], vid); else xf(parts, pdurs, vid);
     }
-    process.stdout.write(`\rshots ${i + 1}/${use.length}`);
-  });
-  console.log('');
-  // 3. join with crossfades (in groups, so a long video never needs one giant filter)
-  const vid = path.join(WORK, 'video.mp4');
-  if (use.length === 1) fs.copyFileSync(use[0].clip, vid);
-  else {
-    const xf = (clips, durs, outFile) => { const a = []; clips.forEach((c) => a.push('-i', c)); let fc = '', prev = '[0:v]', off = 0;
-      for (let k = 1; k < clips.length; k++) { off += durs[k - 1]; const o = k === clips.length - 1 ? '[v]' : `[x${k}]`; fc += `${prev}[${k}:v]xfade=transition=fade:duration=${XF}:offset=${off.toFixed(3)}${o};`; prev = o; }
-      ff([...a, '-filter_complex', fc.slice(0, -1), '-map', '[v]', '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '17', '-pix_fmt', 'yuv420p', outFile]); };
-    // groups of 20 shots; each group keeps its tail so the next group can crossfade into it
-    const G = 20, parts = [], pdurs = [];
-    for (let g = 0; g < use.length; g += G) {
-      const grp = use.slice(g, g + G), f = path.join(WORK, `g${g}.mp4`), last = g + G >= use.length;
-      if (grp.length === 1) fs.copyFileSync(grp[0].clip, f); else xf(grp.map((s) => s.clip), grp.map((s) => s.D), f);
-      parts.push(f); pdurs.push(grp.reduce((a, s) => a + s.D, 0) - (last ? 0 : 0));
-    }
-    if (parts.length === 1) fs.copyFileSync(parts[0], vid); else xf(parts, pdurs, vid);
-  }
+    return vid;
+  };
+  const vid = buildVideo(W, H, '');
+  const vidV = opt('vertical') ? buildVideo(1080, 1920, 'v') : null;
   // 4. sound: narration laid on the timeline, plus the bed
   const voiceTrack = path.join(WORK, 'voice.wav'), ins = [], fl = [];
   use.forEach((s) => {
@@ -255,9 +271,9 @@ function render() {
   const final = path.join(OUT, `${id}.mp4`);
   ff(['-i', vid, '-i', mix, '-vf', sub(path.join(WORK, 'cap169.ass')), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', final]);
   ff(['-i', final, '-vf', `fps=1/${Math.max(2, Math.round(total / 40))},scale=320:-1,tile=8x5`, '-frames:v', '1', path.join(OUT, `${id}-sheet.jpg`)]);
-  if (opt('vertical')) {
+  if (vidV) {
     fs.writeFileSync(path.join(WORK, 'cap916.ass'), ass(cuesFor(style.captions.charsVertical ?? 24), 1080, 1920, style, use));
-    ff(['-i', vid, '-i', mix, '-filter_complex', `[0:v]split[a][b];[a]scale=-2:1920,crop=1080:1920,boxblur=24:2,eq=brightness=-0.18[bg];[b]scale=1080:-2[fg];[bg][fg]overlay=0:(H-h)/2,${sub(path.join(WORK, 'cap916.ass'))}[v]`, '-map', '[v]', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '21', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', path.join(OUT, `${id}-9x16.mp4`)]);
+    ff(['-i', vidV, '-i', mix, '-vf', sub(path.join(WORK, 'cap916.ass')), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', path.join(OUT, `${id}-9x16.mp4`)]);
   }
   console.log(`${final} (${total.toFixed(1)} s, ${use.length} shots, ${cues.length} captions)`);
 }

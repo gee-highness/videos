@@ -74,11 +74,11 @@ And then there's the house. She found it in 2019, spent two years rebuilding it,
 
 [img] a pink-and-white interior of a mews house, a velvet sofa, a chandelier, a staircase curling up {move:panR}
 [card] £12 million | HELLO!'s estimate of Amanda's mews house
-[shot] press-hello.png | HELLO! via Yahoo, 19 Nov 2026
 Three storeys, four bedrooms, five bathrooms. HELLO! estimates it at twelve million pounds. Amanda calls it "Barbie's dream house."
 
 [img same] {move:in}
 [sfx scratch -0.2 x0.7]
+[shot] press-hello.png | HELLO! via Yahoo, 19 Nov 2026
 Before Amanda, it was a flat on top of three garages. And before that, around 1700, it was a coaching house. Keep that in mind, too.
 
 # Season one

@@ -98,10 +98,15 @@ Read `.claude/skills/research-desk/SKILL.md`: research first, label every line F
 | `node essay/capture.cjs <id>` | screenshots the press pages in `capture.json` into `media/` |
 | `node essay/essay.cjs check <id>` | missing images and voice files, length, chapters with times, and a pacing report (long shots, minutes with nothing new, a weak hook) |
 | `node essay/essay.cjs render <id>` | renders `out/<id>.mp4` (1920x1080) and `out/<id>-sheet.jpg` |
-| `... render <id> --vertical` | also `out/<id>-9x16.mp4` (1080x1920: the picture over a blurred copy, captions in the middle) |
+| `... render <id> --vertical` | also `out/<id>-9x16.mp4`: a native 1080x1920 recomposition with the same audio, timing and content: the pictures are cropped to portrait with panning, screenshots and stat cards are re-sized for the narrow frame, portrait clips (like Hayu's Shorts) fill the whole screen, and the captions are re-wrapped to 24 characters |
 | `... render <id> --to 12` | only the first 12 shots, for a quick look |
 
 Rendering speed here: about 1.7 seconds of work per second of video (a 10-minute essay takes about 17 minutes).
 
 ## New style
 Add an entry to `essay/styles.json`: `prompt` (added to every image prompt), `grade` (an ffmpeg colour filter), `zoom`, `moves`, `pad` (the notes of the ambient bed in Hz), and `captions`. Keep the captions block unless the look needs different captions.
+
+## Vertical (9:16) notes
+- A 16:9 picture is cropped to a 9:16 window that slides across it for the pans, so keep the subject near the centre of every AI image.
+- A `[card]` and a `[shot]` on the same shot overlap: use one per shot.
+- Render time roughly doubles with `--vertical` (two picture builds, one audio mix).

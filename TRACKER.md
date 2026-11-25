@@ -9,6 +9,7 @@ Status: `idea` → `scripted` → `voiced` (voice files in) → `images` (all im
 | ID | Title | Style | Length | Status | Next step | Notes |
 |---|---|---|---|---|---|---|
 | es01 | The Real Housewives of London: How a Mews House Became the Most Famous Read of 2026 | london-glam | 10:08 | voiced (Ava, 67 lines in); pictures in (60 Creative Commons photos, credited in image-credits.md); final render | optional: 4 post screenshots, 3 Hayu clips | First full demo: chapters, cards, quote cards, mood music, sound effects, press screenshots and Hayu clips. Facts in `research.md`; media in `media.md` and `media-notes.md` |
+| es02 | Two Stories, One Road: The Westville Dog Attack (Facebook Reel, 9:16) | archive-noir | ~1:25 | scripted | user OKs wording; blazer host image; voices (`projects/es02/termux.sh`); 10 images (`prompts.md`) | News story, live: re-check police status and fundraiser total on posting day. Facts in `research.md`; caption in `post.md` |
 | es00 | The AI Takeover Quietly Stalled (pipeline pilot) | retro-office | ~2.2 min | scripted | voices and images | Check every figure against the MIT NANDA 2025 report before posting |
 
 ### Essay ideas (pick, then I script them)

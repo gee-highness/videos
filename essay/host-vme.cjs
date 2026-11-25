@@ -28,7 +28,8 @@ const POSES = { eyebrow: { gesture: 'shrug', expression: { name: 'surprised', we
 fs.mkdirSync(WORK, { recursive: true });
 const jobs = [];
 for (const s of shots) { if (!s.host || !s.text) continue; if (only && !only.includes(s.i + 1)) continue;
-  const n = String(s.i + 1).padStart(2, '0'), voice = ['mp3', 'wav'].map((e) => path.join(P, 'voice', `${n}.${e}`)).find((f) => fs.existsSync(f));
+  const n = String(s.i + 1).padStart(2, '0'), vsrc = ['mp3', 'wav'].map((e) => path.join(P, 'voice', `${n}.${e}`)).find((f) => fs.existsSync(f));
+  let voice = null; if (vsrc) { voice = path.join(WORK, `${n}.wav`); spawnSync('ffmpeg', ['-v', 'error', '-y', '-i', vsrc, '-ar', '24000', '-ac', '1', '-c:a', 'pcm_s16le', voice]); } // v_me's file engine reads WAV
   for (const [tag, aspect, w, h] of [['v', '9:16', 1080, 1920], ['h', '16:9', 1920, 1080]]) { if (tag === 'h' && !s.host.full) continue;
     const pose = POSES[s.host.pose] || {}, cues = [{ do: 'camera', at: 0, preset: 'closeup', move: 'cut' }];
     if (pose.expression) cues.push({ do: 'expression', at: 0.2, ...pose.expression, duration: 3 }); if (pose.gesture) cues.push({ do: 'gesture', at: 0.6, name: pose.gesture });

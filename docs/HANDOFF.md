@@ -12,6 +12,9 @@ Updated 25 Nov 2026. Read in this order: this file, `TRACKER.md`, `docs/LESSONS.
 - Host: confidential (private v_me repo, `hosts/kuina/`; copy locally to `hosts/kuina/`, git-ignored). A still photo in a framed window or full frame.
 - Last full render was a draft with placeholder pictures; the render with photos + host was stopped before finishing.
 
+## Notes (Nov 25 2026)
+- es01 final: animated host clips are rendered by `node essay/host-vme.cjs es01` (v_me, slow: about 2-3 s per frame), then `node essay/essay.cjs render es01 --vertical`. `projects/*/host/` is git-ignored (it embeds the private look). Stand-ins and stickers: `projects/es01/media-notes.md`.
+
 ## Next
 - [ ] **Animated host.** Details are confidential: see the private v_me repo (`hosts/kuina/`).
 - [ ] **Host images.** Character sheet and thumbnail pose: kept in the private repo, not here.

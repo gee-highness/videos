@@ -71,6 +71,18 @@ Put files in `projects/<id>/media/`. All of it is optional: a missing file rende
 - `node essay/essay.cjs media <id>` writes `media.md` (every file needed, where it is used, credit, status) and `media-download.sh` (a Termux block that downloads the clips with yt-dlp on the phone).
 - Rules: under ~25 s a clip and about 90 s of borrowed footage in total, always credited, always with commentary; screenshots show the headline only. `check` warns past 90 s.
 
+## The host
+A channel host (a fictional, AI-generated presenter) can appear on screen while her lines play. Her profile, looks, wardrobe, poses and image prompt are in `hosts/<name>/HOST.md`.
+```
+host: hosts/naledi/dress.png      (front matter: the default picture)
+host_name: Naledi
+[host]            she appears in a framed window beside the picture (16:9 right, 9:16 top right)
+[host name]       the same, plus a "NALEDI · your host" lower-third (her first appearance)
+[host full]       she fills the frame (9:16) or appears large (16:9): openings and sign-offs
+[host eyebrow]    a pose: hosts/<name>/eyebrow.png if it exists, otherwise the default picture
+```
+Do not put `[host]` on a shot that already has a `[shot]`, `[clip]`, `[card]` or `[quote]`. Two to eight appearances in a ten-minute video; one or two lines each. Say "AI-generated host" in the description.
+
 ## Stock photos instead of AI images
 When there are no AI images, real Creative Commons photos work well, and real places beat illustrations (the actual stadium, lighthouse, square or street the story names).
 1. Search Openverse (`https://api.openverse.org/v1/images/?q=...&license_type=commercial,modification&source=wikimedia`) for each shot; keep landscape photos at least ~1500 px wide. Openverse needs no key and works from the cloud session.

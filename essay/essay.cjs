@@ -35,6 +35,9 @@ function parse() {
     // "# Title" starts a chapter: a title card on screen and a YouTube chapter. "## note" is only for you.
     if (/^#\s/.test(l)) { section = l.replace(/^#\s*/, ''); pendingChapter = section; continue; }
     if (l.startsWith('#')) continue;
+    const hostM = /^\[host(?:\s+([\w-]+))?(?:\s+([\w-]+))?\]$/.exec(l);
+    if (hostM) { if (!shots.length) throw new Error('[host] before the first [img] line'); const sh = shots[shots.length - 1], words = [hostM[1], hostM[2]].filter(Boolean);
+      sh.host = { full: words.includes('full'), name: words.includes('name'), pose: words.find((w) => w !== 'full' && w !== 'name') || null }; continue; } // the channel host on screen for this shot
     const unl = /^\[(unless|when)\s+(\S+)\]$/.exec(l);
     if (unl) { if (!shots.length) throw new Error('[unless] or [when] before the first [img] line'); shots[shots.length - 1][unl[1]] = unl[2]; continue; } // this shot is dropped when media/<file> exists (a typed-quote fallback for a real clip)
     const tc = (x) => x.includes(':') ? x.split(':').reduce((a, v) => a * 60 + +v, 0) : +x;
@@ -101,7 +104,7 @@ function chunk(text, max = 40) {
   return out;
 }
 const assTime = (t) => { const h = Math.floor(t / 3600), m = Math.floor(t / 60) % 60, s = (t % 60).toFixed(2).padStart(5, '0'); return `${h}:${String(m).padStart(2, '0')}:${s}`; };
-function ass(cues, w, h, style, shots = []) {
+function ass(cues, w, h, style, shots = [], hostName = '') {
   const c = style.captions, v = w < h, fs2 = Math.round(h * (v ? c.sizeVertical : c.size)), mv = Math.round(h * (v ? c.marginVVertical : c.marginV));
   const bigMax = Math.round(Math.min(w * 0.16, h * 0.2)), wrapAss = (txt, size) => { const mx = Math.max(8, Math.floor((w * 0.84) / (size * 0.62))); const out = []; let cur = ''; for (const wd of String(txt).split(' ')) { if ((cur + ' ' + wd).trim().length > mx && cur) { out.push(cur); cur = wd; } else cur = (cur + ' ' + wd).trim(); } if (cur) out.push(cur); return out.join('\\N'); }, fit = (txt, mx, k = 0.62) => Math.max(24, Math.min(mx, Math.round((w * 0.86) / (Math.max(...String(txt).split('\n').map((x) => x.length)) * k)))), small = Math.round(fs2 * 0.95), big = bigMax, accent = style.accentAss || '&H0092A29E';
   const dim = (a) => `{\\an7\\pos(0,0)\\bord0\\shad0\\1c&H000000&\\1a&H${a}&\\p1}m 0 0 l ${w} 0 ${w} ${h} 0 ${h}{\\p0}`;
@@ -114,6 +117,8 @@ function ass(cues, w, h, style, shots = []) {
       ev.push(`Dialogue: 2,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(300,250)\\an5\\pos(${cx},${cy})}{\\fs${small}\\1c${accent}}PART ${s.chapterNo}\\N{\\fs${fit(s.chapter, Math.round(big * 0.55), 0.6)}\\1c&HFFFFFF&}${wrapAss(s.chapter.replace(/[{}]/g, ''), fit(s.chapter, Math.round(big * 0.55), 0.6))}`);
     }
     if (s.media && s.mhave && s.media.credit) { const a = s.S + s.lead + 0.3, b = s.S + s.D - 0.2; ev.push(`Dialogue: 4,${assTime(a)},${assTime(b)},Credit,,0,0,0,,{\\fad(200,200)}${(s.media.kind === 'clip' ? 'Clip: ' : 'Source: ') + s.media.credit.replace(/[{}]/g, '')}`); }
+    if (s.host && s.host.name && hostName) { const a = s.S + s.lead + 0.2, b = Math.min(s.S + s.D - 0.2, a + 4); const nx = v ? Math.round(w * 0.05) : Math.round(w * 0.06), ny = v ? Math.round(h * 0.34) : Math.round(h * 0.2);
+      ev.push(`Dialogue: 4,${assTime(a)},${assTime(b)},Title,,0,0,0,,{\\fad(250,250)\\an7\\pos(${nx},${ny})\\fs${Math.round(fs2 * 1.1)}\\bord0\\shad1}${hostName.toUpperCase()}\\N{\\fs${Math.round(fs2 * 0.7)}\\1c${accent}}your host`); }
     if (s.quote) { // someone's words on screen (a quote from the show or a post): the speaker's name, then the words
       const a = s.S + s.lead + 0.1, b = s.S + s.D - 0.2, q = s.quote, qs = Math.round(fs2 * (v ? 1.3 : 1.7));
       ev.push(`Dialogue: 1,${assTime(a)},${assTime(b)},Fx,,0,0,0,,{\\fad(250,250)}${dim('70')}`);
@@ -208,6 +213,19 @@ function render() {
         }
         s.clip = out2;
       }
+      if (s.host && meta.host) { // the host: a framed portrait beside the picture, or large (fills a 9:16 frame) with [host full]
+        const dir = path.dirname(path.join(ROOT, meta.host)), poseFile = s.host.pose && ['png', 'jpg', 'jpeg', 'webp'].map((e) => path.join(dir, `${s.host.pose}.${e}`)).find((f) => fs.existsSync(f));
+        const himg = poseFile || path.join(ROOT, meta.host), out3 = path.join(WORK, `h${nn(s.i)}${tag}.mp4`), LL = L.toFixed(3);
+        if (fs.existsSync(himg)) {
+          const full = s.host.full, hh = Math.round(vert ? (full ? H : H * 0.3) : H * (full ? 0.86 : 0.62));
+          let fc;
+          if (vert && full) fc = `[1:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},zoompan=z='1+0.05*on/${Math.round(L * FPS)}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=${W}x${H}:fps=${FPS},format=yuv420p,fade=t=in:st=0:d=0.3[v]`;
+          else { const x = vert ? `W-w-${Math.round(W * 0.04)}` : full ? '(W-w)/2' : `W-w-${Math.round(W * 0.05)}`, y = vert ? `${Math.round(H * 0.06)}` : `(H-h)/2-${Math.round(H * 0.04)}`;
+            fc = `[0:v]${full ? 'eq=brightness=-0.3,boxblur=16:2' : 'null'}[bg];[1:v]scale=-2:${hh},pad=iw+12:ih+12:6:6:color=0x${(style.hostFrame || 'c9a96e')},pad=iw+80:ih+80:40:40:color=black@0,format=rgba,split[c][sh];[sh]colorchannelmixer=rr=0:gg=0:bb=0:aa=0.65,boxblur=16:3[shb];[shb][c]overlay=0:6[card];[card]fade=t=in:st=0.1:d=0.35:alpha=1[cz];[bg][cz]overlay=x=${x}:y=${y}:format=auto:shortest=1[v]`; }
+          ff(['-i', s.clip, '-loop', '1', '-framerate', String(FPS), '-t', LL, '-i', himg, '-filter_complex', fc, '-map', '[v]', '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '17', '-pix_fmt', 'yuv420p', '-t', LL, out3]);
+          s.clip = out3;
+        }
+      }
       process.stdout.write(`\r${tag || 'wide'} shots ${i + 1}/${use.length}`);
     });
     console.log('');
@@ -267,12 +285,12 @@ function render() {
   return cues; };
   const cues = cuesFor(style.captions.chars ?? 40);
   const fontsdir = path.join(__dirname, 'fonts'), sub = (f) => `subtitles=${f}:fontsdir=${fontsdir}`;
-  fs.writeFileSync(path.join(WORK, 'cap169.ass'), ass(cues, W, H, style, use));
+  fs.writeFileSync(path.join(WORK, 'cap169.ass'), ass(cues, W, H, style, use, meta.host_name || ''));
   const final = path.join(OUT, `${id}.mp4`);
   ff(['-i', vid, '-i', mix, '-vf', sub(path.join(WORK, 'cap169.ass')), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', final]);
   ff(['-i', final, '-vf', `fps=1/${Math.max(2, Math.round(total / 40))},scale=320:-1,tile=8x5`, '-frames:v', '1', path.join(OUT, `${id}-sheet.jpg`)]);
   if (vidV) {
-    fs.writeFileSync(path.join(WORK, 'cap916.ass'), ass(cuesFor(style.captions.charsVertical ?? 24), 1080, 1920, style, use));
+    fs.writeFileSync(path.join(WORK, 'cap916.ass'), ass(cuesFor(style.captions.charsVertical ?? 24), 1080, 1920, style, use, meta.host_name || ''));
     ff(['-i', vidV, '-i', mix, '-vf', sub(path.join(WORK, 'cap916.ass')), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', path.join(OUT, `${id}-9x16.mp4`)]);
   }
   console.log(`${final} (${total.toFixed(1)} s, ${use.length} shots, ${cues.length} captions)`);

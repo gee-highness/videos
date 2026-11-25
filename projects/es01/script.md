@@ -4,6 +4,8 @@ style: london-glam
 voice: en-US-AvaMultilingualNeural
 rate: +0%
 music: none
+host: hosts/naledi/dress.png
+host_name: Naledi
 status: scripted; research in research.md, plan in plan.md
 sources: research.md (every fact and quote with its source; cast members' words are quoted as claims)
 ---
@@ -15,6 +17,7 @@ sources: research.md (every fact and quote with its source; cast members' words 
 # One sentence
 [img] an empty television reunion stage at night: six velvet armchairs in a semicircle, ring lights, a dark studio, gold-and-plum glow {move:in}
 [sfx riser -1.6]
+[host full name]
 In November 2026, a reality show most of the world had never watched produced one sentence that most of the world can now quote.
 
 [img same] {move:hold}
@@ -33,6 +36,7 @@ Within days, SZA, Questlove and The View were talking about it. Millions of peop
 And at the centre of it all was a house that, three hundred years ago, was built for horses.
 
 [img same] {move:out}
+[host]
 To understand how we got here, you have to meet the two women who used to be friends.
 
 # Two routes to Belgravia
@@ -142,6 +146,7 @@ Most of them did. Except one.
 The reunion streamed on the sixteenth of November. Katherine Ryan in the middle. Karen and Amanda on the same set.
 
 [img] a sealed brown envelope on a velvet chair, slightly open, light falling across it {move:in}
+[host eyebrow]
 Karen came with a list. Some of it was claims, and Amanda denied them.
 
 [img] a gold wristwatch on a marble table showing a late hour, a guest list beside it {move:in}
@@ -182,6 +187,7 @@ Jeremy, she suggested, had spent five hundred thousand pounds on Karen's brand, 
 
 [img same] {move:hold}
 [pause 0.6]
+[host]
 This was a mistake.
 
 # The read
@@ -234,9 +240,11 @@ Silence.
 
 [img] the reunion stage seen from the dark audience, six chairs, a single spotlight on an empty chair {move:out}
 [music calm]
+[host]
 One thing to be clear about.
 
 [img same] {move:in}
+[host]
 What Karen said about Amanda's love life was an insult in an argument, not a fact, and Amanda has never been shown to have done any of it.
 
 [img same] {move:in}
@@ -348,6 +356,7 @@ As for Season Three, nothing has been announced.
 The Sun reports that producers want to "shake things up", and that some of the cast are scared for their places.
 
 [img] a glossy black front door in Belgravia with a brass number plate, unmarked, a single lantern lit {move:in}
+[host laugh]
 Karen, for her part, has nothing to worry about. She has five other front doors.
 
 # The house
@@ -367,4 +376,5 @@ The funny part? Back in 2025, during that HELLO! photo shoot, Amanda made a pred
 
 [img same] {move:out}
 [music triumph]
+[host full arms]
 She was right.

@@ -1,5 +1,5 @@
-/* Sound effects and a quiet music bed, synthesised in code (no downloads, no licences).
-   bed(file, dur, sfx, music): sfx = [[time, name, volume?], ...]; music = [[from, to], ...] ranges where the tune plays. */
+/* Cartoon sound effects (synthesised) plus orchestral music (orchestra/orchestra.cjs).
+   bed(file, dur, sfx, music): sfx = [[time, name, volume?], ...]; music = [[from, to, mood?], ...] ranges where the orchestra plays. */
 const fs = require('fs');
 const SR = 44100, TAU = Math.PI * 2;
 let seed = 1; const noise = () => { seed = (seed * 16807) % 2147483647; return seed / 1073741823.5 - 1; };
@@ -17,22 +17,12 @@ const S = {
   thud: { d: 0.4, f: (t) => (Math.sin(TAU * (110 * t - 60 * t * t)) * Math.exp(-9 * t) + noise() * Math.exp(-60 * t) * 0.5) * 1.3 },
   munch: { d: 0.5, lp: 0.12, f: (t) => noise() * (t % 0.25 < 0.09 ? 1 : 0) * 0.9 },
 };
-function bed(file, dur, sfx, music) {
+function synthBed(file, dur, sfx) {
   const n = Math.ceil(dur * SR), buf = new Float32Array(n);
   for (const [at, name, vol = 1] of sfx) {
     const s = S[name]; if (!s) throw new Error('unknown sound ' + name);
     let lp = 0; const i0 = Math.round(at * SR), m = Math.round(s.d * SR);
     for (let i = 0; i < m && i0 + i < n; i++) { let v = s.f(i / SR); if (s.lp) { lp += s.lp * (v - lp); v = lp; } buf[i0 + i] += v * vol * 0.32 * Math.min(1, (m - i) / 300); }
-  }
-  // music: plucked arpeggio, C Am F G, 104 beats a minute, very quiet under the voice
-  const beat = 60 / 104, chords = [[262, 330, 392], [220, 262, 330], [175, 220, 262], [196, 247, 294]], pat = [0, 1, 2, 1, 0, 1, 2, 1];
-  const pluck = (at, f, vol, dec) => { const i0 = Math.round(at * SR), m = Math.round(0.9 * SR); for (let i = 0; i < m && i0 + i < n; i++) { const t = i / SR; buf[i0 + i] += (Math.sin(TAU * f * t) + 0.3 * Math.sin(TAU * 2 * f * t)) * Math.exp(-dec * t) * Math.min(1, t * 400) * vol * gain(i0 + i); } };
-  const gain = (i) => { const t = i / SR; let g = 0; for (const [a, b] of music) g = Math.max(g, Math.min(1, (t - a) / 0.4, (b - t) / 0.8)); return Math.max(0, g); };
-  if (music.length) for (let k = 0; k * beat / 2 < dur; k++) {
-    const at = k * beat / 2, ch = chords[Math.floor(k / 8) % 4];
-    if (!music.some(([a, b]) => at >= a - 0.1 && at < b)) continue;
-    pluck(at, ch[pat[k % 8]] * 2, 0.05, 7);
-    if (k % 4 === 0) pluck(at, ch[0] / 2, 0.09, 4);
   }
   const pcm = Buffer.alloc(44 + n * 4);
   pcm.write('RIFF', 0); pcm.writeUInt32LE(36 + n * 4, 4); pcm.write('WAVEfmt ', 8); pcm.writeUInt32LE(16, 16); pcm.writeUInt16LE(1, 20); pcm.writeUInt16LE(2, 22);
@@ -40,4 +30,18 @@ function bed(file, dur, sfx, music) {
   for (let i = 0; i < n; i++) { const v = Math.max(-1, Math.min(1, buf[i])) * 32767 | 0; pcm.writeInt16LE(v, 44 + i * 4); pcm.writeInt16LE(v, 46 + i * 4); }
   fs.writeFileSync(file, pcm);
 }
-module.exports = { bed, sounds: Object.keys(S) };
+// Music is played by the orchestra (orchestra/orchestra.cjs, real recorded sections); the cartoon effects above stay synthesised.
+// music = [[from, to, mood?], ...]: mood defaults to 'comedy'; each range is its own piece that fades out at its end.
+const path = require('path'), { execFileSync } = require('child_process');
+function bed(file, dur, sfx, music, opts = {}) {
+  const orch = require('../orchestra/orchestra.cjs');
+  if (!music.length || (!orch.available() && !tryFetch())) { synthBed(file, dur, sfx); return; }
+  const fx = file + '.fx.wav', mu = file + '.mu.wav';
+  synthBed(fx, dur, sfx);
+  const cues = []; music.forEach(([a, b, mood = 'comedy']) => { cues.push([a, mood]); cues.push([b, 'none']); });
+  orch.score(mu, dur, cues, [], { lufs: opts.lufs ?? -27 });
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', fx, '-i', mu, '-filter_complex', '[0:a][1:a]amix=inputs=2:normalize=0,alimiter=limit=0.95[o]', '-map', '[o]', '-c:a', 'pcm_s16le', file]);
+  fs.rmSync(fx); fs.rmSync(mu);
+}
+function tryFetch() { try { execFileSync('bash', [path.join(__dirname, '..', 'orchestra', 'fetch.sh')], { stdio: 'inherit' }); return true; } catch (e) { console.warn('orchestra: samples unavailable, no music'); return false; } }
+module.exports = { bed, sounds: Object.keys(S), moods: require('../orchestra/orchestra.cjs').moods };

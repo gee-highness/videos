@@ -234,8 +234,8 @@ function resolveTiming(ep, durs) {
   });
   ep.sfx = (ep.sx || []).map(([i, off, name, vol]) => [V[i].at + off, name, vol ?? 1]);
   ep.music = []; let open = null;
-  ep.scenes.forEach((sc) => { if (!sc.dry && open === null) open = sc.from; if (sc.dry && open !== null) { ep.music.push([open, sc.from - 0.1]); open = null; } });
-  if (open !== null) ep.music.push([open, ep.dur]);
+  ep.scenes.forEach((sc) => { if (!sc.dry && open === null) open = sc.from; if (sc.dry && open !== null) { ep.music.push([open, sc.from - 0.1, ep.mood]); open = null; } });
+  if (open !== null) ep.music.push([open, ep.dur, ep.mood]);
 }
 
 /* ---- Episode kit (K): shared characters and whole scenes, so a new episode is mostly its own jokes ---- */

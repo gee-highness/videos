@@ -26,6 +26,7 @@ In November 2026, a reality show most of the world had never watched produced on
 [sfx notify]
 [sfx notify +0.9]
 [sfx notify +1.5 x0.7]
+[shot] press-complex.png | Complex, 19 Nov 2026
 Within days, SZA, Questlove and The View were talking about it. Millions of people watched a clip of six women arguing about property.
 
 [img] a narrow cobbled London mews at night, pastel doors, warm lamps, wet stones {move:panR}
@@ -50,6 +51,7 @@ Her husband is Jeremy Peace, the businessman who used to chair West Bromwich Alb
 His fortune is reported at around a hundred and seventy-five million pounds.
 
 [img] three framed television screens on a wall, each glowing a different colour, in a dark hallway
+[shot] press-bravo.png | Bravo, 18 Nov 2026
 And Karen is a Real Housewives veteran. Jersey. Cheshire. London. She has been on every British version of the show there has ever been.
 
 [img] a polished black grand piano in a white stucco Belgravia drawing room, tall windows, night outside {move:panL}
@@ -72,6 +74,7 @@ And then there's the house. She found it in 2019, spent two years rebuilding it,
 
 [img] a pink-and-white interior of a mews house, a velvet sofa, a chandelier, a staircase curling up {move:panR}
 [card] £12 million | HELLO!'s estimate of Amanda's mews house
+[shot] press-hello.png | HELLO! via Yahoo, 19 Nov 2026
 Three storeys, four bedrooms, five bathrooms. HELLO! estimates it at twelve million pounds. Amanda calls it "Barbie's dream house."
 
 [img same] {move:in}
@@ -81,6 +84,7 @@ Before Amanda, it was a flat on top of three garages. And before that, around 17
 # Season one
 [img] a grand London hotel lobby, marble floor, a gold revolving door, six empty champagne glasses on a tray {move:in}
 [music sneaky]
+[shot] wiki-infobox.png | Wikipedia
 When Hayu launched The Real Housewives of London in August 2025, it was the streaming service's first original show.
 
 [img same] {move:panL}
@@ -116,6 +120,7 @@ For Karen, who had been on Amanda's side, it looked like a swap. Amanda herself 
 [sfx tick]
 [sfx tick +1.4]
 [sfx tick +2.8]
+[shot] wiki-season2-episodes.png | Wikipedia, Season 2 episode list
 The episode titles tell you where this was going. "Loose Lips Sink Yachts." "Read Them and Weep." "Soiree It Ain't So."
 
 [img] a 1990s-themed party in a London townhouse: a disco ball, neon, a dance floor with nobody on it {move:out}
@@ -133,6 +138,7 @@ Most of them did. Except one.
 [img] the reunion stage again, now lit, six velvet armchairs, a host's chair in the centre, the audience seats in darkness {move:in}
 [music tension]
 [sfx boom x0.6]
+[clip] hayu-backstage.mp4 0:00-0:14 mute | Hayu | https://www.youtube.com/watch?v=ZDUS31oI3R4
 The reunion streamed on the sixteenth of November. Katherine Ryan in the middle. Karen and Amanda on the same set.
 
 [img] a sealed brown envelope on a velvet chair, slightly open, light falling across it {move:in}
@@ -190,6 +196,7 @@ This was a mistake.
 
 [img] a cobbled London mews in daylight with a row of old stable doors and iron hay hooks above them {move:panL}
 [music calm]
+[shot] press-people-mews.png | PEOPLE via Yahoo, 17 Nov 2026
 Quick history lesson, for everyone outside the UK.
 
 [img same] {move:in}
@@ -198,15 +205,24 @@ A mews house was originally the stables and coach house behind a grand London ho
 [img same] {move:in}
 Today they're some of the most expensive addresses in the city. But everybody in that room knew what a mews house used to be.
 
+[img same] {move:hold}
+[when hayu-monologue.mp4]
+[music none]
+[clip] hayu-monologue.mp4 0:00-0:30 sound | Hayu (YouTube) | https://www.youtube.com/shorts/tE1vNwAmj7E
+[subs] 0:00 "I'm from Jamaica, a little girl from the countryside. And I came to England at 25 years old, and I own five properties." // 0:10 "And you come to England, you sleep with princes, you sleep with lords, you sleep with mayors. You sleep with this, you sleep with that..." // 0:22 "...and you only have one mews house. Low-budget v*gina, Amanda."
+
 [img] the country road in Jamaica again, now at full morning, a young woman's suitcase at the bus stop, nobody in frame {move:in}
+[unless hayu-monologue.mp4]
 [music drama]
 [sfx riser -1.4]
 [quote] Karen | "I'm from Jamaica, a little girl from the countryside. And I came to England at 25 years old, and I own five properties."
 
 [img] a grand London ballroom with a red carpet up a marble staircase, crystal chandeliers, the room empty {move:up}
+[unless hayu-monologue.mp4]
 [quote] Karen | "And you come to England, you sleep with princes, you sleep with lords, you sleep with mayors. You sleep with this, you sleep with that..."
 
 [img] the blush-pink mews house at night, rain on the cobbles, one lamp on {move:in}
+[unless hayu-monologue.mp4]
 [music none]
 [sfx boom]
 [quote] Karen | "...and you only have one mews house. Low-budget v*gina, Amanda."
@@ -234,11 +250,13 @@ The list of places she owns. Her journey in one sentence. Then the same three wo
 Katherine Ryan, the host, said afterwards that she knew she was witnessing history.
 
 [img same] {move:panR}
+[shot] press-tab-katherine.png | The Tab, 19 Nov 2026
 [quote] Katherine Ryan, on Instagram | "I love Amanda... iconic Jamaican women who have taught me, no-one does it better. No-one has the vocab."
 
 # Part two
 [img] a backstage corridor of a television studio, a clothing rail, a mirror ringed with bulbs, a single banana on a silver tray {move:in}
 [music sneaky]
+[shot] press-realitytea-part2.png | Reality Tea, 23 Nov 2026
 A week later, Part Two arrived, and so did the backstage footage.
 
 [img] a gilded ivory tower on a misty hill, cartoonishly tall and elegant, clouds below it {move:up}
@@ -252,6 +270,12 @@ Amanda's argument was that once you have a hundred or two hundred million pounds
 Karen's answer was delivered while eating a banana.
 
 [img same] {move:hold}
+[when hayu-hell.mp4]
+[clip] hayu-hell.mp4 0:00-0:14 sound | Hayu (YouTube) | https://www.youtube.com/shorts/-Qegcz91O4s
+[subs] 0:00 "Hell is not a place for Amanda. It's too good. But she can't come for me, because I got Jesus."
+
+[img same] {move:hold}
+[unless hayu-hell.mp4]
 [sfx munch +0.4]
 [quote] Karen | "Hell is not a place for Amanda. It's too good. But she can't come for me, because I got Jesus."
 
@@ -281,17 +305,21 @@ And the two Juliets, Mayhew and Angus, had a moment of their own.
 By then, the clip had left London.
 
 [img] a recording studio at night, a microphone and a mixing desk, headphones hanging on a stand {move:in}
+[shot] post-sza.png | Instagram, SZA
 [quote] SZA | "Oh I'm starting episode one TONIGHT... Ain't seen nobody cleared this crazy since Phaedra."
 
 [img] a vinyl record spinning on a turntable, warm light, a tall afro comb resting beside it {move:in}
+[shot] post-questlove.png | Instagram, Questlove
 [quote] Questlove | "This is the first time I've paid attention to housewives... She brung the ruckus!"
 
 [img] a dancehall stage in Kingston at night, speaker stacks and coloured lights, an empty microphone stand {move:panR}
 [sfx scratch]
+[shot] post-vybz.png | Instagram, Vybz Kartel
 In Jamaica, dancehall star Vybz Kartel posted that "Low budget v-word" was his new song. Spice asked whether she should make one too.
 
 [img] a teacup being set down on a saucer, a few drops jumping out, a gold crown resting beside it on a lace cloth {move:in}
 [sfx ding]
+[shot] post-huger.png | Instagram, Karen Huger
 [quote] Karen Huger, The Real Housewives of Potomac | "From one Karen to another, darling, I had to put my tea down for that one. Take your crown."
 
 [img] a bright American daytime-television studio, four empty chairs at a curved desk, morning light {move:panL}
@@ -299,6 +327,7 @@ On The View, Whoopi Goldberg introduced it by admitting she hadn't known they ha
 
 [img] a laptop on a kitchen table showing a streaming menu, the screen glowing purple, a cup of tea beside it {move:in}
 [sfx shutter]
+[shot] press-peacock.png | Memorable TV, Nov 2026
 And Peacock put the whole second season up in America.
 
 [img] the blush-pink mews house by day, sunshine on the cobbles, a magazine photographer's light stand outside {move:up}
@@ -306,6 +335,7 @@ And Peacock put the whole second season up in America.
 Even HELLO!'s Laura Benjamin, who had been inside the house, weighed in.
 
 [img same] {move:in}
+[shot] press-hello.png | HELLO! via Yahoo, 19 Nov 2026
 There was, she wrote, "absolutely nothing low-budget about the estimated twelve-million-pound property".
 
 # What's next
@@ -314,6 +344,7 @@ There was, she wrote, "absolutely nothing low-budget about the estimated twelve-
 As for Season Three, nothing has been announced.
 
 [img same] {move:hold}
+[shot] press-tab-season3.png | The Tab, 24 Nov 2026
 The Sun reports that producers want to "shake things up", and that some of the cast are scared for their places.
 
 [img] a glossy black front door in Belgravia with a brass number plate, unmarked, a single lantern lit {move:in}

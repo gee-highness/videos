@@ -7,3 +7,5 @@
 - 2026-11-24 Rendering speed: about 0.8 s of work per second of video for drafts (ultrafast intermediates, 1.5x zoompan source).
 - 2026-11-25 The music and effects are synthesised (essay/score.cjs): no licences. Moods: calm, glam, sneaky, tension, drama, triumph, island, none. I can only measure loudness, not hear it: ask the user to listen.
 - 2026-11-25 Quote cards replace captions for that shot (the words are already on screen); a silent quote shot stays up ~0.34 s a word + 1.2 s.
+- 2026-11-25 Instagram, TikTok and X cannot be captured here (login walls) and YouTube downloads are blocked or against their terms: the user fetches clips on the phone (yt-dlp in Termux, or a screen recording) and screenshots posts. Public press and Wikipedia pages capture fine once the cookie banners are removed (essay/capture.cjs).
+- 2026-11-25 Voice and image files are numbered by shot, so inserting a shot renumbers everything after it and breaks recordings already made. `[when]` shots (clips that exist only when their file does) take the previous shot's number; never insert a narrated shot into a script whose voices exist without telling the user which lines changed.

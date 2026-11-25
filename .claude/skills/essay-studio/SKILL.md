@@ -24,6 +24,9 @@ Read `docs/ESSAYS.md` first (it lists every script directive, music mood and sou
 - Humour comes from understatement and callbacks ("Remember that number. It comes back."), never from mocking a group.
 - End on a twist or callback the viewer did not see coming.
 
+## Media
+Use real media wherever it makes the story clearer: press headlines (`[shot]`, captured with `essay/capture.cjs`), the show's own clips (`[clip]`, short and credited, with commentary), and posts (the user screenshots them). Always keep a typed fallback (`[quote]`, `[unless]`) so a missing file never leaves a hole. Run `media` to write the list and the phone download block. Details and the rules for borrowed footage are in `docs/ESSAYS.md`.
+
 ## Rules
 - Truth first: sources in the front matter, numbers said the way the source says them.
 - No real people's likenesses, no logos, no copyrighted characters in image prompts.

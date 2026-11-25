@@ -55,6 +55,22 @@ Keeps the previous picture with a new camera move (in, out, panL, panR, up, down
 ```
 About 145 words is one minute. A 10-minute essay is about 1,450 words and 90 to 120 shots.
 
+## Clips, screenshots and other media
+Put files in `projects/<id>/media/`. All of it is optional: a missing file renders as a labelled placeholder (a missing clip or post never breaks the render).
+```
+[shot] press-bravo.png | Bravo, 18 Nov 2026        a screenshot floats over the dimmed picture, credited on screen as "Source: ..."
+[clip] hayu-monologue.mp4 0:03-0:27 sound | Hayu (YouTube) | https://youtube.com/...    plays full frame (0:03 to 0:27 of the file) with its sound; "mute" for B-roll. Credited as "Clip: ...". The URL feeds `media`
+[subs] 0:00 "First line." // 0:08 "Second line."      captions for a clip: seconds into the used part (times optional: lines then share the clip evenly)
+[when file.mp4]     keep this shot only if the file exists (a real clip)
+[unless file.mp4]   drop this shot if the file exists (the typed-quote fallback for that clip)
+```
+- A `[shot]` or `[clip]` on a shot that also has a `[quote]` replaces the typed quote when the file exists; otherwise the typed quote stays (so a missing Instagram screenshot costs nothing).
+- A `[when]` shot takes the previous shot's number, so adding clips never changes the voice or image numbers already recorded.
+- A silent shot with a clip lasts as long as the clip; with narration the clip's sound is ducked under the voice.
+- `node essay/capture.cjs <id>` screenshots public pages listed in `projects/<id>/capture.json` (cookie banners removed, cropped to the headline, a block of text or a selector). Instagram, TikTok and X need a login: the user screenshots those.
+- `node essay/essay.cjs media <id>` writes `media.md` (every file needed, where it is used, credit, status) and `media-download.sh` (a Termux block that downloads the clips with yt-dlp on the phone).
+- Rules: under ~25 s a clip and about 90 s of borrowed footage in total, always credited, always with commentary; screenshots show the headline only. `check` warns past 90 s.
+
 ## Music and sound effects
 All synthesised in `essay/score.cjs` (nothing to license). Set the opening mood with `music:` in the front matter (a mood name, `pad`, `none` or a file) and change it with `[music mood]` lines. The music ducks under the narrator by itself.
 
@@ -78,6 +94,8 @@ Read `.claude/skills/research-desk/SKILL.md`: research first, label every line F
 | Command | Does |
 |---|---|
 | `node essay/essay.cjs plan <id>` | writes `prompts.md` (one prompt per shot, style added) and `termux.sh` (every voice line, retries built in) |
+| `node essay/essay.cjs media <id>` | writes `media.md` and `media-download.sh` (clips and screenshots needed) |
+| `node essay/capture.cjs <id>` | screenshots the press pages in `capture.json` into `media/` |
 | `node essay/essay.cjs check <id>` | missing images and voice files, length, chapters with times, and a pacing report (long shots, minutes with nothing new, a weak hook) |
 | `node essay/essay.cjs render <id>` | renders `out/<id>.mp4` (1920x1080) and `out/<id>-sheet.jpg` |
 | `... render <id> --vertical` | also `out/<id>-9x16.mp4` (1080x1920: the picture over a blurred copy, captions in the middle) |

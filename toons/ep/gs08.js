@@ -4,7 +4,7 @@ const room = () => win() + rect(-20, 1240, 1120, 200, 0);
 const letter = (x, y, s = 1, rot = 0) => grp(path('M-130,-170 L120,-160 L140,170 L-120,160 Z', { fill: '#fff', w: 6 }) + line('M-100,-120 l40,20 l30,-14 l50,22 M-90,-60 h170 M-90,-20 h150 M-90,20 h170 M-90,60 h120', { w: 4 }) +
   text(0, -126, 'SPORTS DAY', { size: 36 }) + path('M30,90 q60,-10 90,40 q-60,30 -90,-40Z', { fill: '#f0d48a', w: 5 }) + text(-40, 140, 'March', { size: 34, fill: BRAND }), x, y, s, rot);
 const EP = {
-  voiceTempo: 1.08, id: 'gs08', title: 'The letter', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
+  voiceTempo: 0.9, gapScale: 2.2, gapMin: 0.9, holdCaps: true, endTail: 4, id: 'gs08', title: 'The letter', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
   voices: { N: 'en-GB-RyanNeural', Z: 'en-ZA-LeahNeural', K: 'en-US-AnaNeural' },
   voice: [
     { who: 'Z', text: "Sipho. Why didn't you tell me about sports day?" },

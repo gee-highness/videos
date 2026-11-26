@@ -4,7 +4,7 @@ const grid = (t, t0, mess) => { let s = ''; for (let r = 0; r < 4; r++) for (let
   s += `<rect x="${20 + c * 116}" y="${70 + r * 64}" width="104" height="52" rx="6" fill="#fff" stroke="${INK}" stroke-width="3"/>` + (mess ? line(`M${34 + c * 116},${96 + r * 64} q30,${rnd(i) * 30 - 15} 70,0`, { w: 4, stroke: rnd(i + 9) > 0.7 ? BRAND : INK }) : ''); } return s; };
 const lab = () => rect(-20, 1240, 1120, 200, 0) + rect(60, 1080, 960, 50, 8, { fill: '#fff', w: 6 }) + grp(path('M-30,-90 h60 M-18,-90 v60 l-40,80 h116 l-40,-80 v-60', { fill: '#fff', w: 5 }), 820, 1080);
 const EP = {
-  voiceTempo: 1.08, id: 'gs04', title: 'One whiteboard', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
+  voiceTempo: 0.9, gapScale: 2.2, gapMin: 0.9, holdCaps: true, endTail: 4, id: 'gs04', title: 'One whiteboard', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
   voices: { N: 'en-GB-RyanNeural', U: 'en-ZA-LukeNeural', M: 'en-US-AndrewMultilingualNeural' },
   voice: [
     { who: 'N', text: 'The new timetable. Three weeks. One whiteboard. Four markers. One still works.' },

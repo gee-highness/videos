@@ -3,7 +3,7 @@ const { gogo, learner, win, appScene, gssEnd, talker } = K;
 const room = () => win() + rect(-20, 1240, 1120, 200, 0) + rect(560, 1060, 480, 180, 30, { fill: '#fff', w: 6 }) + rect(580, 1000, 440, 90, 30, { fill: PAPER, w: 6 });
 const ph = (lit) => ({ e: [130, 170], h: [120, 60], hold: rect(-26, -74, 52, 86, 10, { fill: INK, w: 4 }) + (lit ? rect(-19, -64, 38, 62, 4, { fill: BRAND, w: 1 }) : '') });
 const EP = {
-  voiceTempo: 1.08, id: 'gs07', title: 'Stuff', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
+  voiceTempo: 0.9, gapScale: 2.2, gapMin: 0.9, holdCaps: true, endTail: 4, id: 'gs07', title: 'Stuff', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
   voices: { N: 'en-GB-RyanNeural', Z: 'en-ZA-LeahNeural', K: 'en-US-AnaNeural' },
   voice: [
     { who: 'Z', text: 'How was school today?' },

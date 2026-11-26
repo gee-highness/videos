@@ -222,13 +222,13 @@ function tickerText(t, str) {
 function resolveTiming(ep, durs) {
   if (!ep.auto) return;
   let prevEnd = 0;
-  ep.voice.forEach((l, i) => { l.d = durs[i]; l.at = i === 0 ? 0.3 : prevEnd + (l.gap ?? 0.34); prevEnd = l.at + l.d; });
+  ep.voice.forEach((l, i) => { l.d = durs[i]; l.at = i === 0 ? 0.3 : prevEnd + Math.max((l.gap ?? 0.34) * (ep.gapScale ?? 1), ep.gapMin ?? 0); prevEnd = l.at + l.d; });
   const V = ep.voice, last = V[V.length - 1];
   ep.scenes.forEach((sc, k) => { sc.from = sc.s === 0 ? 0 : Math.round((V[sc.s].at - 0.25) * 100) / 100; });
-  ep.scenes.forEach((sc, k) => { sc.to = k + 1 < ep.scenes.length ? ep.scenes[k + 1].from : Math.round((last.at + last.d + (sc.tail ?? 2.6)) * 100) / 100; });
+  ep.scenes.forEach((sc, k) => { sc.to = k + 1 < ep.scenes.length ? ep.scenes[k + 1].from : Math.round((last.at + last.d + (ep.endTail ?? sc.tail ?? 2.6)) * 100) / 100; });
   ep.dur = ep.scenes[ep.scenes.length - 1].to;
   ep.captions = (ep.caps || []).map(([i, text, stop], k, a) => {
-    const from = V[i].at - 0.05; let to = stop != null ? V[stop].at - 0.05 : V[i].at + V[i].d + 0.3;
+    const from = V[i].at - 0.05; let to = stop != null ? V[stop].at - 0.05 : (ep.holdCaps && a[k + 1] ? V[a[k + 1][0]].at - 0.05 : V[i].at + V[i].d + 0.3);
     if (a[k + 1]) to = Math.min(to, V[a[k + 1][0]].at - 0.05);
     return { from, to, text };
   });

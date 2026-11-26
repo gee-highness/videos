@@ -4,7 +4,7 @@ const slip = (x, y, s = 1, rot = 0) => grp(rect(-230, -130, 460, 260, 10, { fill
   text(-200, -20, 'Ref: school fees', { size: 38, anchor: 'start' }) + text(-200, 36, 'From: Mom', { size: 46, anchor: 'start', fill: BRAND }) + text(-200, 92, 'E1,500', { size: 44, anchor: 'start' }), x, y, s, rot);
 const desk = () => rect(-20, 1240, 1120, 200, 0) + line('M-20,1276 H1100', { w: 4 });
 const EP = {
-  voiceTempo: 1.08, id: 'gs03', title: 'From: Mom', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
+  voiceTempo: 0.9, gapScale: 2.2, gapMin: 0.9, holdCaps: true, endTail: 4, id: 'gs03', title: 'From: Mom', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
   voices: { N: 'en-GB-RyanNeural', U: 'en-ZA-LukeNeural' },
   voice: [
     { who: 'U', text: 'Proof of payment. One thousand five hundred. From: Mom.' },

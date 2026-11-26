@@ -4,7 +4,7 @@ const staffroom = (dark) => rect(-20, 1240, 1120, 200, 0) + rect(80, 1060, 920, 
   rect(820, 360, 180, 260, 8, { fill: dark ? '#8d887c' : '#fff' }) + text(910, 500, dark ? 'night' : '', { size: 30 });
 const flash = (x, y, s = 1) => grp(rect(-60, -24, 120, 48, 10, { fill: BRAND, w: 5 }) + rect(60, -14, 34, 28, 4, { fill: '#fff', w: 4 }), x, y, s);
 const EP = {
-  voiceTempo: 1.08, id: 'gs02', title: 'Report week', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
+  voiceTempo: 0.9, gapScale: 2.2, gapMin: 0.9, holdCaps: true, endTail: 4, id: 'gs02', title: 'Report week', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
   voices: { N: 'en-GB-RyanNeural', M: 'en-US-AndrewMultilingualNeural', L: 'en-US-AvaMultilingualNeural' },
   voice: [
     { who: 'N', text: "Report week. The staff room hasn't seen the sun since Tuesday." },

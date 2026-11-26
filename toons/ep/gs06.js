@@ -1,7 +1,7 @@
 /* GS06 "The other bag"  For teachers (demo: Teacher). Timing follows the voice files (EP.auto). */
 const { dube, learner, board, bag, appScene, gssEnd, talker, classroom } = K;
 const EP = {
-  voiceTempo: 1.08, id: 'gs06', title: 'The other bag', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
+  voiceTempo: 0.9, gapScale: 2.2, gapMin: 0.9, holdCaps: true, endTail: 4, id: 'gs06', title: 'The other bag', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
   voices: { N: 'en-GB-RyanNeural', M: 'en-US-AndrewMultilingualNeural', K: 'en-US-AnaNeural' },
   voice: [
     { who: 'M', text: 'Sipho. Homework.' },

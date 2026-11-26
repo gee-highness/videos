@@ -2,7 +2,7 @@
 const { news, principal, dube, gogo, learner, bag, gssEnd, talker } = K;
 const pen = grp(rect(-120, -16, 240, 32, 14, { fill: '#fff', w: 5 }) + path('M120,-16 L170,0 L120,16 Z', { fill: INK, w: 4 }) + text(-20, 12, 'NOT MR DUBE\'S', { size: 22 }), 780, 680, 1.2, -12);
 const EP = {
-  voiceTempo: 1.08, id: 'gs10', title: 'School News', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
+  voiceTempo: 0.9, gapScale: 2.2, gapMin: 0.9, holdCaps: true, endTail: 4, id: 'gs10', title: 'School News', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
   voices: { N: 'en-GB-RyanNeural', A: 'en-US-EmmaMultilingualNeural' },
   voice: [
     { who: 'A', text: 'Good evening. This is School News.' },

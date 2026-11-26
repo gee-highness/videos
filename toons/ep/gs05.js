@@ -4,7 +4,7 @@ const form = (t, rel) => { const f = (y, label, val, at) => text(-250, y, label,
   return rect(-290, -300, 580, 600, 10, { fill: '#fff', w: 6 }) + text(0, -230, 'APPLICATION', { size: 44 }) + f(-140, 'Name', 'Sipho', rel(0) + 1.4) + f(-40, 'Surname', 'Form One', rel(1) + 0.2) + f(60, 'Date of birth', '', 99) +
     (t > rel(3) ? text(80, 56, 'Yes.', { font: BRUSH, size: 72, weight: 400, anchor: 'start', fill: BRAND, rot: -6 }) : '') + f(160, 'Phone', '', 99) + text(130, 156, t > rel(1) + 1 ? 'see above' : '', { font: BRUSH, size: 40, weight: 400, anchor: 'start', fill: BRAND, rot: 3 }); };
 const EP = {
-  voiceTempo: 1.08, id: 'gs05', title: 'Date of birth: Yes', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
+  voiceTempo: 0.9, gapScale: 2.2, gapMin: 0.9, holdCaps: true, endTail: 4, id: 'gs05', title: 'Date of birth: Yes', auto: true, brand: '#1f6f4a', accentOnInk: '#f5c84b', url: 'gss-lms.vercel.app/demo', logoFile: 'toons/logos/gss-mark.svg',
   voices: { N: 'en-GB-RyanNeural', L: 'en-US-AvaMultilingualNeural' },
   voice: [
     { who: 'L', text: 'New application. Name: Sipho.' },

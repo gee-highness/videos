@@ -78,12 +78,14 @@ const spoken = (t) => t.replace(/\*/g, '').replace(/\s+/g, ' ').trim();
 // ---------- plan: image prompts and the Termux voice script ----------
 function plan() {
   const { meta, style, shots } = parse();
+  { const hj = meta.host && path.join(path.dirname(path.join(__dirname, '..', meta.host)), 'host.json'); // a locked host speaks the same way in every video (hosts/<name>/host.json, private)
+    if (hj && fs.existsSync(hj)) { const h = JSON.parse(fs.readFileSync(hj, 'utf8')); if (h.lock) { meta.voice = h.voice; meta.rate = h.rate; meta.pitch = h.pitch || ''; console.log(`host voice locked: ${h.voice} ${h.rate} ${h.pitch || ''}`); } } }
   let md = `# ${meta.title || id}: image prompts\n\nMake each image ${style.aspect || '16:9'} and save it as \`projects/${id}/img/NN.png\` (or .jpg/.webp). Shots marked "same image" reuse the one before.\n\nStyle added to every prompt:\n> ${style.prompt}\n\n`;
   shots.forEach((s) => { const i = s.i; if (s.when && s.same) return; md += `## ${nn(i)}${s.section ? ' · ' + s.section : ''}\n` + (s.same ? '_same image as the shot before_\n\n' : '```\n' + s.prompt + '. ' + style.prompt + '\n```\n') + `Narration: ${spoken(s.text)}\n\n`; });
   fs.writeFileSync(path.join(P, 'prompts.md'), md);
   const q = (s) => `'${s.replace(/'/g, `'\\''`)}'`;
   let sh = `# ${meta.title || id}: every voice line. Paste the whole block into Termux (needs: pkg install python zip; pip install edge-tts).\n# Each line retries up to 5 times, and lines already made are skipped, so it is safe to run again. Send back Downloads/${id}-voice.zip\n`;
-  sh += `say(){ n=0; until [ -s "$1.mp3" ] || [ $n -ge 5 ]; do rm -f "$1.mp3"; edge-tts --rate=${meta.rate} --voice ${meta.voice} --text "$2" --write-media "$1.mp3"; n=$((n+1)); [ -s "$1.mp3" ] || sleep 2; done; }\n`;
+  sh += `say(){ n=0; until [ -s "$1.mp3" ] || [ $n -ge 5 ]; do rm -f "$1.mp3"; edge-tts --rate=${meta.rate} ${meta.pitch ? `--pitch=${meta.pitch} ` : ''}--voice ${meta.voice} --text "$2" --write-media "$1.mp3"; n=$((n+1)); [ -s "$1.mp3" ] || sleep 2; done; }\n`;
   sh += `mkdir -p ~/storage/downloads/${id}-voice && cd ~/storage/downloads/${id}-voice\n`;
   shots.forEach((s) => { const i = s.i; if (spoken(s.text)) sh += `say ${nn(i)} ${q(spoken(s.text))}\n`; });
   sh += `cd .. && rm -f ${id}-voice.zip && zip -qr ${id}-voice.zip ${id}-voice && find ${id}-voice -name "*.mp3" -size 0 && echo "Done: Downloads/${id}-voice.zip (a file listed above is empty: run the block again)"\n`;

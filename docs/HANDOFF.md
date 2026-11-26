@@ -24,6 +24,7 @@ Updated 25 Nov 2026. Read in this order: this file, `TRACKER.md`, `docs/LESSONS.
 - [ ] **v_me as the studio** (plan saved in `docs/STUDIO_PLAN.md`, not started): format spec + es01 conversion first.
 - [x] **es03 (bride and DJ song reel):** finished and checked 26 Nov 2026 (`projects/es03/out/es03-9x16.mp4`, 1:44, -16.2 LUFS). Left: the user listens, confirms the "people are split" line, posts with `post.md`.
 - [x] **es02 (Westville reel + two cartoon skits on the host's TV):** finished and checked 26 Nov 2026 (`projects/es02/out/es02-9x16.mp4`, 2:38, -16.2 LUFS). Left: the user listens and posts with `post.md`.
+- [ ] **es04 (Pete Edochie tribute):** scripted, pictures and TV card done (`projects/es04/`). When the voices arrive: unzip into a fresh folder, copy to `projects/es04/voice/`, `node essay/host-vme.cjs es04 --scale 0.5 --v-only` (3 host clips, about 25 minutes, background, never pkill; `[host solemn]` = a gentle sad expression), check each clip, `node essay/essay.cjs render es04 --vertical-only`, check frames and loudness, send.
 - [ ] Next video: pick from the ideas in `TRACKER.md` (or the user's topic), follow `.claude/skills/research-desk` and `.claude/skills/essay-studio`.
 
 ## How the user works

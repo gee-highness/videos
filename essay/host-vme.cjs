@@ -29,7 +29,7 @@ const shots = []; for (const raw of src.split('\n')) { const l = raw.trim(); if 
 shots.forEach((x) => { if (x.tv === undefined) x.tv = null; });
 let counter = 0; shots.forEach((s) => { if (s.when) s.i = Math.max(0, counter - 1); else s.i = counter++; });
 const only = opt('only') ? opt('only').split(',').map(Number) : null, scale = opt('scale', '0.5'), fps = opt('fps', '24');
-const POSES = { eyebrow: { gesture: 'shrug', expression: { name: 'surprised', weight: 0.25 } }, laugh: { expression: { name: 'happy', weight: 0.9 } }, point: { gesture: 'point' }, phone: {}, arms: { gesture: 'nod' }, desk: {} };
+const POSES = { solemn: { expression: { name: 'sad', weight: 0.3 } }, eyebrow: { gesture: 'shrug', expression: { name: 'surprised', weight: 0.25 } }, laugh: { expression: { name: 'happy', weight: 0.9 } }, point: { gesture: 'point' }, phone: {}, arms: { gesture: 'nod' }, desk: {} };
 fs.mkdirSync(WORK, { recursive: true });
 const jobs = [];
 for (const s of shots) { if (!s.host || !s.text) continue; if (only && !only.includes(s.i + 1)) continue;

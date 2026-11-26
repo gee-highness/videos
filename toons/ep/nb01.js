@@ -26,7 +26,7 @@ const EP = {
   ],
   caps: [[0, 'Ladies and gentlemen of\nGate Street.\nI have *solved* the case.', 1], [1, '“Oh? *How?*”', 2], [2, 'He was *inside* the gate.\nI read it in a comment.', 3], [3, 'Wait. *Outside.*\n100% sure of *both.*', 4], [4, '“Were *you there?*”', 5],
     [5, '“No. But I watched\n*two seasons* of a courtroom show.”', 6], [6, '“So nobody knows\nwhere he was *standing?*”', 7], [7, '“*Nobody.*”', 8], [8, '“Then why is\neveryone *shouting?*”', 9], [9, '“Because shouting is *free.*\nSurgery is *not.*”']],
-  sx: [[0, 0.1, 'pop'], [2, 0.3, 'chime', 0.7], [3, 0.0, 'scratch', 0.8], [5, 0.5, 'womp', 0.7], [7, 0.1, 'tick'], [9, 1.6, 'ding', 0.8]],
+  sx: [[0, 0.1, 'pop'], [2, 0.3, 'chime', 0.7], [3, 0.0, 'sting', 0.6], [5, 0.5, 'womp', 0.7], [7, 0.1, 'tick'], [9, 1.6, 'ding', 0.8]],
   mood: 'comedy',
   scenes: [
     { s: 0, draw(t, T, len, rel) {

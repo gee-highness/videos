@@ -22,14 +22,15 @@ const shots = []; for (const raw of src.split('\n')) { const l = raw.trim(); if 
   const m = /^\[img(?:\s+same)?\]/.exec(l); if (m) { shots.push({ text: '', host: null, when: false }); continue; }
   if (!shots.length) continue; const sh = shots[shots.length - 1];
   const tvm = /^\[tv\s+(\S+)\]$/.exec(l); if (tvm) { sh.tv = tvm[1]; continue; }
-  const h = /^\[host(?:\s+([\w-]+))?(?:\s+([\w-]+))?\]$/.exec(l); if (h) { const w = [h[1], h[2]].filter(Boolean); sh.host = { full: w.includes('full'), pose: w.find((x) => x !== 'full' && x !== 'name') || null }; continue; }
+  const h = /^\[host(?:\s+([\w-]+))?(?:\s+([\w-]+))?(?:\s+([\w-]+))?\]$/.exec(l); if (h) { const w = [h[1], h[2], h[3]].filter(Boolean); sh.host = { full: w.includes('full'), pose: w.find((x) => x !== 'full' && x !== 'name') || null }; continue; }
   if (/^\[(when|unless)\s/.test(l)) { if (/^\[when/.test(l)) sh.when = true; continue; }
   if (/^\[(card|pause|quote|music|sfx|shot|clip|subs|sticker)/.test(l)) continue;
   sh.text += (sh.text ? ' ' : '') + l; }
 shots.forEach((x) => { if (x.tv === undefined) x.tv = null; });
 let counter = 0; shots.forEach((s) => { if (s.when) s.i = Math.max(0, counter - 1); else s.i = counter++; });
 const only = opt('only') ? opt('only').split(',').map(Number) : null, scale = opt('scale', '0.5'), fps = opt('fps', '24');
-const POSES = { solemn: { expression: { name: 'sad', weight: 0.3 } }, eyebrow: { gesture: 'shrug', expression: { name: 'surprised', weight: 0.25 } }, laugh: { expression: { name: 'happy', weight: 0.9 } }, point: { gesture: 'point' }, phone: {}, arms: { gesture: 'nod' }, desk: {} };
+const TV_CLOSE = { id: 'tv-close', label: 'Close-up, TV behind', x: 1.25, z: 2.8, facing: Math.PI / 2, cam: { azimuth: 0, distance: 1.6, height: 1.5, lookY: 1.3, fov: 36, pos: { x: 2.85, y: 1.62, z: 2.8 }, look: { x: 0.3, y: 1.42, z: 2.8 } } }; // tight framing: face and shoulders, the TV glowing behind
+const POSES = { tight: { spot: 'close' }, present: { gesture: 'present' }, nod: { gesture: 'nod' }, solemn: { expression: { name: 'sad', weight: 0.3 } }, eyebrow: { gesture: 'shrug', expression: { name: 'surprised', weight: 0.25 } }, laugh: { expression: { name: 'happy', weight: 0.9 } }, point: { gesture: 'point' }, phone: {}, arms: { gesture: 'nod' }, desk: {} };
 fs.mkdirSync(WORK, { recursive: true });
 const jobs = [];
 for (const s of shots) { if (!s.host || !s.text) continue; if (only && !only.includes(s.i + 1)) continue;
@@ -41,7 +42,7 @@ for (const s of shots) { if (!s.host || !s.text) continue; if (only && !only.inc
     cues.push({ do: 'say', text: s.text, ...(voice ? { audio: voice } : {}), caption: false }, { do: 'wait', seconds: 0.4 });
     const script = { version: 1, meta: { title: `${id} host ${n}${tag}`, format: { aspect, width: w, height: h, fps: +fps } },
       setup: { avatarLook: look, scene: 'apartment-default', background: 'living-room', lighting: 'studioSoft', camera: 'halfbody', voice: { engine: voice ? 'file' : 'none' }, animation: { personality: 'calm', energy: 0.5, handsRest: 'front', eyeContact: 0.9 } }, cues };
-    if (hostTv) { const nm = s.tv || hostTv; script.setup.background = 'tv-host'; script.setup.spots = [TV_SPOT]; script.cues = script.cues.filter((c) => c.do !== 'camera');
+    if (hostTv) { const nm = s.tv || hostTv; const SP = pose.spot === 'close' ? TV_CLOSE : TV_SPOT; script.setup.background = SP.id; script.setup.spots = [SP]; script.cues = script.cues.filter((c) => c.do !== 'camera');
       if (nm !== 'none') { const img = path.join(P, 'tv', nm + '.png'); if (!fs.existsSync(img)) throw new Error('TV picture not found: ' + img); fs.copyFileSync(img, path.join(WORK, `tv-${nm}.png`)); script.cues.unshift({ do: 'media', at: 0, src: `tv-${nm}.png`, layout: 'tv', duration: 120 }); } }
     const f = path.join(WORK, `${n}-${tag}.vme.json`); fs.writeFileSync(f, JSON.stringify(script)); jobs.push({ n, tag, f, voice }); } }
 console.log(`${jobs.length} host clips to render (scale ${scale}, ${fps} fps)`);

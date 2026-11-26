@@ -37,8 +37,8 @@ function parse() {
     if (/^#\s/.test(l)) { section = l.replace(/^#\s*/, ''); pendingChapter = section; continue; }
     if (l.startsWith('#')) continue;
     const tvM = /^\[tv\s+(\S+)\]$/.exec(l); if (tvM) { if (!shots.length) throw new Error('[tv] before the first [img] line'); shots[shots.length - 1].tv = tvM[1]; continue; } // what the host's TV shows (made by essay/host-vme.cjs)
-    const hostM = /^\[host(?:\s+([\w-]+))?(?:\s+([\w-]+))?\]$/.exec(l);
-    if (hostM) { if (!shots.length) throw new Error('[host] before the first [img] line'); const sh = shots[shots.length - 1], words = [hostM[1], hostM[2]].filter(Boolean);
+    const hostM = /^\[host(?:\s+([\w-]+))?(?:\s+([\w-]+))?(?:\s+([\w-]+))?\]$/.exec(l);
+    if (hostM) { if (!shots.length) throw new Error('[host] before the first [img] line'); const sh = shots[shots.length - 1], words = [hostM[1], hostM[2], hostM[3]].filter(Boolean);
       sh.host = { full: words.includes('full'), name: words.includes('name'), pose: words.find((w) => w !== 'full' && w !== 'name') || null }; continue; } // the channel host on screen for this shot
     const stk = /^\[sticker\s+(.+)\]$/.exec(l); // a sticker on this part of the video: this is a substitute for the media we wanted
     if (stk) { if (!shots.length) throw new Error('[sticker] before the first [img] line'); shots[shots.length - 1].sticker = stk[1].trim(); continue; }

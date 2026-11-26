@@ -1,6 +1,6 @@
 ---
 title: Two Stories, One Road: The Westville Dog Attack
-style: archive-noir
+style: pop
 voice: en-US-AvaMultilingualNeural
 rate: +0%
 music: tension
@@ -17,7 +17,7 @@ sources: research.md (every fact and quote with its source; the owner's and Donc
 
 # The hook
 [img] illustration: an empty suburban road at dawn in Durban, wet tarmac, a closed automated gate on the left, a recycling sack on the kerb {move:in}
-[host full name]
+[host full name tight]
 A man was mauled by three dogs on a Durban street. Now he and the dogs' owner tell police two different stories.
 
 # What happened
@@ -26,6 +26,7 @@ Wednesday morning, Westville. Sizwe Doncabe was collecting recyclables.
 
 [img] illustration: an empty stretch of road, a dropped recycling sack on the tarmac, long shadows {move:out}
 [sfx hush]
+[card] 3 | PIT BULLS
 Three pit bulls attacked him. He is in hospital, and his family says he could lose his right arm.
 
 # Her side, his side
@@ -47,11 +48,12 @@ He says he never went in.
 Now, to be fair, nothing is proven. Police are investigating both accounts.
 
 [img same] {move:out}
+[card] 2 | EARLIER ATTACKS, ON OTHER DOGS
 The same three dogs were linked to two earlier attacks, on other dogs.
 
 # On my TV
 [img] illustration: a living room wall with a big TV glowing, a shelf and a plant {move:in}
-[host full]
+[host full point]
 [tv ep1]
 [music sneaky]
 Meanwhile, online, everyone has a verdict. On my TV, so does Gate Street.
@@ -69,7 +71,7 @@ In South African law an owner can be liable even without negligence, unless the 
 
 # The help
 [img] illustration: a TV on a wall showing a jar of coins, warm light {move:in}
-[host full]
+[host full present]
 [tv ep2]
 [music triumph]
 Some people skipped the verdict. Gate Street, episode two.
@@ -78,9 +80,10 @@ Some people skipped the verdict. Gate Street, episode two.
 [clip] nb02.mp4 0:00-0:29 sound | The Neighbourhood, Ep. 2
 
 [img] illustration: a phone lying on a table showing a glowing donation bar, a cup of tea, soft light {move:in}
+[card] R100,000+ | RAISED, REPORTEDLY
 A fund for his recovery has reportedly passed a hundred thousand rand.
 
 [img same] {move:in}
-[host full]
+[host full nod]
 [music calm]
 Ban the breed, or licence owners? Tell me below. Check your sources. See you in the next one.

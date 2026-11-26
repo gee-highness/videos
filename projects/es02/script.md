@@ -57,7 +57,7 @@ The same three dogs were linked to two earlier attacks, on other dogs.
 Meanwhile, online, everyone has a verdict. On my TV, so does Gate Street.
 
 [img] illustration: a cartoon street title card {move:hold}
-[clip] nb01.mp4 0:00-0:40 sound | The Neighbourhood, Ep. 1
+[clip] nb01.mp4 0:00-0:32 sound | The Neighbourhood, Ep. 1
 
 # Why the gate matters
 [img] illustration: a closed courtroom door, a brass scale on a bench, warm lamplight {move:in}
@@ -75,7 +75,7 @@ In South African law an owner can be liable even without negligence, unless the 
 Some people skipped the verdict. Gate Street, episode two.
 
 [img] illustration: a cartoon street title card {move:hold}
-[clip] nb02.mp4 0:00-0:35 sound | The Neighbourhood, Ep. 2
+[clip] nb02.mp4 0:00-0:29 sound | The Neighbourhood, Ep. 2
 
 [img] illustration: a phone lying on a table showing a glowing donation bar, a cup of tea, soft light {move:in}
 A fund for his recovery has reportedly passed a hundred thousand rand.

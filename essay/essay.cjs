@@ -6,6 +6,7 @@
                                                   and projects/<id>/termux.sh (paste into Termux to make the voices)
    node essay/essay.cjs render <id>            -> projects/<id>/out/<id>.mp4 (1920x1080) and <id>-sheet.jpg
    node essay/essay.cjs render <id> --vertical -> also <id>-9x16.mp4 (1080x1920, for Shorts/Reels/Status)
+   node essay/essay.cjs render <id> --vertical-only -> only <id>-9x16.mp4 (skips the 16:9 render, about half the time)
    node essay/essay.cjs render <id> --to 12    -> only the first 12 shots (quick check)
    node essay/essay.cjs check <id>             -> what is missing (images, voice files) and the estimated length
 
@@ -257,8 +258,9 @@ function render() {
     }
     return vid;
   };
-  const vid = buildVideo(W, H, '');
-  const vidV = opt('vertical') ? buildVideo(1080, 1920, 'v') : null;
+  const vOnly = !!opt('vertical-only');
+  const vid = vOnly ? null : buildVideo(W, H, '');
+  const vidV = opt('vertical') || vOnly ? buildVideo(1080, 1920, 'v') : null;
   // 4. sound: narration laid on the timeline, plus the bed
   const voiceTrack = path.join(WORK, 'voice.wav'), ins = [], fl = [];
   use.forEach((s) => {
@@ -298,13 +300,13 @@ function render() {
   const fontsdir = path.join(__dirname, 'fonts'), sub = (f) => `subtitles=${f}:fontsdir=${fontsdir}`;
   fs.writeFileSync(path.join(WORK, 'cap169.ass'), ass(cues, W, H, style, use, meta.host_name || ''));
   const final = path.join(OUT, `${id}.mp4`);
-  ff(['-i', vid, '-i', mix, '-vf', sub(path.join(WORK, 'cap169.ass')), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', final]);
-  ff(['-i', final, '-vf', `fps=1/${Math.max(2, Math.round(total / 40))},scale=320:-1,tile=8x5`, '-frames:v', '1', path.join(OUT, `${id}-sheet.jpg`)]);
+  if (vid) ff(['-i', vid, '-i', mix, '-vf', sub(path.join(WORK, 'cap169.ass')), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', final]);
+  if (vid) ff(['-i', final, '-vf', `fps=1/${Math.max(2, Math.round(total / 40))},scale=320:-1,tile=8x5`, '-frames:v', '1', path.join(OUT, `${id}-sheet.jpg`)]);
   if (vidV) {
     fs.writeFileSync(path.join(WORK, 'cap916.ass'), ass(cuesFor(style.captions.charsVertical ?? 24), 1080, 1920, style, use, meta.host_name || ''));
     ff(['-i', vidV, '-i', mix, '-vf', sub(path.join(WORK, 'cap916.ass')), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', path.join(OUT, `${id}-9x16.mp4`)]);
   }
-  console.log(`${final} (${total.toFixed(1)} s, ${use.length} shots, ${cues.length} captions)`);
+  console.log(`${vid ? final : path.join(OUT, `${id}-9x16.mp4`)} (${total.toFixed(1)} s, ${use.length} shots, ${cues.length} captions)`);
 }
 function check() {
   const { style, shots: all } = parse(); const noImg = [], noVoice = [];

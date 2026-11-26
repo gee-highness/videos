@@ -121,6 +121,7 @@ Read `.claude/skills/research-desk/SKILL.md`: research first, label every line F
 | `node essay/essay.cjs check <id>` | missing images and voice files, length, chapters with times, and a pacing report (long shots, minutes with nothing new, a weak hook) |
 | `node essay/essay.cjs render <id>` | renders `out/<id>.mp4` (1920x1080) and `out/<id>-sheet.jpg` |
 | `... render <id> --vertical` | also `out/<id>-9x16.mp4`: a native 1080x1920 recomposition with the same audio, timing and content: the pictures are cropped to portrait with panning, screenshots and stat cards are re-sized for the narrow frame, portrait clips (like Hayu's Shorts) fill the whole screen, and the captions are re-wrapped to 24 characters |
+| `... render <id> --vertical-only` | only `out/<id>-9x16.mp4` (no 16:9 render): about half the time; use it for Reels/Shorts-only videos |
 | `... render <id> --to 12` | only the first 12 shots, for a quick look |
 
 Rendering speed here: about 1.7 seconds of work per second of video (a 10-minute essay takes about 17 minutes).

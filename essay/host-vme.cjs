@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* The animated host: renders every [host] moment of an essay with the v_me avatar (the `kuina` look) in the default house.
-   node essay/host-vme.cjs <id> [--scale 0.5] [--only 1,4] [--fps 24]     -> projects/<id>/host/NN-v.mp4 (9:16) and NN-h.mp4 (16:9, full-screen shots only)
+   node essay/host-vme.cjs <id> [--scale 0.5] [--only 1,4] [--fps 24] [--v-only]     -> projects/<id>/host/NN-v.mp4 (9:16) and NN-h.mp4 (16:9, full-screen shots only)
    The essay engine (essay/essay.cjs) plays these clips in the framed window and the full-screen host shots. No photo of the host is ever used.
    Needs: the v_me repo (env VME_DIR, default /home/user/v_me) with npm install done, and the look file hosts/kuina/v_me-look.json
    (private; kept in the v_me repo under hosts/kuina/). The line she says is the shot's narration: projects/<id>/voice/NN.mp3 if it exists
@@ -30,7 +30,7 @@ const jobs = [];
 for (const s of shots) { if (!s.host || !s.text) continue; if (only && !only.includes(s.i + 1)) continue;
   const n = String(s.i + 1).padStart(2, '0'), vsrc = ['mp3', 'wav'].map((e) => path.join(P, 'voice', `${n}.${e}`)).find((f) => fs.existsSync(f));
   let voice = null; if (vsrc) { voice = path.join(WORK, `${n}.wav`); spawnSync('ffmpeg', ['-v', 'error', '-y', '-i', vsrc, '-ar', '24000', '-ac', '1', '-c:a', 'pcm_s16le', voice]); } // v_me's file engine reads WAV
-  for (const [tag, aspect, w, h] of [['v', '9:16', 1080, 1920], ['h', '16:9', 1920, 1080]]) { if (tag === 'h' && !s.host.full) continue;
+  for (const [tag, aspect, w, h] of [['v', '9:16', 1080, 1920], ['h', '16:9', 1920, 1080]]) { if (tag === 'h' && (!s.host.full || args.includes('--v-only'))) continue;
     const pose = POSES[s.host.pose] || {}, cues = [{ do: 'camera', at: 0, preset: 'closeup', move: 'cut' }];
     if (pose.expression) cues.push({ do: 'expression', at: 0.2, ...pose.expression, duration: 3 }); if (pose.gesture) cues.push({ do: 'gesture', at: 0.6, name: pose.gesture });
     cues.push({ do: 'say', text: s.text, ...(voice ? { audio: voice } : {}), caption: false }, { do: 'wait', seconds: 0.4 });

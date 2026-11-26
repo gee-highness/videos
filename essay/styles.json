@@ -98,5 +98,53 @@
    "chars": 40,
    "charsVertical": 24
   }
+ },
+ "pop": {
+  "about": "Fast, saturated and bold for Facebook and Instagram Reels: vivid grade, big zooms, short varied transitions, a whoosh on every cut, word-by-word bold captions with the key word in gold.",
+  "prompt": "Cinematic editorial still, 16:9, glossy and moody, shallow depth of field, rich contrast. Palette: ivory #F2EBDD, champagne gold #C9A96E, deep plum #3B1E2E, midnight navy #14192B. Warm tungsten light against cool blue night, soft haze, subtle film grain, luxury magazine look, symmetrical framing. No recognisable real people, no faces in focus, no text, no logos, no watermarks.",
+  "aspect": "16:9",
+  "placeholder": "0x14192b",
+  "grade": "eq=saturation=1.35:contrast=1.1:brightness=0.02,unsharp=3:3:0.6",
+  "zoom": 0.16,
+  "moves": [
+   "in",
+   "panR",
+   "out",
+   "panL",
+   "in",
+   "up",
+   "down"
+  ],
+  "pause": 0.2,
+  "gap": 0.18,
+  "chapterHold": 0.0,
+  "scoreVolume": 1.0,
+  "musicVolume": 0.12,
+  "accentAss": "&H006EA9C9",
+  "captions": {
+   "font": "Anton",
+   "size": 0.05,
+   "sizeVertical": 0.046,
+   "marginV": 0.1,
+   "marginVVertical": 0.23,
+   "box": "&H26000000",
+   "chars": 26,
+   "charsVertical": 18,
+   "mode": "pop",
+   "upper": true
+  },
+  "xfade": [
+   "slideleft",
+   "circleopen",
+   "wipeleft",
+   "zoomin",
+   "slideright",
+   "pixelize",
+   "fadewhite",
+   "smoothleft"
+  ],
+  "xfadeDur": 0.22,
+  "cutSfx": "whoosh",
+  "riser": true
  }
 }

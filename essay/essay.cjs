@@ -29,7 +29,7 @@ const nn = (i) => String(i + 1).padStart(2, '0');
 function parse() {
   const src = fs.readFileSync(path.join(P, 'script.md'), 'utf8');
   const meta = {}, body = src.replace(/^---\n([\s\S]*?)\n---\n/, (_, m) => { for (const l of m.split('\n')) { const k = /^(\w+):\s*(.*)$/.exec(l); if (k) meta[k[1]] = k[2].trim(); } return ''; });
-  const shots = []; let section = '', pendingChapter = null;
+  const shots = []; let section = '', pendingChapter = null, curPart = 1;
   for (const raw of body.replace(/<!--[\s\S]*?-->/g, '').split('\n')) {
     const l = raw.trim();
     if (!l || l.startsWith('<!--')) continue;
@@ -52,6 +52,14 @@ function parse() {
       if (clipM) { const o = /sound/.test(clipM[4]); sh.media = { kind: 'clip', file: clipM[1], start: tc(clipM[2]), end: tc(clipM[3]), sound: o, ...cr(clipM[5]) }; }
       if (subsM) sh.subs = subsM[1].split('//').map((x) => x.trim()).filter(Boolean).map((x) => { const m = /^(\d+:\d+(?:\.\d+)?|\d+(?:\.\d+)?s)\s+(.*)$/.exec(x); return m ? { at: tc(m[1].replace(/s$/, '')), text: m[2] } : { text: x }; });
       continue; }
+    const partM = /^\[part\s+(\d+)\]$/.exec(l); if (partM) { curPart = +partM[1]; continue; } // [part 2]: the shots after this line are the second upload (each part stays inside the reel limit)
+    const edM = /^\[(low|cut|src|tag)(?:\s+(.+))?\]$/.exec(l);
+    if (edM) { if (!shots.length) throw new Error('[' + edM[1] + '] before the first [img] line'); const sh = shots[shots.length - 1];
+      if (edM[1] === 'low') sh.low = true; // droppable when the part runs over the reel limit
+      else if (edM[1] === 'cut') { const [w, name] = (edM[2] || '').split(/\s+/); if (w && name) (sh.cuts ||= []).push({ word: w.replace(/_/g, ' '), name }); } // [cut word img]: switch to img/<img>.png when the narrator says <word>
+      else if (edM[1] === 'src') sh.src = (edM[2] || '').trim(); // a source chip: [src Highway Mail, 20 Nov]
+      else sh.tag = (edM[2] || '').trim(); // a sliding tag: [tag WED 18 NOV · 7 AM]
+      continue; }
     const card = /^\[card\]\s*(.*)$/.exec(l), pz = /^\[pause\s+([\d.]+)\]$/.exec(l), quote = /^\[quote\]\s*(.*)$/.exec(l),
       mus = /^\[music\s+(\w+)\]$/.exec(l), fx = /^\[sfx\s+(\w+)(?:\s+(end|[+-]?[\d.]+))?(?:\s+x([\d.]+))?\]$/.exec(l);
     if (card || pz || quote || mus || fx) { if (!shots.length) throw new Error('[card], [quote], [pause], [music] or [sfx] before the first [img] line: ' + l); const sh = shots[shots.length - 1];
@@ -62,7 +70,7 @@ function parse() {
       else sh.pause = +pz[1];
       continue; }
     const m = /^\[img(?:\s+(same))?\]\s*(.*)$/.exec(l);
-    if (m) { shots.push({ section, chapter: pendingChapter, prompt: m[2], same: !!m[1], text: '', move: (/\{move:(\w+)\}/.exec(m[2]) || [])[1] }); pendingChapter = null; shots[shots.length - 1].prompt = m[2].replace(/\{move:\w+\}/, '').trim(); continue; }
+    if (m) { shots.push({ section, chapter: pendingChapter, part: curPart, prompt: m[2], same: !!m[1], text: '', move: (/\{move:(\w+)\}/.exec(m[2]) || [])[1] }); pendingChapter = null; shots[shots.length - 1].prompt = m[2].replace(/\{move:\w+\}/, '').trim(); continue; }
     if (!shots.length) throw new Error('Narration before the first [img] line: ' + l.slice(0, 60));
     shots[shots.length - 1].text += (shots[shots.length - 1].text ? ' ' : '') + l;
   }
@@ -112,11 +120,23 @@ function chunk(text, max = 40) {
 const assTime = (t) => { const h = Math.floor(t / 3600), m = Math.floor(t / 60) % 60, s = (t % 60).toFixed(2).padStart(5, '0'); return `${h}:${String(m).padStart(2, '0')}:${s}`; };
 function ass(cues, w, h, style, shots = [], hostName = '') {
   const c = style.captions, v = w < h, fs2 = Math.round(h * (v ? c.sizeVertical : c.size)), mv = Math.round(h * (v ? c.marginVVertical : c.marginV));
-  const bigMax = Math.round(Math.min(w * 0.16, h * 0.2)), wrapAss = (txt, size) => { const mx = Math.max(8, Math.floor((w * 0.84) / (size * 0.62))); const out = []; let cur = ''; for (const wd of String(txt).split(' ')) { if ((cur + ' ' + wd).trim().length > mx && cur) { out.push(cur); cur = wd; } else cur = (cur + ' ' + wd).trim(); } if (cur) out.push(cur); return out.join('\\N'); }, fit = (txt, mx, k = 0.62) => Math.max(24, Math.min(mx, Math.round((w * 0.86) / (Math.max(...String(txt).split('\n').map((x) => x.length)) * k)))), small = Math.round(fs2 * 0.95), big = bigMax, accent = style.accentAss || '&H0092A29E';
+  const bigMax = Math.round(Math.min(w * 0.16, h * 0.2)), wrapAss = (txt, size) => { const mx = Math.max(8, Math.floor((w * 0.84) / (size * 0.62))); const out = []; let cur = ''; for (const wd of String(txt).split(' ')) { if ((cur + ' ' + wd).trim().length > mx && cur) { out.push(cur); cur = wd; } else cur = (cur + ' ' + wd).trim(); } if (cur) out.push(cur); return out.join('\\N'); }, fit = (txt, mx, k = 0.62) => Math.max(24, Math.min(mx, Math.round((w * 0.86) / (Math.max(...String(txt).split('\n').map((x) => x.length)) * k)))), small = Math.round(fs2 * (style.captions.mode === 'pop' ? 1.25 : 0.95)), big = style.captions.mode === 'pop' ? Math.round(Math.min(w * 0.3, h * 0.17)) : bigMax, accent = style.accentAss || '&H0092A29E';
   const dim = (a) => `{\\an7\\pos(0,0)\\bord0\\shad0\\1c&H000000&\\1a&H${a}&\\p1}m 0 0 l ${w} 0 ${w} ${h} 0 ${h}{\\p0}`;
   const ev = [];
+  const NUMW = /^(one|two|three|four|five|six|seven|eight|nine|ten|hundred|thousand|million|billion|\d[\d,.]*[%k]?)$/i;
+  const popEv = (q) => { // bold word-by-word captions: each word pops in as it is said; a number (or the longest word) is in the accent colour
+    const words = []; q.lines.forEach((l, li) => l.replace(/[{}]/g, '').split(' ').forEach((wd) => { if (wd) words.push({ wd: c.upper ? wd.toUpperCase() : wd, li }); }));
+    if (!words.length) return [];
+    let ai = words.findIndex((x) => NUMW.test(x.wd.replace(/[^\w,.%]/g, ''))); if (ai < 0) { let best = 0; words.forEach((x, j) => { if (x.wd.length > words[best].wd.length) best = j; }); ai = words[best].wd.length >= 5 ? best : -1; }
+    const tot = words.reduce((a, x) => a + x.wd.length + 2, 0), dur = Math.max(0.3, q.b - q.a); let acc = 0; const st = words.map((x) => { const t = q.a + dur * 0.88 * acc / tot; acc += x.wd.length + 2; return t; });
+    return words.map((_, k) => { let txt = '', cur = words[0].li;
+      words.forEach((x, j) => { if (x.li !== cur) { txt += '\\N'; cur = x.li; } else if (j) txt += ' ';
+        txt += (j === k ? '{\\fscx70\\fscy70\\t(0,90,\\fscx114\\fscy114)\\t(90,170,\\fscx100\\fscy100)}' : '') + (j === ai ? '{\\1c&H0066D1FF&}' : '') + (j > k ? '{\\alpha&HFF&}' : '') + x.wd + (j === ai ? '{\\1c&HFFFFFF&}' : '') + (j > k ? '{\\alpha&H00&}' : ''); });
+      return `Dialogue: 3,${assTime(st[k])},${assTime(k + 1 < words.length ? st[k + 1] : q.b)},Cap,,0,0,0,,${txt}`; }); };
   shots.forEach((s) => {
     const cx = Math.round(w / 2), cy = Math.round(h * (v ? 0.4 : 0.42));
+    if (s.src) { const a = s.S + s.lead + 0.25, b = Math.min(s.S + s.D - 0.2, a + 3.6); ev.push(`Dialogue: 4,${assTime(a)},${assTime(b)},Src,,0,0,0,,{\\fad(180,180)\\an7\\pos(${Math.round(w * 0.05)},${Math.round(h * (v ? 0.075 : 0.08))})}SOURCE · ${s.src.replace(/[{}]/g, '').toUpperCase()}`); }
+    if (s.tag) { const a = s.S + s.lead + 0.15, b = Math.min(s.S + s.D - 0.2, a + 3.4), ty = Math.round(h * (v ? 0.13 : 0.14)); ev.push(`Dialogue: 4,${assTime(a)},${assTime(b)},Tag,,0,0,0,,{\\an9\\move(${w + 500},${ty},${w - Math.round(w * 0.04)},${ty},0,260)\\fad(0,220)}${s.tag.replace(/[{}]/g, '').toUpperCase()}`); }
     if (s.chapter && s.chapterNo > 1) { // a chapter card while the narrator waits: dim the picture, show the number and the title
       const a = s.S + 0.15, b = s.S + s.lead - 0.05;
       ev.push(`Dialogue: 1,${assTime(a)},${assTime(b)},Fx,,0,0,0,,{\\fad(250,250)}${dim('40')}`);
@@ -144,14 +164,16 @@ function ass(cues, w, h, style, shots = [], hostName = '') {
     }
   });
   return `[Script Info]\nScriptType: v4.00+\nPlayResX: ${w}\nPlayResY: ${h}\nWrapStyle: 2\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n` +
-    `Style: Cap,${c.font},${fs2},&H00FFFFFF,&H00FFFFFF,${c.box},${c.box},0,0,0,0,100,100,0,0,3,${Math.round(fs2 * 0.18)},0,2,60,60,${mv},1\n` +
+    (c.mode === 'pop' ? `Style: Cap,${c.font},${fs2},&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,0,0,0,0,100,100,1,0,1,${Math.round(fs2 * 0.11)},${Math.round(fs2 * 0.05)},2,50,50,${mv},1\n` : `Style: Cap,${c.font},${fs2},&H00FFFFFF,&H00FFFFFF,${c.box},${c.box},0,0,0,0,100,100,0,0,3,${Math.round(fs2 * 0.18)},0,2,60,60,${mv},1\n`) +
     `Style: Title,${c.font},${big},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,1,0,0,0,100,100,0,0,1,0,2,5,60,60,0,1\n` +
     `Style: Quote,${c.font},${Math.round(fs2 * 1.35)},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,1,0,0,100,100,0,0,1,0,2,5,${Math.round(w * (v ? 0.08 : 0.16))},${Math.round(w * (v ? 0.08 : 0.16))},0,1\n` +
     `Style: Credit,${c.font},${Math.round(fs2 * 0.62)},&H00DDDDDD,&H00DDDDDD,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,${Math.round(fs2 * 0.06)},1,1,${Math.round(w * 0.025)},60,${Math.round(h * 0.03)},1\n` +
     `Style: Name,${c.font},${Math.round(fs2 * 1.7)},&H00FFFFFF,&H00FFFFFF,${c.box},${c.box},1,0,0,0,100,100,0,0,3,${Math.round(fs2 * 0.22)},0,7,0,0,0,1\n` +
     `Style: Sticker,${c.font},${Math.round(fs2 * 0.72)},&H00101010,&H00101010,&H004BC8F5,&H004BC8F5,0,0,0,0,100,100,0,0,3,${Math.round(fs2 * 0.2)},0,7,0,0,0,1\n` +
+    `Style: Src,${c.font},${Math.round(fs2 * 0.62)},&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,0,0,0,0,100,100,1,0,3,${Math.round(fs2 * 0.14)},0,7,0,0,0,1\n` +
+    `Style: Tag,${c.font},${Math.round(fs2 * 0.95)},&H00101010,&H00101010,&H004BC8F5,&H004BC8F5,0,0,0,0,100,100,1,0,3,${Math.round(fs2 * 0.2)},0,9,0,0,0,1\n` +
     `Style: Fx,${c.font},10,&H00000000,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n` +
-    [...ev, ...cues.map((q) => `Dialogue: 3,${assTime(q.a)},${assTime(q.b)},Cap,,0,0,0,,${q.lines.map((l) => l.replace(/[{}]/g, '')).join('\\N')}`)].join('\n') + '\n';
+    [...ev, ...(c.mode === 'pop' ? cues.flatMap(popEv) : cues.map((q) => `Dialogue: 3,${assTime(q.a)},${assTime(q.b)},Cap,,0,0,0,,${q.lines.map((l) => l.replace(/[{}]/g, '')).join('\\N')}`))].join('\n') + '\n';
 }
 
 // ---------- render ----------
@@ -161,9 +183,13 @@ function placeholder(file, i, prompt, style, W = 1920, H = 1080) {
   ff(['-f', 'lavfi', '-i', `color=c=${style.placeholder || '0x1c2523'}:s=${W}x${H}`, '-vf', `drawtext=fontfile=${path.join(__dirname, 'fonts/NotoSansMono.ttf')}:textfile=${tf}:fontcolor=0x9ea292:fontsize=34:x=${W < H ? 60 : 120}:y=${W < H ? 420 : 200}:line_spacing=10`, '-frames:v', '1', file]);
 }
 function render() {
-  const { meta, style, shots } = parse(), to = opt('to') ? +opt('to') : shots.length, has = (f) => fs.existsSync(path.join(P, 'media', f)) && fs.statSync(path.join(P, 'media', f)).size > 0, dropped = (x) => (x.unless && has(x.unless)) || (x.when && !has(x.when)), use = shots.slice(0, to).filter((x) => !dropped(x));
+  const { shots } = parse(), parts = [...new Set(shots.map((x) => x.part))].sort((a, b) => a - b), want = opt('part') && opt('part') !== true ? [+opt('part')] : parts;
+  want.forEach((pn) => renderPart(pn, parts.length));
+}
+function renderPart(partNo, nParts) {
+  const sfxp = nParts > 1 ? `-part${partNo}` : '', { meta, style, shots } = parse(), to = opt('to') ? +opt('to') : shots.length, has = (f) => fs.existsSync(path.join(P, 'media', f)) && fs.statSync(path.join(P, 'media', f)).size > 0, dropped = (x) => (x.unless && has(x.unless)) || (x.when && !has(x.when)), use0 = shots.filter((x) => x.part === partNo).slice(0, to).filter((x) => !dropped(x));
   fs.mkdirSync(WORK, { recursive: true }); fs.mkdirSync(OUT, { recursive: true });
-  const pause = style.pause ?? 0.45, gap = style.gap ?? 0.45;
+  let use = use0; const pause = style.pause ?? 0.45, gap = style.gap ?? 0.45;
   // 1. voice: clean each line (Edge leaves ~0.9 s after every full stop), measure it
   const missing = [];
   use.forEach((s, i) => {
@@ -182,11 +208,14 @@ function render() {
     s.D = s.lead + s.d + gap + (s.pause || 0) + (i === use.length - 1 ? 2.5 : 0);
   });
   if (missing.length) console.log(`No voice for shots ${missing.join(', ')}: silent, timed from the text.`);
+  { const limit = +(meta.limit || 90); let tot = use.reduce((a, x) => a + x.D, 0); // the reel limit: drop [low] shots (last first) until the part fits
+    if (tot > limit && !opt('keep-low')) for (const x of [...use].reverse()) { if (tot <= limit) break; if (x.low) { tot -= x.D; use = use.filter((y) => y !== x); console.log(`part ${partNo} is over the ${limit} s limit: dropped the low-priority shot ${nn(x.i)}`); } }
+    if (tot > limit) console.log(`WARNING: part ${partNo} is ${tot.toFixed(0)} s, over the ${limit} s reel limit: split it with [part N] or mark shots [low]`); else console.log(`part ${partNo}: ${tot.toFixed(0)} s (limit ${limit} s)`); }
   let t = 0, chNo = 0; use.forEach((s) => { s.S = t; t += s.D; if (s.chapter) s.chapterNo = ++chNo; }); const total = t;
   // YouTube chapters for the description (the first must start at 0:00)
   const mmss = (x) => `${Math.floor(x / 60)}:${String(Math.floor(x % 60)).padStart(2, '0')}`;
   const chs = use.filter((s) => s.chapter).map((s, k) => `${mmss(k === 0 ? 0 : s.S)} ${s.chapter}`);
-  fs.mkdirSync(OUT, { recursive: true }); if (chs.length) fs.writeFileSync(path.join(OUT, `${id}-chapters.txt`), chs.join('\n') + '\n');
+  fs.mkdirSync(OUT, { recursive: true }); if (chs.length) fs.writeFileSync(path.join(OUT, `${id}${sfxp}-chapters.txt`), chs.join('\n') + '\n');
   // 2 and 3. pictures and the joined video, once for each shape: 1920x1080 and (with --vertical) a native 1080x1920 recomposition
   const probe = (f) => { try { const [w, h] = execFileSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'csv=p=0:s=x', f]).toString().trim().split('x').map(Number); return { w, h }; } catch { return { w: 16, h: 9 }; } };
   const moves = style.moves || ['in', 'panR', 'out', 'panL'];
@@ -212,6 +241,17 @@ function render() {
         ff(['-loop', '1', '-framerate', String(FPS), '-t', T, '-i', img, '-vf', `scale=-2:${ch}:force_original_aspect_ratio=increase,crop=${cw}:${ch}:x='(iw-${cw})*${pan}':y=0,zoompan=z='${Z}':x='iw/2-(iw/zoom/2)':y='${Y}':d=1:s=${W}x${H}:fps=${FPS},${grade},format=yuv420p`, '-frames:v', String(N), ...enc, '-pix_fmt', 'yuv420p', base]);
       }
       s.clip = base;
+      if (s.cuts && s.cuts.length && spoken(s.text)) { // word-timed cuts: a new picture on the word being said (hard cut, short push)
+        const txt = spoken(s.text), found = [];
+        s.cuts.forEach((c) => { const ix = txt.toLowerCase().indexOf(c.word.toLowerCase()); const f = ['png', 'jpg', 'jpeg', 'webp'].map((e) => path.join(P, 'img', `${c.name}.${e}`)).find((q) => fs.existsSync(q)); if (ix >= 0 && f) found.push({ t: Math.min(Math.max(s.lead + s.d * (ix / txt.length) - 0.12, 0.7), L - 0.9), img: f }); });
+        found.sort((a, b) => a.t - b.t);
+        if (found.length) { s.cutAt = found.map((x) => x.t); const ins = ['-i', base]; let fc = '', prev = '[0:v]';
+          found.forEach((c, k) => { const cf = path.join(WORK, `cut${nn(s.i)}${k}${tag}.mp4`), Lc = L - c.t, Nc = Math.round(Lc * FPS), mvc = ['in', 'panR', 'out', 'panL'][(i + k + 1) % 4], zc = style.zoom ?? 0.07;
+            const Zc = { in: `1+${zc}*on/${Nc}`, out: `${1 + zc}-${zc}*on/${Nc}`, panR: `1+${zc / 2}*on/${Nc}`, panL: `1+${zc / 2}*on/${Nc}` }[mvc], cw = Math.round(W * 1.5), ch = Math.round(H * 1.5), Tc = Lc.toFixed(3);
+            const pan = { panR: `(0.32+0.36*t/${Tc})`, panL: `(0.68-0.36*t/${Tc})` }[mvc] || '0.5';
+            ff(['-loop', '1', '-framerate', String(FPS), '-t', Tc, '-i', c.img, '-vf', vert ? `scale=-2:${ch}:force_original_aspect_ratio=increase,crop=${cw}:${ch}:x='(iw-${cw})*${pan}':y=0,zoompan=z='${Zc}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=${W}x${H}:fps=${FPS},${grade},format=yuv420p` : `scale=${W * 1.5}:${H * 1.5}:force_original_aspect_ratio=increase,crop=${W * 1.5}:${H * 1.5},zoompan=z='${Zc}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${Nc}:s=${W}x${H}:fps=${FPS},${grade},format=yuv420p`, '-frames:v', String(Nc), ...enc, '-pix_fmt', 'yuv420p', cf]);
+            ins.push('-i', cf); fc += `[${k + 1}:v]setpts=PTS-STARTPTS+${c.t.toFixed(3)}/TB[c${k}];${prev}[c${k}]overlay=eof_action=pass:enable='gte(t,${c.t.toFixed(3)})'[o${k}];`; prev = `[o${k}]`; });
+          const outc = path.join(WORK, `cs${nn(s.i)}${tag}.mp4`); ff([...ins, '-filter_complex', fc.slice(0, -1), '-map', prev, ...enc, '-pix_fmt', 'yuv420p', outc]); s.clip = outc; } }
       if (s.media && s.mhave) { // a screenshot floats over a dimmed picture; a video clip plays full frame (letterboxed over a blurred background when its shape does not fit)
         const out2 = path.join(WORK, `m${nn(s.i)}${tag}.mp4`), LL = L.toFixed(3), enc2 = ['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '17', '-pix_fmt', 'yuv420p', '-t', LL, out2];
         if (s.media.kind === 'shot') {
@@ -248,7 +288,7 @@ function render() {
     if (use.length === 1) fs.copyFileSync(use[0].clip, vid);
     else {
       const xf = (clips, durs, outFile) => { const a = []; clips.forEach((c) => a.push('-i', c)); let fc = '', prev = '[0:v]', off = 0;
-        for (let k = 1; k < clips.length; k++) { off += durs[k - 1]; const o = k === clips.length - 1 ? '[v]' : `[x${k}]`; fc += `${prev}[${k}:v]xfade=transition=fade:duration=${XF}:offset=${off.toFixed(3)}${o};`; prev = o; }
+        for (let k = 1; k < clips.length; k++) { off += durs[k - 1]; const o = k === clips.length - 1 ? '[v]' : `[x${k}]`; fc += `${prev}[${k}:v]xfade=transition=${(style.xfade || ['fade'])[(k - 1) % (style.xfade || ['fade']).length]}:duration=${style.xfadeDur ?? XF}:offset=${off.toFixed(3)}${o};`; prev = o; }
         ff([...a, '-filter_complex', fc.slice(0, -1), '-map', '[v]', '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '17', '-pix_fmt', 'yuv420p', outFile]); };
       // groups of 20 shots; each group keeps its tail so the next group can crossfade into it
       const G = 20, parts = [], pdurs = [];
@@ -276,6 +316,11 @@ function render() {
     const { score, moods } = require('./score.cjs'), cuesM = [], sfx = [];
     if (moods.includes(music)) cuesM.push([0, music]);
     use.forEach((s) => { if (s.music) cuesM.push([Math.max(0, s.S - 0.3), s.music]);
+      if (style.cutSfx && s.i > 0 && !s.chapter) sfx.push([Math.max(0, s.S - 0.05), style.cutSfx, 0.35]);
+      (s.cutAt || []).forEach((tc2) => sfx.push([s.S + tc2, style.cutSfx || 'tick', 0.3]));
+      if (style.riser && s.media && s.media.kind === 'clip') sfx.push([Math.max(0, s.S - 1.5), 'riser', 0.5]);
+      if (s.card) sfx.push([s.S + s.lead + 0.15, 'pop', 0.5]);
+      if (s.tag || s.src) sfx.push([s.S + s.lead + 0.2, 'tick', 0.4]);
       for (const f of s.sfx || []) sfx.push([f.at === 'end' ? s.S + s.lead + s.d : s.S + s.lead + parseFloat(f.at), f.name, f.vol]); });
     if (!cuesM.length) cuesM.push([0, 'calm']);
     const raw = path.join(WORK, 'score.wav'); score(raw, total, cuesM, sfx);
@@ -302,24 +347,24 @@ function render() {
   const cues = cuesFor(style.captions.chars ?? 40);
   const fontsdir = path.join(__dirname, 'fonts'), sub = (f) => `subtitles=${f}:fontsdir=${fontsdir}`;
   fs.writeFileSync(path.join(WORK, 'cap169.ass'), ass(cues, W, H, style, use, meta.host_name || ''));
-  const final = path.join(OUT, `${id}.mp4`);
+  const final = path.join(OUT, `${id}${sfxp}.mp4`);
   if (vid) ff(['-i', vid, '-i', mix, '-vf', sub(path.join(WORK, 'cap169.ass')), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', final]);
-  if (vid) ff(['-i', final, '-vf', `fps=1/${Math.max(2, Math.round(total / 40))},scale=320:-1,tile=8x5`, '-frames:v', '1', path.join(OUT, `${id}-sheet.jpg`)]);
+  if (vid) ff(['-i', final, '-vf', `fps=1/${Math.max(2, Math.round(total / 40))},scale=320:-1,tile=8x5`, '-frames:v', '1', path.join(OUT, `${id}${sfxp}-sheet.jpg`)]);
   if (vidV) {
     fs.writeFileSync(path.join(WORK, 'cap916.ass'), ass(cuesFor(style.captions.charsVertical ?? 24), 1080, 1920, style, use, meta.host_name || ''));
-    ff(['-i', vidV, '-i', mix, '-vf', sub(path.join(WORK, 'cap916.ass')), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', path.join(OUT, `${id}-9x16.mp4`)]);
+    ff(['-i', vidV, '-i', mix, '-vf', sub(path.join(WORK, 'cap916.ass')), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', path.join(OUT, `${id}${sfxp}-9x16.mp4`)]);
   }
-  console.log(`${vid ? final : path.join(OUT, `${id}-9x16.mp4`)} (${total.toFixed(1)} s, ${use.length} shots, ${cues.length} captions)`);
+  console.log(`${vid ? final : path.join(OUT, `${id}${sfxp}-9x16.mp4`)} (${total.toFixed(1)} s, ${use.length} shots, ${cues.length} captions)`);
 }
 function check() {
-  const { style, shots: all } = parse(); const noImg = [], noVoice = [];
+  const { meta, style, shots: all } = parse(); const noImg = [], noVoice = [];
   const hasM = (f) => fs.existsSync(path.join(P, 'media', f)) && fs.statSync(path.join(P, 'media', f)).size > 0;
   const shots = all.filter((x) => !((x.unless && hasM(x.unless)) || (x.when && !hasM(x.when))));
   shots.forEach((x) => { x.n = x.i; });
   shots.forEach((s) => { const i = s.i; if (!s.same && !['png', 'jpg', 'jpeg', 'webp'].some((e) => fs.existsSync(path.join(P, 'img', `${nn(i)}.${e}`)))) noImg.push(nn(i)); const v = path.join(P, 'voice', nn(i) + '.mp3'); if (spoken(s.text) && (!fs.existsSync(v) || !fs.statSync(v).size)) noVoice.push(nn(i)); });
   // Pacing estimate: voice length if the file exists (minus Edge's padding), otherwise from the text
   let t = 0; const tl = shots.map((s, k) => { const i = s.i; const v = path.join(P, 'voice', nn(i) + '.mp3'); const words = spoken(s.text).split(' ').length;
-    const d = s.quote && !spoken(s.text) ? s.quote.text.split(' ').length * 0.34 + 1.2 : fs.existsSync(v) && fs.statSync(v).size ? Math.max(0.5, dur(v) - 0.7 - 0.45 * (spoken(s.text).match(/[.!?]/g) || []).length) : spoken(s.text).length * 0.066;
+    const d = s.media && s.media.kind === 'clip' && !spoken(s.text) ? s.media.end - s.media.start : s.quote && !spoken(s.text) ? s.quote.text.split(' ').length * 0.34 + 1.2 : fs.existsSync(v) && fs.statSync(v).size ? Math.max(0.5, dur(v) - 0.7 - 0.45 * (spoken(s.text).match(/[.!?]/g) || []).length) : spoken(s.text).length * 0.066;
     const lead = LEAD + (s.chapter && i > 0 ? (style.chapterHold ?? 1.8) : 0), D = lead + d + (style.gap ?? 0.45) + (s.pause || 0); const r = { i: k, S: t, D, words, s }; t += D; return r; });
   const mmss = (x) => `${Math.floor(x / 60)}:${String(Math.floor(x % 60)).padStart(2, '0')}`;
   const words = tl.reduce((a, r) => a + r.words, 0), warn = [];
@@ -331,6 +376,9 @@ function check() {
   console.log(`images missing: ${noImg.join(' ') || 'none'}\nvoice missing:  ${noVoice.join(' ') || 'none'}\n\nChapters:`);
   const ch = tl.filter((r) => r.s.chapter); ch.forEach((r, k) => console.log(`  ${mmss(r.S).padStart(5)}  ${r.s.chapter}  (${(((ch[k + 1]?.S ?? t) - r.S) / 60).toFixed(1)} min)`));
   if (!ch.length || ch[0].i !== 0) warn.push('Start the script with a "# Chapter" line so YouTube chapters begin at 0:00.');
+  { const lim = +(meta.limit || 90), by = {}; tl.forEach((r) => { (by[r.s.part] ||= []).push(r); }); // each part must fit the reel limit (default 90 s)
+    Object.keys(by).forEach((pn) => { const sec = by[pn].reduce((a, r) => a + r.D, 0), low = by[pn].filter((r) => r.s.low).reduce((a, r) => a + r.D, 0);
+      console.log(`Part ${pn}: ${sec.toFixed(0)} s of ${lim} s${sec > lim ? ` OVER by ${(sec - lim).toFixed(0)} s: ${low >= sec - lim ? 'the [low] shots will be dropped' : 'split with [part N] or mark more shots [low]'}` : ' (ok)'}`); }); }
   const avg = t / shots.length; console.log(`\nAverage shot ${avg.toFixed(1)} s (aim 4 to 8 s).`);
   tl.forEach((r) => { if (r.D > 11) warn.push(`Shot ${nn(r.i)} runs ${r.D.toFixed(1)} s: split it into two pictures.`); });
   // something new should happen at least every minute: a chapter, a card, a question, a pause or a callback

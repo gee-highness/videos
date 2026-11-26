@@ -25,15 +25,15 @@ Status: `idea` → `scripted` → `voiced` (voice files in) → `images` (all im
 
 | ID | Title | Brand | Length | Status | Notes |
 |---|---|---|---|---|---|
-| gs01 | Blessed Tuesday | GSS-LMS (Cartoon High) | 24.9 s | checked | principal |
-| gs02 | Report week | GSS-LMS | 24.9 s | checked | principal and teachers |
-| gs03 | From: Mom | GSS-LMS | 23.0 s | checked | bursar |
-| gs04 | One whiteboard | GSS-LMS | 31.0 s | checked | deputy |
-| gs05 | Date of birth: Yes | GSS-LMS | 23.2 s | checked | registrar |
-| gs06 | The other bag | GSS-LMS | 23.6 s | checked | teacher |
-| gs07 | Stuff | GSS-LMS | 24.7 s | checked | parent |
-| gs08 | The letter | GSS-LMS | 22.5 s | checked | parent |
-| gs09 | 1998 | GSS-LMS | 22.0 s | checked | learner |
-| gs10 | School News | GSS-LMS | 24.5 s | checked | everyone |
+| gs01 | Blessed Tuesday | GSS-LMS (Cartoon High) | 37.2 s | checked | principal |
+| gs02 | Report week | GSS-LMS | 35.7 s | checked | principal and teachers |
+| gs03 | From: Mom | GSS-LMS | 31.6 s | checked | bursar |
+| gs04 | One whiteboard | GSS-LMS | 42.2 s | checked | deputy |
+| gs05 | Date of birth: Yes | GSS-LMS | 32.2 s | checked | registrar |
+| gs06 | The other bag | GSS-LMS | 34.6 s | checked | teacher |
+| gs07 | Stuff | GSS-LMS | 34.5 s | checked | parent |
+| gs08 | The letter | GSS-LMS | 32.1 s | checked | parent |
+| gs09 | 1998 | GSS-LMS | 30.3 s | checked | learner |
+| gs10 | School News | GSS-LMS | 33.3 s | checked | everyone |
 
 Cartoon High plan and captions: `toons/PLAN-gss-cartoon-high.md`, `toons/captions-gss-cartoon-high.md`. Posting results go in `.claude/skills/cartoon-studio/references/feedback.md`.

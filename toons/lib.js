@@ -45,12 +45,12 @@ function person(o) {
   const arm = (side, a) => {
     a = a || { e: [108, 225], h: [98, 318] };
     const d = `M${side * sh[0]},${sh[1]} Q${side * a.e[0]},${a.e[1]} ${side * a.h[0]},${a.h[1]}`;
-    return line(d, { w: 40 }) + line(d, { w: 30, stroke: PAPER }) + circ(side * a.h[0], a.h[1], 19, { w: 5 }) + (a.hold ? grp(a.hold, side * a.h[0], a.h[1]) : '');
+    return line(d, { w: 40 }) + line(d, { w: 30, stroke: o.skin || PAPER }) + circ(side * a.h[0], a.h[1], 19, { w: 5, fill: o.skin }) + (a.hold ? grp(a.hold, side * a.h[0], a.h[1]) : '');
   };
   let g = '';
   if (!o.headOnly) {
   if (o.armBack) g += arm(o.armBack === 'L' ? -1 : 1, o.armBack === 'L' ? o.armL : o.armR);
-  g += path('M-104,340 L-94,132 C-92,92 -46,74 0,74 C46,74 92,92 94,132 L104,340', { w: 5 });
+  g += path('M-104,340 L-94,132 C-92,92 -46,74 0,74 C46,74 92,92 94,132 L104,340', { w: 5, fill: o.cloth });
   if (body === 'apron') g += path('M-58,340 L-56,176 L56,176 L58,340', { w: 5, fill: '#fff' }) + line('M-56,176 L-30,80 M56,176 L30,80 M-28,250 h56 v50 h-56 z', { w: 5 });
   if (body === 'suit') g += path('M-34,76 L0,150 L34,76', { w: 5, fill: '#fff' }) + line('M-34,76 L-52,150 L0,210 L52,150 L34,76 M0,210 V340', { w: 5 }) + path('M-10,150 L0,138 L10,150 L6,196 L0,206 L-6,196 Z', { w: 4, fill: INK });
   if (body === 'tee') g += line('M-30,78 Q0,104 30,78', { w: 5 });
@@ -60,9 +60,9 @@ function person(o) {
   if (o.armBack !== 'R') g += arm(1, o.armR);
   }
   // head
-  let h = circ(-61, 4, 11, { w: 5 }) + circ(61, 4, 11, { w: 5 });
+  let h = circ(-61, 4, 11, { w: 5, fill: o.skin }) + circ(61, 4, 11, { w: 5, fill: o.skin });
   if (earrings) h += circ(-63, 26, 7, { w: 4, fill: 'none' }) + circ(63, 26, 7, { w: 4, fill: 'none' });
-  h += path('M-60,0 C-60,-80 60,-80 60,0 C60,60 32,76 0,76 C-32,76 -60,60 -60,0Z', { w: 5 });
+  h += path('M-60,0 C-60,-80 60,-80 60,0 C60,60 32,76 0,76 C-32,76 -60,60 -60,0Z', { w: 5, fill: o.skin });
   if (hair === 'short') h += path('M-62,-8 C-70,-92 70,-92 62,-8 C44,-52 -44,-52 -62,-8Z', { w: 5, fill: INK });
   if (hair === 'afro') { let d = 'M-64,-4'; for (let i = 0; i <= 8; i++) { const a = Math.PI * (1 + i / 8), r = 86; d += ` Q${Math.cos(a - 0.2) * (r + 26)},${Math.sin(a - 0.2) * (r + 26) - 8} ${Math.cos(a) * r},${Math.sin(a) * r - 8}`; } h += path(d + ' L64,-4 C40,-46 -40,-46 -64,-4Z', { w: 5, fill: INK }); }
   if (hair === 'puff') h += circ(0, -96, 44, { w: 5, fill: INK }) + path('M-62,-8 C-70,-84 70,-84 62,-8 C44,-50 -44,-50 -62,-8Z', { w: 5, fill: INK });
@@ -352,3 +352,22 @@ const K = (() => {
   const classroom = () => rect(-20, 1240, 1120, 200, 0, { fill: '#e4dfd2' }) + line('M-20,1240 H1100', { w: 5 });
   return { goat, light, ...school, board, desk, bag, book, paperPile, app, appScene, gssEnd, talker, classroom, fillR, head, say, ...cast, win, table, smallPhone, buzz, mark, stamp, holdPhone, counter, mug, icons, news, ownApp, devices, end };
 })();
+
+/* THE NEIGHBOURHOOD (fake cartoon series, original cast, flat sitcom colours). Fictional characters only: never the real people in a story. */
+const nbVerdict = (o) => person({ hair: 'short', body: 'suit', glasses: true, moustache: true, skin: '#b5784f', cloth: '#e8b84a', ...o });
+const nbGogo = (o) => person({ hair: 'wrap', body: 'tee', glasses: true, earrings: true, skin: '#8a5a3b', cloth: '#d9534f', ...o });
+const nbLwazi = (o) => person({ hair: 'puff', body: 'tee', skin: '#9a6a46', cloth: '#3fa7d6', ...o });
+const nbStreet = () => {
+  let g = rect(-20, -20, 1120, 1960, 0, { fill: '#8fd0ee', w: 0 }) + circ(900, 200, 90, { fill: '#ffd166', w: 0 }) + circ(150, 150, 60, { fill: '#fff', w: 0, stroke: '#fff' }) + circ(215, 135, 44, { fill: '#fff', w: 0 });
+  [[-40, 860, 400, 450, '#e9d8b4'], [370, 800, 360, 510, '#f2c9a0'], [700, 880, 420, 430, '#d6e4c4']].forEach(([x, y, w, h, f]) => {
+    g += rect(x, y, w, h, 0, { fill: f, w: 6 }) + path(`M${x - 20},${y} L${x + w / 2},${y - 120} L${x + w + 20},${y} Z`, { fill: '#b5523b', w: 6 }) +
+      rect(x + w / 2 - 38, y + h - 180, 76, 180, 6, { fill: '#8a5a3b', w: 5 }) + rect(x + 40, y + 70, 64, 64, 4, { fill: '#fff7c2', w: 5 }) + rect(x + w - 104, y + 70, 64, 64, 4, { fill: '#fff7c2', w: 5 });
+  });
+  g += rect(-20, 1240, 1120, 80, 0, { fill: '#6fae5a', w: 0 }) + rect(-20, 1300, 1120, 700, 0, { fill: '#c9b79c', w: 6 }) + line('M-20,1300 H1100', { w: 8 });
+  for (let i = 0; i < 9; i++) g += line(`M${-10 + i * 140},1300 v-120`, { w: 10 });          // a gate's black bars along the wall
+  return g + line('M-20,1180 H1100', { w: 10 }) + rect(960, 1150, 60, 50, 6, { fill: '#2b2b33', w: 4 }) + circ(990, 1175, 11, { fill: '#e5484d', w: 2 });
+};
+const nbBoard = (x, y, w, h, inner = '') => rect(x - 14, y - 14, w + 28, h + 28, 10, { fill: '#a8703a', w: 6 }) + rect(x, y, w, h, 4, { fill: '#2f4a3a', w: 5 }) + inner +
+  line(`M${x + w * 0.25},${y + h + 14} v60 M${x + w * 0.75},${y + h + 14} v60`, { w: 10 });
+const chalk = (x, y, str, size = 80, o = {}) => text(x, y, str, { size, fill: o.fill ?? '#f2efe4', font: BRUSH, weight: 400, rot: o.rot ?? 0 });
+const nbTitle = (t, series, ep, name) => { const a = 1 - prog(t, 1.4, 1.9); return a <= 0 ? '' : `<g opacity="${a}">` + rect(60, 60, 960, 250, 30, { fill: '#fff7c2', w: 8 }) + text(540, 160, series.toUpperCase(), { font: BRUSH, size: 96, weight: 400 }) + text(540, 250, ep + '  ·  ' + name, { size: 58 }) + '</g>'; };

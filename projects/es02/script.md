@@ -6,6 +6,7 @@ rate: +0%
 music: tension
 host: hosts/kuina/dress.png
 host_name: Kuina
+host_tv: series
 status: scripted v2 (9:16 reel with two cartoon skits from the fake series "The Neighbourhood" on the host's TV); research in research.md; plan in plan.md
 sources: research.md (every fact and quote with its source; the owner's and Doncabe's words are quoted as claims). The skits use FICTIONAL characters only and never joke about the attack, the injuries or either person.
 ---
@@ -31,7 +32,7 @@ Three pit bulls attacked him. He is in hospital, and his family says he could lo
 [img] illustration: a closed black automated gate with a camera, dawn light {move:in}
 [quote] The dogs' owner | "I did not encourage or instruct my dogs to attack the man."
 
-[img] illustration: a closed black automated gate with a camera, dawn light {move:out}
+[img same] {move:out}
 She says he followed her through the gate and grabbed her. She has laid assault and trespassing charges.
 
 [img] illustration: the road outside a gate, bin bags on the kerb, a trolley across the street {move:panL}
@@ -51,6 +52,7 @@ The same three dogs were linked to two earlier attacks, on other dogs.
 # On my TV
 [img] illustration: a living room wall with a big TV glowing, a shelf and a plant {move:in}
 [host full]
+[tv ep1]
 [music sneaky]
 Meanwhile, online, everyone has a verdict. On my TV, so does Gate Street.
 
@@ -68,6 +70,7 @@ In South African law an owner can be liable even without negligence, unless the 
 # The help
 [img] illustration: a TV on a wall showing a jar of coins, warm light {move:in}
 [host full]
+[tv ep2]
 [music triumph]
 Some people skipped the verdict. Gate Street, episode two.
 

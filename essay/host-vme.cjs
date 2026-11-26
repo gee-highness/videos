@@ -15,13 +15,18 @@ if (!lookFile) throw new Error('host look not found (hosts/kuina/v_me-look.json,
 const look = JSON.parse(fs.readFileSync(lookFile, 'utf8'));
 // the shots with a [host ...] line: same parsing as essay.cjs (shot numbers = voice file numbers)
 const src = fs.readFileSync(path.join(P, 'script.md'), 'utf8').replace(/^---\n[\s\S]*?\n---\n/, '').replace(/<!--[\s\S]*?-->/g, '');
+const hostTv = (/^host_tv:\s*(\S+)/m.exec((fs.readFileSync(path.join(P, 'script.md'), 'utf8').match(/^---\n([\s\S]*?)\n---/) || [])[1] || '') || [])[1] || null; // front matter host_tv: <name in projects/<id>/tv/> = she stands in front of her TV
+// a spot in the v_me apartment: the host in front of the TV, the camera 2 m away, the TV centred behind her (9:16 and 16:9)
+const TV_SPOT = { id: 'tv-host', label: 'In front of the TV', x: 1.25, z: 2.8, facing: Math.PI / 2, cam: { azimuth: 0, distance: 2.2, height: 1.38, lookY: 1.2, fov: 46, pos: { x: 3.4, y: 1.9, z: 2.8 }, look: { x: 0.3, y: 1.2, z: 2.8 } } };
 const shots = []; for (const raw of src.split('\n')) { const l = raw.trim(); if (!l || /^#\s/.test(l) || l.startsWith('#')) continue;
   const m = /^\[img(?:\s+same)?\]/.exec(l); if (m) { shots.push({ text: '', host: null, when: false }); continue; }
   if (!shots.length) continue; const sh = shots[shots.length - 1];
+  const tvm = /^\[tv\s+(\S+)\]$/.exec(l); if (tvm) { sh.tv = tvm[1]; continue; }
   const h = /^\[host(?:\s+([\w-]+))?(?:\s+([\w-]+))?\]$/.exec(l); if (h) { const w = [h[1], h[2]].filter(Boolean); sh.host = { full: w.includes('full'), pose: w.find((x) => x !== 'full' && x !== 'name') || null }; continue; }
   if (/^\[(when|unless)\s/.test(l)) { if (/^\[when/.test(l)) sh.when = true; continue; }
   if (/^\[(card|pause|quote|music|sfx|shot|clip|subs|sticker)/.test(l)) continue;
   sh.text += (sh.text ? ' ' : '') + l; }
+shots.forEach((x) => { if (x.tv === undefined) x.tv = null; });
 let counter = 0; shots.forEach((s) => { if (s.when) s.i = Math.max(0, counter - 1); else s.i = counter++; });
 const only = opt('only') ? opt('only').split(',').map(Number) : null, scale = opt('scale', '0.5'), fps = opt('fps', '24');
 const POSES = { eyebrow: { gesture: 'shrug', expression: { name: 'surprised', weight: 0.25 } }, laugh: { expression: { name: 'happy', weight: 0.9 } }, point: { gesture: 'point' }, phone: {}, arms: { gesture: 'nod' }, desk: {} };
@@ -36,8 +41,13 @@ for (const s of shots) { if (!s.host || !s.text) continue; if (only && !only.inc
     cues.push({ do: 'say', text: s.text, ...(voice ? { audio: voice } : {}), caption: false }, { do: 'wait', seconds: 0.4 });
     const script = { version: 1, meta: { title: `${id} host ${n}${tag}`, format: { aspect, width: w, height: h, fps: +fps } },
       setup: { avatarLook: look, scene: 'apartment-default', background: 'living-room', lighting: 'studioSoft', camera: 'halfbody', voice: { engine: voice ? 'file' : 'none' }, animation: { personality: 'calm', energy: 0.5, handsRest: 'front', eyeContact: 0.9 } }, cues };
+    if (hostTv) { const nm = s.tv || hostTv; script.setup.background = 'tv-host'; script.setup.spots = [TV_SPOT]; script.cues = script.cues.filter((c) => c.do !== 'camera');
+      if (nm !== 'none') { const img = path.join(P, 'tv', nm + '.png'); if (!fs.existsSync(img)) throw new Error('TV picture not found: ' + img); fs.copyFileSync(img, path.join(WORK, `tv-${nm}.png`)); script.cues.unshift({ do: 'media', at: 0, src: `tv-${nm}.png`, layout: 'tv', duration: 120 }); } }
     const f = path.join(WORK, `${n}-${tag}.vme.json`); fs.writeFileSync(f, JSON.stringify(script)); jobs.push({ n, tag, f, voice }); } }
 console.log(`${jobs.length} host clips to render (scale ${scale}, ${fps} fps)`);
+if (args.includes('--still')) { // a quick look (one JPEG per clip, about a minute) instead of the whole clip
+  for (const j of jobs) { const r = spawnSync('npm', ['run', 'performer:render', '--', j.f, '--engine', 'none', '--scale', scale, '--stills', '1.2', '--out', path.join(WORK, `${j.n}-${j.tag}-still.mp4`)], { cwd: VME, stdio: 'inherit' }); if (r.status !== 0) process.exit(1); }
+  console.log('stills in ' + path.join(WORK, 'stills')); process.exit(0); }
 for (const j of jobs) { const out = path.join(OUT, `${j.n}-${j.tag}.mp4`); if (fs.existsSync(out) && !args.includes('--force')) { console.log('have', out); continue; }
   console.log(`rendering ${j.n}-${j.tag} (${j.voice ? 'voice file' : 'silent, synthetic mouth'})`);
   const r = spawnSync('npm', ['run', 'performer:render', '--', j.f, '--engine', j.voice ? 'file' : 'none', '--scale', scale, '--out', out], { cwd: VME, stdio: 'inherit' });

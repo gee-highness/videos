@@ -71,6 +71,9 @@ Put files in `projects/<id>/media/`. All of it is optional: a missing file rende
 - `node essay/essay.cjs media <id>` writes `media.md` (every file needed, where it is used, credit, status) and `media-download.sh` (a Termux block that downloads the clips with yt-dlp on the phone).
 - Rules: under ~25 s a clip and about 90 s of borrowed footage in total, always credited, always with commentary; screenshots show the headline only. `check` warns past 90 s.
 
+## The host's TV (cartoon series behind her)
+Front matter `host_tv: <name>` puts the host in front of the apartment TV (custom v_me spot `tv-host`, camera 2 m away, TV centred behind her, her head clear of the title), and the TV shows `projects/<id>/tv/<name>.png` (1280x720). `[tv ep1]` on a host shot changes the picture for that shot (`[tv none]` = TV off). `node essay/host-vme.cjs <id> --v-only --still` renders one JPEG per host clip in about a minute (check the framing before the 35-minute render). Skits are full-screen cartoons from `toons/ep/nbNN.js` (`toons/engine.cjs`, voices per speaker) used as `[clip] nbNN.mp4 0:00-0:NN sound | The Neighbourhood, Ep. N`.
+
 ## The host
 A channel host (a fictional, AI-generated presenter) can appear on screen while her lines play. Her profile, looks, wardrobe, poses and image prompt are in `hosts/<name>/HOST.md`.
 ```

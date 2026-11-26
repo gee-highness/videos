@@ -71,6 +71,17 @@ Put files in `projects/<id>/media/`. All of it is optional: a missing file rende
 - `node essay/essay.cjs media <id>` writes `media.md` (every file needed, where it is used, credit, status) and `media-download.sh` (a Termux block that downloads the clips with yt-dlp on the phone).
 - Rules: under ~25 s a clip and about 90 s of borrowed footage in total, always credited, always with commentary; screenshots show the headline only. `check` warns past 90 s.
 
+## Fast edits, parts and the reel limit
+| Directive | Does |
+|---|---|
+| `[cut word img]` | at the moment the narrator says `word`, hard-cut to `img/<img>.png` (underscore for a space) for the rest of the shot |
+| `[tag text]` | a yellow tag slides in from the right (a date, a place, a number) |
+| `[src text]` | a small "SOURCE" chip top-left |
+| `[card BIG | small]` | a pop-in statistic or phrase (big in the `pop` style) |
+| `[low]` | this shot is dropped first if the part runs over the limit |
+| `[part 2]` | the shots after this line are the second upload; `render <id> --vertical-only` renders every part (`--part 1` for one) as `<id>-partN-9x16.mp4` |
+Front matter: `limit: 90` (seconds per part), `tags:` (hashtags). Style `pop` = vivid grade, big zoom, varied short transitions, a whoosh per cut, riser into clips, Anton bold captions that pop word by word with the number or longest word in gold. `check` prints each part's length against the limit. `kit <id>` writes `kit.md` (3 caption variants, pinned comment, hashtags) and a cover frame per part. Voice files stay numbered by shot across the parts, so one voice zip serves every part.
+
 ## The host's TV (cartoon series behind her)
 Front matter `host_tv: <name>` puts the host in front of the apartment TV (custom v_me spot `tv-host`, camera 2 m away, TV centred behind her, her head clear of the title), and the TV shows `projects/<id>/tv/<name>.png` (1280x720). `[tv ep1]` on a host shot changes the picture for that shot (`[tv none]` = TV off). `node essay/host-vme.cjs <id> --v-only --still` renders one JPEG per host clip in about a minute (check the framing before the 35-minute render). Skits are full-screen cartoons from `toons/ep/nbNN.js` (`toons/engine.cjs`, voices per speaker) used as `[clip] nbNN.mp4 0:00-0:NN sound | The Neighbourhood, Ep. N`.
 

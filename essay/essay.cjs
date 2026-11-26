@@ -407,5 +407,18 @@ function media() {
   fs.writeFileSync(path.join(P, 'media-download.sh'), sh);
   console.log(`${list.length} media items (${list.filter((r) => r.s.media.kind === 'clip').length} clips). ${path.join(P, 'media.md')}\n${path.join(P, 'media-download.sh')}`);
 }
-const run = { plan, render, check, media }[cmd];
-if (run) run(); else console.log('Commands: plan, render, check, media');
+// ---------- kit: the posting kit for each part (caption variants, pinned comment, hashtags, cover frame) ----------
+function kit() {
+  const { meta, shots } = parse(), parts = [...new Set(shots.map((x) => x.part))].sort((a, b) => a - b), many = parts.length > 1;
+  const tags = (meta.tags || '').split(/[\s,]+/).filter(Boolean).map((t) => '#' + t.replace(/^#/, ''));
+  let md = `# ${id}: posting kit (${parts.length} upload${many ? 's' : ''})\n\nReel limit ${meta.limit || 90} s per upload. Turn on Facebook's AI label (the host is AI-generated). Check the first 3 seconds on a phone before posting.\n`;
+  for (const pn of parts) {
+    const ps = shots.filter((x) => x.part === pn), narr = ps.filter((x) => spoken(x.text)), hook = narr[0] ? spoken(narr[0].text) : meta.title, second = narr[1] ? spoken(narr[1].text) : '', last = narr[narr.length - 1] ? spoken(narr[narr.length - 1].text) : '';
+    const sfx = many ? `-part${pn}` : '', vid = path.join(OUT, `${id}${sfx}-9x16.mp4`), cover = path.join(OUT, `${id}${sfx}-cover.png`);
+    md += `\n## ${many ? 'Part ' + pn : 'Upload'}\n\n**Caption (pick one, first line is the hook):**\n1. ${hook} ${many && pn < parts.length ? 'Part ' + (pn + 1) + ' is out next.' : ''}\n2. Two sides, one story. ${second || hook}\n3. ${hook.split('.')[0]}. Here is what is on record. 👇\n\n**Pinned comment:** ${last.endsWith('?') || /\?/.test(last) ? last : 'What do you think? Tell me below.'} Sources are in the description.\n\n**Hashtags:** ${tags.join(' ') || '(add tags: in the script front matter)'}\n\n**Cover frame:** ${path.relative(ROOT, cover)} (1.2 s into the video, with the title on it)\n`;
+    if (fs.existsSync(vid)) { const title = String(meta.title || id).replace(/:.*/, '').toUpperCase().replace(/['"]/g, '').replace(/[:,]/g, ''); try { ff(['-ss', '1.2', '-i', vid, '-frames:v', '1', '-vf', `drawtext=fontfile=${path.join(__dirname, 'fonts/Anton-Regular.ttf')}:text='${title}${many ? '  PART ' + pn : ''}':fontcolor=white:fontsize=84:borderw=6:bordercolor=black:x=(w-text_w)/2:y=h*0.12`, cover]); } catch (e) { md += '(cover frame failed)\n'; } }
+  }
+  fs.writeFileSync(path.join(P, 'kit.md'), md); console.log(path.join(P, 'kit.md'));
+}
+const run = { plan, render, check, media, kit }[cmd];
+if (run) run(); else console.log('Commands: plan, render, check, media, kit');

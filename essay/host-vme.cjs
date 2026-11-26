@@ -10,7 +10,8 @@ const ROOT = path.join(__dirname, '..'), id = process.argv[2], args = process.ar
 const opt = (k, d) => { const i = args.indexOf('--' + k); return i < 0 ? d : args[i + 1]; };
 if (!id) { console.log(fs.readFileSync(__filename, 'utf8').split('*/')[0]); process.exit(1); }
 const VME = process.env.VME_DIR || '/home/user/v_me', P = path.join(ROOT, 'projects', id), OUT = path.join(P, 'host'), WORK = path.join(OUT, '.work');
-const lookFile = [path.join(ROOT, 'hosts/kuina/v_me-look.json'), path.join(VME, 'hosts/kuina/v_me-look.json'), path.join(VME, 'public/avatars/looks/kuina.json')].find((f) => fs.existsSync(f));
+const hostLook = (/^host_look:\s*(\S+)/m.exec((fs.readFileSync(path.join(P, 'script.md'), 'utf8').match(/^---\n([\s\S]*?)\n---/) || [])[1] || '') || [])[1] || null; // front matter host_look: sunshine | maroon | blackgold | mustard (hosts/kuina/looks/)
+const lookFile = [...(hostLook ? [path.join(ROOT, 'hosts/kuina/looks', hostLook + '.json')] : []), path.join(ROOT, 'hosts/kuina/v_me-look.json'), path.join(VME, 'hosts/kuina/v_me-look.json'), path.join(VME, 'public/avatars/looks/kuina.json')].find((f) => fs.existsSync(f));
 if (!lookFile) throw new Error('host look not found (hosts/kuina/v_me-look.json, private)');
 const look = JSON.parse(fs.readFileSync(lookFile, 'utf8'));
 // the shots with a [host ...] line: same parsing as essay.cjs (shot numbers = voice file numbers)

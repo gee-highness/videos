@@ -146,5 +146,50 @@
   "xfadeDur": 0.22,
   "cutSfx": "whoosh",
   "riser": true
+ },
+ "pop-soft": {
+  "about": "The pop edit, softened for tributes and serious stories: gentler colour, slower push, soft dissolves and a quiet hush on cuts (no whoosh or riser). Same bold word-by-word captions.",
+  "prompt": "Cinematic editorial still, 16:9, glossy and moody, shallow depth of field, rich contrast. Palette: ivory #F2EBDD, champagne gold #C9A96E, deep plum #3B1E2E, midnight navy #14192B. Warm tungsten light against cool blue night, soft haze, subtle film grain, luxury magazine look, symmetrical framing. No recognisable real people, no faces in focus, no text, no logos, no watermarks.",
+  "aspect": "16:9",
+  "placeholder": "0x14192b",
+  "grade": "eq=saturation=1.12:contrast=1.06:brightness=0.01",
+  "zoom": 0.1,
+  "moves": [
+   "in",
+   "panR",
+   "out",
+   "panL",
+   "in",
+   "up",
+   "down"
+  ],
+  "pause": 0.2,
+  "gap": 0.18,
+  "chapterHold": 0.0,
+  "scoreVolume": 1.0,
+  "musicVolume": 0.12,
+  "accentAss": "&H006EA9C9",
+  "captions": {
+   "font": "Anton",
+   "size": 0.05,
+   "sizeVertical": 0.046,
+   "marginV": 0.1,
+   "marginVVertical": 0.23,
+   "box": "&H26000000",
+   "chars": 26,
+   "charsVertical": 18,
+   "mode": "pop",
+   "upper": true
+  },
+  "xfade": [
+   "fade",
+   "dissolve",
+   "fadewhite",
+   "fade",
+   "dissolve"
+  ],
+  "xfadeDur": 0.35,
+  "cutSfx": "hush",
+  "riser": false
  }
 }

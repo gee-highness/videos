@@ -31,3 +31,6 @@ Use real media wherever it makes the story clearer: press headlines (`[shot]`, c
 - Truth first: sources in the front matter, numbers said the way the source says them.
 - No real people's likenesses, no logos, no copyrighted characters in image prompts.
 - Captions always on; the hook lands in the first 10 seconds.
+
+## Media
+For every video, get licensed images and short clips with `essay/media-kit.cjs` (`docs/MEDIA.md`): brief, Termux block, ingest, contact sheets, then use them as `[cut word img]`, `[shot]` and credited `[clip]` cutaways.

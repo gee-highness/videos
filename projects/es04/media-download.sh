@@ -1,8 +1,8 @@
-# es04 media: licensed images and searched videos. Paste the whole block into Termux (needs: pkg install python zip ffmpeg curl; pip install yt-dlp).
-# Images come from Wikimedia Commons (credited in image-credits.md). Videos are searched on YouTube and kept short. Send back Downloads/es04-media.zip
-mkdir -p ~/storage/downloads/es04-media/img ~/storage/downloads/es04-media/vid && cd ~/storage/downloads/es04-media
+# es04 media (small): images and 25-second YouTube snippets (about 200 MB at most). Paste the whole block into Termux (needs: pkg install python zip ffmpeg curl; pip install yt-dlp).
+# Send back Downloads/es04-media-small.zip
+mkdir -p ~/storage/downloads/es04-media-small/img ~/storage/downloads/es04-media-small/vid && cd ~/storage/downloads/es04-media-small
 UA='TributeVideoMaker/1.0'
-g(){ [ -s "img/$1" ] || curl -sL -m 120 -A "$UA" -o "img/$1" "https://commons.wikimedia.org/wiki/Special:FilePath/$2?width=2400"; }
+g(){ [ -s "img/$1" ] || { curl -sL -m 120 -A "$UA" -o "img/$1" "https://commons.wikimedia.org/wiki/Special:FilePath/$2?width=2400"; sleep 2; }; }
 g 01-pete-portrait.jpg 'Pete-edochie.jpg'
 g 02-pete-unroyal.jpg 'Kingsley_Abasili_and_Pete_Edochie_(Unroyal).jpg'
 g 03-pete-wikipedia-ad.png 'Wikipedia_Okonwo_video_ad_still.png'
@@ -24,16 +24,22 @@ g 18-clapper1.jpg 'Clapperboard%2C_O2_film%2C_September_2008.jpg'
 g 19-clapper2.jpg 'Clpbrd.jpg'
 g 20-projector.jpg 'Cinema_projector_Everyman_Theatre%2C_Muswell_Hill.jpg'
 g 21-nollywood-lion.jpg 'Filming_a_nollywood_movie_titled_the_lion.jpg'
-# Commons video (67 MB, 3:08, 1080p: use Wi-Fi; features him)
+# YouTube snippets: only 25 s from the given start (default 15 s in), at most 480p and 25 MB, 1 per search; an .info.json keeps the title and uploader for the credit
+y(){ yt-dlp -q --no-warnings -f "bv*[height<=480]+ba/b[height<=480]" --merge-output-format mp4 --match-filter 'duration<=900' --max-filesize 25M --max-downloads 1 --restrict-filenames --write-info-json --download-sections "*$3-$(( $3 + 25 ))" --force-keyframes-at-cuts -o "vid/$1-%(id)s.%(ext)s" "ytsearch6:$2"; }
+y things-fall-apart 'Pete Edochie Things Fall Apart 1987 Okonkwo NTA' 20
+y lionheart 'Pete Edochie Lionheart official trailer Netflix' 30
+y wikipedia-ad 'Pete Edochie Wikipedia advert Things Come Together' 40
+y interview 'Pete Edochie interview proverbs' 30
+y tribute-news 'Pete Edochie dies tribute Channels Television' 10
+y igodo 'Pete Edochie Igodo clip' 60
+y rituals 'Pete Edochie Rituals Nollywood clip' 60
+y unroyal 'Pete Edochie Unroyal trailer' 20
+cd .. && rm -f es04-media-small.zip && zip -qr es04-media-small.zip es04-media-small && du -sh es04-media-small.zip && echo 'Done: Downloads/es04-media-small.zip'
+
+# es04 media (big): large Commons videos only (use Wi-Fi). Paste the whole block into Termux (needs: pkg install python zip ffmpeg curl; pip install yt-dlp).
+# Send back Downloads/es04-media-big.zip
+mkdir -p ~/storage/downloads/es04-media-big/img ~/storage/downloads/es04-media-big/vid && cd ~/storage/downloads/es04-media-big
+UA='TributeVideoMaker/1.0'
+# 67 MB, 3:08, 1080p: use Wi-Fi; features him
 [ -s vid/wikipedia-things-come-together.webm ] || curl -sL -m 900 -A "$UA" -o vid/wikipedia-things-come-together.webm 'https://commons.wikimedia.org/wiki/Special:FilePath/Wikipedia_-_Things_come_together.webm'
-# YouTube searches: up to 2 short videos per search (under 15 minutes, 720p), with an .info.json for the credit
-y(){ yt-dlp -q --no-warnings -f 'bv*[height<=720]+ba/b[height<=720]' --merge-output-format mp4 --match-filter 'duration<=900' --max-downloads 2 --restrict-filenames --write-info-json -o "vid/$1-%(id)s.%(ext)s" "ytsearch6:$2"; }
-y things-fall-apart 'Pete Edochie Things Fall Apart 1987 Okonkwo NTA'
-y lionheart 'Pete Edochie Lionheart official trailer Netflix'
-y wikipedia-ad 'Pete Edochie Wikipedia advert Things Come Together'
-y interview 'Pete Edochie interview proverbs'
-y tribute-news 'Pete Edochie dies tribute Channels Television'
-y igodo 'Pete Edochie Igodo clip'
-y rituals 'Pete Edochie Rituals Nollywood clip'
-y unroyal 'Pete Edochie Unroyal trailer'
-cd .. && rm -f es04-media.zip && zip -qr es04-media.zip es04-media && ls -la es04-media/img es04-media/vid | tail -40 && echo 'Done: Downloads/es04-media.zip'
+cd .. && rm -f es04-media-big.zip && zip -qr es04-media-big.zip es04-media-big && du -sh es04-media-big.zip && echo 'Done: Downloads/es04-media-big.zip'

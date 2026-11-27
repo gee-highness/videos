@@ -11,8 +11,8 @@
      { "search": ["Chinua Achebe", "Nollywood film set"],             Openverse queries (commercial + modification licences, wide, >= 1500 px)
        "commons": [["pete-portrait","Pete-edochie.jpg","Kelvin Jewel","CC BY-SA 4.0","note"]],   exact Commons files: key, file, author, licence, note
        "commonsVideos": [["wikipedia-ad","Wikipedia_-_Things_come_together.webm","Wikimedia Foundation","CC BY-SA 4.0","67 MB"]],
-       "videos": [["things-fall-apart","Pete Edochie Things Fall Apart 1987 Okonkwo NTA"]],   yt-dlp YouTube searches
-       "perSearch": 2, "maxMinutes": 15, "perQuery": 4 }
+       "videos": [["things-fall-apart","Pete Edochie Things Fall Apart 1987 Okonkwo NTA", 15]],   yt-dlp YouTube searches: key, query, start second of the snippet
+       "perSearch": 1, "clipSeconds": 25, "height": 480, "maxMB": 25, "maxMinutes": 15, "perQuery": 4 }
    Rules (docs/MEDIA.md): CC BY, CC BY-SA and CC0 only for images; credit every image; borrowed footage short (under 25 s each) with commentary;
    no photos of private people; check licences on the Commons file page before posting. */
 const fs = require('fs'), path = require('path'), { execFileSync } = require('child_process');
@@ -51,15 +51,21 @@ function build() {
     cand += `\n## ${q}\n`; list.forEach((r) => { cand += `- ${r.title.replace(/<[^>]+>/g, '').slice(0, 70)} | ${r.license.toUpperCase()} | ${r.creator || '?'} | ${r.width}x${r.height} | ${r.foreign_landing_url}\n  ${r.url}\n`; }); sleep(1000);
   }
   fs.writeFileSync(path.join(P, 'media-candidates.md'), cand);
-  const L = [`# ${id} media: licensed images and searched videos. Paste the whole block into Termux (needs: pkg install python zip ffmpeg curl; pip install yt-dlp).`, `# Images come from Wikimedia Commons (credited in image-credits.md). Videos are searched on YouTube and kept short. Send back Downloads/${id}-media.zip`,
-    `mkdir -p ~/storage/downloads/${id}-media/img ~/storage/downloads/${id}-media/vid && cd ~/storage/downloads/${id}-media`, `UA='${UA}'`,
-    'g(){ [ -s "img/$1" ] || curl -sL -m 120 -A "$UA" -o "img/$1" "https://commons.wikimedia.org/wiki/Special:FilePath/$2?width=2400"; }'];
+  const clipS = b.clipSeconds || 25, height = b.height || 480, maxMB = b.maxMB || 25, per1 = b.perSearch || 1;
+  const head = (kind, note) => [`# ${id} media (${kind}): ${note} Paste the whole block into Termux (needs: pkg install python zip ffmpeg curl; pip install yt-dlp).`, `# Send back Downloads/${id}-media-${kind}.zip`, `mkdir -p ~/storage/downloads/${id}-media-${kind}/img ~/storage/downloads/${id}-media-${kind}/vid && cd ~/storage/downloads/${id}-media-${kind}`, `UA='${UA}'`];
+  const tail = (kind) => `cd .. && rm -f ${id}-media-${kind}.zip && zip -qr ${id}-media-${kind}.zip ${id}-media-${kind} && du -sh ${id}-media-${kind}.zip && echo 'Done: Downloads/${id}-media-${kind}.zip'`;
+  const S = head('small', `images and ${clipS}-second YouTube snippets (about ${maxMB * (b.videos || []).length} MB at most).`), BG = head('big', 'large Commons videos only (use Wi-Fi).');
+  S.push('g(){ [ -s "img/$1" ] || { curl -sL -m 120 -A "$UA" -o "img/$1" "https://commons.wikimedia.org/wiki/Special:FilePath/$2?width=2400"; sleep 2; }; }');
   const C = ['# Image and video credits (put them in the description; CC BY and BY-SA need the credit and a note that pictures were cropped or recoloured)\n', '| File | Author | Licence | Note |\n|---|---|---|---|\n'];
-  (b.commons || []).forEach(([key, file, author, lic, note], i) => { const ext = file.split('.').pop().toLowerCase(), name = `${String(i + 1).padStart(2, '0')}-${key}.${ext}`; L.push(`g ${name} '${file}'`); C.push(`| ${name} | ${author} | ${lic} | ${note || ''} |\n`); });
-  (b.commonsVideos || []).forEach(([key, file, author, lic, note]) => { const ext = file.split('.').pop(); L.push(`# Commons video (${note || 'large: use Wi-Fi'})`, `[ -s vid/${key}.${ext} ] || curl -sL -m 900 -A "$UA" -o vid/${key}.${ext} 'https://commons.wikimedia.org/wiki/Special:FilePath/${file}'`); C.push(`| vid/${key}.${ext} | ${author} | ${lic} | ${note || ''} |\n`); });
-  if ((b.videos || []).length) { L.push(`# YouTube searches: up to ${per} short videos per search (under ${mins} minutes, 720p), with an .info.json for the credit`, `y(){ yt-dlp -q --no-warnings -f 'bv*[height<=720]+ba/b[height<=720]' --merge-output-format mp4 --match-filter 'duration<=${mins * 60}' --max-downloads ${per} --restrict-filenames --write-info-json -o "vid/$1-%(id)s.%(ext)s" "ytsearch6:$2"; }`); b.videos.forEach(([k, q]) => L.push(`y ${k} '${q.replace(/'/g, "'\\''")}'`)); C.push('\nYouTube clips: credit by title and uploader from each .info.json (media-review.md lists them); each clip under 25 s, with commentary over it.\n'); }
-  L.push(`cd .. && rm -f ${id}-media.zip && zip -qr ${id}-media.zip ${id}-media && ls -la ${id}-media/img ${id}-media/vid | tail -40 && echo 'Done: Downloads/${id}-media.zip'`);
+  (b.commons || []).forEach(([key, file, author, lic, note], i) => { const ext = file.split('.').pop().toLowerCase(), name = `${String(i + 1).padStart(2, '0')}-${key}.${ext}`; S.push(`g ${name} '${file}'`); C.push(`| ${name} | ${author} | ${lic} | ${note || ''} |\n`); });
+  (b.commonsVideos || []).forEach(([key, file, author, lic, note]) => { const ext = file.split('.').pop(); BG.push(`# ${note || 'large file'}`, `[ -s vid/${key}.${ext} ] || curl -sL -m 900 -A "$UA" -o vid/${key}.${ext} 'https://commons.wikimedia.org/wiki/Special:FilePath/${file}'`); C.push(`| vid/${key}.${ext} | ${author} | ${lic} | ${note || ''} |\n`); });
+  if ((b.videos || []).length) { S.push(`# YouTube snippets: only ${clipS} s from the given start (default 15 s in), at most ${height}p and ${maxMB} MB, ${per1} per search; an .info.json keeps the title and uploader for the credit`,
+    `y(){ yt-dlp -q --no-warnings -f "bv*[height<=${height}]+ba/b[height<=${height}]" --merge-output-format mp4 --match-filter 'duration<=${(b.maxMinutes || 15) * 60}' --max-filesize ${maxMB}M --max-downloads ${per1} --restrict-filenames --write-info-json --download-sections "*$3-$(( $3 + ${clipS} ))" --force-keyframes-at-cuts -o "vid/$1-%(id)s.%(ext)s" "ytsearch6:$2"; }`);
+    b.videos.forEach(([k, q, st]) => S.push(`y ${k} '${q.replace(/'/g, "'\\''")}' ${st == null ? 15 : st}`)); C.push(`\nYouTube snippets: credit by title and uploader from each .info.json (media-review.md lists them); each snippet is ${clipS} s, with commentary over it.\n`); }
+  S.push(tail('small')); BG.push(tail('big'));
+  const L = [...S, '', ...BG];
+  fs.writeFileSync(path.join(P, 'media-download-small.sh'), S.join('\n') + '\n'); fs.writeFileSync(path.join(P, 'media-download-big.sh'), BG.join('\n') + '\n');
   fs.writeFileSync(path.join(P, 'media-download.sh'), L.join('\n') + '\n'); fs.writeFileSync(path.join(P, 'image-credits.md'), C.join(''));
-  console.log(`${path.join(P, 'media-candidates.md')}\n${path.join(P, 'media-download.sh')}\n${path.join(P, 'image-credits.md')}`);
+  console.log(`${path.join(P, 'media-candidates.md')}\n${path.join(P, 'media-download-small.sh')}  (images + short YouTube snippets)\n${path.join(P, 'media-download-big.sh')}  (large Commons videos)\n${path.join(P, 'image-credits.md')}`);
 }
 if (sub === 'ingest') ingest(arg); else build();

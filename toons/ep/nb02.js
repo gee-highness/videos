@@ -10,7 +10,7 @@ const jar = (x, y, coins, label, lab2) => grp(jar0(0, 0, coins, label, lab2), x,
 const jar0 = (x, y, coins, label, lab2) => { let c = ''; for (let i = 0; i < coins; i++) c += circ(x - 80 + (i % 4) * 54 + (i % 2) * 10, y + 150 - Math.floor(i / 4) * 30, 24, { fill: i % 3 ? '#ffd166' : '#e8e0c0', w: 4 }) + '';
   return rect(x - 130, y - 170, 260, 340, 36, { fill: '#e8f6fb', w: 7 }) + c + rect(x - 112, y - 215, 224, 56, 12, { fill: '#8a5a3b', w: 6 }) + rect(x - 96, y - 40, 192, 74, 8, { fill: lab2 ? '#7fe0a0' : '#fff', w: 5 }) + text(x, y + 4, label, { size: label.length > 8 ? 30 : 40 }) + (lab2 ? text(x, y + 28, lab2, { size: 22 }) : ''); };
 const EP = {
-  voiceTempo: 0.95, id: 'nb02', title: 'The Jar', auto: true, brand: '#e0742f', accentOnInk: '#ffd166', url: '', logoFile: 'toons/logos/neighbourhood-mark.svg', series: 'The Neighbourhood', episode: 'Ep. 2',
+  voiceTempo: 0.95, id: 'nb02', title: 'The Jar', auto: true, brand: '#e0742f', accentOnInk: '#ffd166', url: '', logoFile: 'toons/logos/neighbourhood-mark.svg', series: "Kuina's Neighbourhood", episode: 'Ep. 2',
   voices: { V: 'en-ZA-LukeNeural', G: 'en-ZA-LeahNeural', L: 'en-US-AnaNeural' },
   voice: [
     { who: 'G', text: 'Lwazi. Fetch my jar.' },

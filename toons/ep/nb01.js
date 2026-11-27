@@ -10,7 +10,7 @@ const cast3 = (t, rel, st = {}) => {
   return G + V + L;
 };
 const EP = {
-  voiceTempo: 0.95, id: 'nb01', title: 'Gate Talk', auto: true, brand: '#e0742f', accentOnInk: '#ffd166', url: '', logoFile: 'toons/logos/neighbourhood-mark.svg', series: 'The Neighbourhood', episode: 'Ep. 1',
+  voiceTempo: 0.95, id: 'nb01', title: 'Gate Talk', auto: true, brand: '#e0742f', accentOnInk: '#ffd166', url: '', logoFile: 'toons/logos/neighbourhood-mark.svg', series: "Kuina's Neighbourhood", episode: 'Ep. 1',
   voices: { V: 'en-ZA-LukeNeural', G: 'en-ZA-LeahNeural', L: 'en-US-AnaNeural' },
   voice: [
     { who: 'V', text: 'Ladies and gentlemen of Gate Street. I have solved the Westville case.' },

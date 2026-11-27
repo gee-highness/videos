@@ -8,7 +8,7 @@ host: hosts/kuina/dress.png
 host_name: Kuina
 host_tv: series
 limit: 90
-tags: Westville Durban SouthAfrica DogSafety SAnews
+tags: KuinasNeighbourhood Westville Durban SouthAfrica DogSafety SAnews
 status: v3, two uploads (part 1 the news, part 2 Gate Street); each part inside the 90 s reel limit; research in research.md
 sources: research.md. The skits use FICTIONAL characters only and never joke about the attack, the injuries or either person.
 ---

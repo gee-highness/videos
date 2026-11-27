@@ -24,4 +24,4 @@
 | 21-nollywood-lion.jpg | Bestvillage | CC BY-SA | on set, said to be with Pete Edochie |
 | vid/wikipedia-things-come-together.webm | Wikimedia Foundation | CC BY-SA 4.0 | 67 MB, 3:08, 1080p: use Wi-Fi; features him |
 
-YouTube clips: credit by title and uploader from each .info.json (media-review.md lists them); each clip under 25 s, with commentary over it.
+YouTube snippets: credit by title and uploader from each .info.json (media-review.md lists them); each snippet is 25 s, with commentary over it.

@@ -48,7 +48,7 @@ Narration: She reportedly said she had wanted that song since her single days, a
 ## 08 · The standoff
 _same image as the shot before_
 
-Narration: [shot press-ghpage.png | GhPage, 24 Nov 2026] Her friends, family, in-laws, even the groom, reportedly begged her to take another one.
+Narration: Her friends, family, in-laws, even the groom, reportedly begged her to take another one.
 
 ## 09 · The fair part
 ```

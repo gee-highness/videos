@@ -9,7 +9,7 @@ say 04 'A bride identified as Sugah asked the DJ for one particular song. He sai
 say 05 'He tried to download it. It failed. So he played another song by the same artist.'
 say 06 'She said no.'
 say 07 'She reportedly said she had wanted that song since her single days, and would go back to her father'\''s house unless it was found.'
-say 08 '[shot press-ghpage.png | GhPage, 24 Nov 2026] Her friends, family, in-laws, even the groom, reportedly begged her to take another one.'
+say 08 'Her friends, family, in-laws, even the groom, reportedly begged her to take another one.'
 say 09 'Now, to be fair. Online, people are split. Some say it is her day. Others say it is one song.'
 say 10 'It is not the first time. In 2024, another Igbo bride held back her wine until the DJ played Obodo. He played it. She served it.'
 say 11 'Wedding planners say the same thing: tell your DJ your songs before the day.'

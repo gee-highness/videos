@@ -56,7 +56,7 @@ She reportedly said she had wanted that song since her single days, and would go
 
 [img same] {move:out}
 [low]
-[shot press-ghpage.png | GhPage, 24 Nov 2026]
+[shot] press-ghpage.png | GhPage, 24 Nov 2026
 Her friends, family, in-laws, even the groom, reportedly begged her to take another one.
 
 # The fair part
